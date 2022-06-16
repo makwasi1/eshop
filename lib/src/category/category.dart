@@ -1,5 +1,6 @@
 
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/home/home.dart';
 import 'package:eshop/src/signup/sign_in.dart';
 import 'package:eshop/src/widgets/category_view.dart';
 import 'package:eshop/src/widgets/categoty_items.dart';
@@ -15,13 +16,13 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  bool isList = false;
+  bool isList = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: DefaultAppBar(
-        title: "Category",
+        title: "CATEGORIES",
         action: [
           IconButton(
             icon: isList ? Icon(Icons.apps) : Icon(Icons.list),
@@ -32,17 +33,17 @@ class _CategoryState extends State<Category> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.cancel_outlined),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => SignIn(), //search page
+                builder: (context) => Home(), //search page
               ),
             ),
           ),
         ],
       ),
       body: Categoryview(
-        direction: Axis.vertical,
+        direction: Axis.horizontal,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: kWhiteColor,

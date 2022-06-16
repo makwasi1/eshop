@@ -10,20 +10,18 @@ class TopLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: 1,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage(logo),
-              height: 160.0,
-            ),
-            Text(
-              'Velocity Shop',
-              style: kTitleTextStyle,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Image(
+            image: AssetImage(logo),
+            height: 160.0,
+          ),
+          Text(
+            'Velocity Shop',
+            style: kTitleTextStyle,
+          ),
+        ],
       ),
     );
   }

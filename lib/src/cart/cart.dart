@@ -16,7 +16,7 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(title: "Cart"),
+      appBar: const DefaultAppBar(title: "CART"),
       bottomNavigationBar: Material(
         elevation: kLess,
         color: kWhiteColor,
@@ -68,7 +68,7 @@ class _CartState extends State<Cart> {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(fontSize: kFixPadding)),
                             Text(cartItems[index].desc,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 12.0, color: kLightColor)),
                             Text("\$ ${cartItems[index].price.toString()}"),
                             Row(
@@ -82,7 +82,7 @@ class _CartState extends State<Cart> {
                                         }
                                       });
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.remove_circle_outline,
                                       color: kPrimaryColor,
                                     )),
@@ -111,7 +111,7 @@ class _CartState extends State<Cart> {
                                         }
                                       });
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.add_circle_outline,
                                       color: kPrimaryColor,
                                     )),

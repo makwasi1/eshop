@@ -1,4 +1,7 @@
+
+
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/payments/payments.dart';
 import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/signup/components/default_text_field.dart';
 import 'package:eshop/src/signup/sign_in.dart';
@@ -8,7 +11,7 @@ import 'package:eshop/src/widgets/header_label.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryAddress extends StatefulWidget {
-  DeliveryAddress({Key key}) : super(key: key);
+  const DeliveryAddress({Key key}) : super(key: key);
 
   @override
   _DeliveryAddressState createState() => _DeliveryAddressState();
@@ -19,7 +22,7 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: DefaultAppBar(
+      appBar: const DefaultAppBar(
         title: "Delivery Address",
         child: DefaultBackButton(),
       ),
@@ -69,8 +72,8 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
               btnText: "Go to payment",
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => SignIn(),
-                  // builder: (context) => Payment(),
+                  // builder: (context) => SignIn(),
+                  builder: (context) => Payment(),
                 ),
               ),
             ),

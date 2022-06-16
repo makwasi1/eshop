@@ -1,6 +1,7 @@
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/landing/components/outline_default_button.dart';
 import 'package:eshop/src/signup/sign_in.dart';
+import 'package:eshop/src/signup/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class BottomButtons extends StatelessWidget {
@@ -12,29 +13,27 @@ class BottomButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: 1,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            OutlineDefaultButton(
-              btnText: 'Sign Up',
-              press: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SignIn(),
-                ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          OutlineDefaultButton(
+            btnText: 'Sign Up',
+            press: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SignUp(),
               ),
             ),
-            SizedBox(height: kDefaultPadding),
-            OutlineDefaultButton(
-              btnText: 'Sign In',
-              press: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => SignIn(),
-                ),
+          ),
+          const SizedBox(height: kDefaultPadding),
+          OutlineDefaultButton(
+            btnText: 'Sign In',
+            press: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SignIn(),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

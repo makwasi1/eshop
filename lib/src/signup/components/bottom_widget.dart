@@ -4,31 +4,34 @@ import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/signup/sign_in.dart';
 import 'package:flutter/material.dart';
 
-class BottomWidgets extends StatelessWidget {
+class BottomWidgets extends StatefulWidget {
   const BottomWidgets({
     Key key,
   }) : super(key: key);
 
   @override
+  State<BottomWidgets> createState() => _BottomWidgetsState();
+}
+
+class _BottomWidgetsState extends State<BottomWidgets> {
+  @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ClearFullButton(
-            darkText: 'Already have an account?',
-            colorText: ' SignIn',
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SignIn())),
-          ),
-          DefaultButton(
-            btnText: 'Sign Up',
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => BottomNavBar(0))),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [ 
+        // ClearFullButton(
+        //   darkText: 'Already have an account?',
+        //   colorText: ' SignIn',
+        //   onPressed: () => Navigator.push(
+        //       context, MaterialPageRoute(builder: (context) => SignIn())),
+        // ),
+      DefaultButton(
+            btnText: 'Register',
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => BottomNavBar(0))),
           ),
         ],
-      ),
+    
     );
   }
 }

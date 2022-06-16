@@ -16,11 +16,12 @@ class DefaultTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(kShape)),
-        color: kAccentColor,
+      decoration:  BoxDecoration(
+        borderRadius: null,
+        border: Border.all(color: Colors.grey) ,
+        color: kWhiteColor,
       ),
       child: TextField(
         cursorColor: kPrimaryColor,
@@ -29,8 +30,9 @@ class DefaultTextField extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
           border: InputBorder.none,
-          icon: Icon(icon, color: kPrimaryColor),
           hintText: hintText,
+          fillColor: Colors.white,
+          hintStyle: const TextStyle(color: Colors.grey),
         ),
       ),
     );

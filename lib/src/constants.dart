@@ -93,6 +93,7 @@ final labels = [
   'Payments',
   'Message',
   'My Orders',
+  'Live Tracking',
   'Setting Account',
   'Call Center',
   'About Application',
@@ -103,6 +104,7 @@ final icons = [
   Icons.payment,
   Icons.message,
   Icons.local_dining,
+  Icons.local_shipping,
   Icons.settings,
   Icons.person,
   Icons.info,
@@ -218,12 +220,12 @@ final paymentDetailList = [
       textColor: Colors.red),
   PaymentModal(
       date: "Aug 15",
-      details: "Flat ₹650 off",
+      details: "Flat UGX 650 off",
       amount: 650.0,
       textColor: Colors.green),
   PaymentModal(
       date: "Dec 03",
-      details: "Congrats! Flat ₹180",
+      details: "Congrats! Flat UGX 180",
       amount: 180.0,
       textColor: Colors.green),
   PaymentModal(
@@ -238,7 +240,7 @@ final paymentDetailList = [
       textColor: Colors.red),
   PaymentModal(
       date: "Apr 18",
-      details: "Congrats! ₹375 Rewarded",
+      details: "Congrats! UGX 375 Rewarded",
       amount: 375.0,
       textColor: Colors.green),
 ];

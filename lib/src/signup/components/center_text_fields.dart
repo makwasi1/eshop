@@ -9,11 +9,10 @@ class CenterTextfields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Column(
+    return  Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
           DefaultTextField(
             hintText: 'Fullname',
             icon: Icons.person,
@@ -42,7 +41,7 @@ class CenterTextfields extends StatelessWidget {
             obscureText: true,
           ),
         ],
-      ),
+    
     );
   }
 }

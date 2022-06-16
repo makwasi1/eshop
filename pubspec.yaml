@@ -15,12 +15,22 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: 
+  badges: ^2.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+  location:
+  provider:
+  google_maps_flutter:
+  permission_handler:
+
+  awesome_card: ^1.1.7
+  getwidget: ^1.2.4
+  font_awesome_flutter: ^10.1.0
+  
   im_stepper: 
   # percent_indicator: 
 
@@ -34,3 +44,4 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - map_style.json

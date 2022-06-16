@@ -1,6 +1,11 @@
+import 'package:eshop/src/about/about.dart';
+import 'package:eshop/src/call_center/call_center.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/notifications/notification_list.dart';
+import 'package:eshop/src/orders/track_map.dart';
 import 'package:eshop/src/orders/track_orders.dart';
+import 'package:eshop/src/payments/payment_details.dart';
+import 'package:eshop/src/settings/settings.dart';
 import 'package:eshop/src/widgets/message.dart';
 import 'package:flutter/material.dart';
 
@@ -84,6 +89,10 @@ class _AccountState extends State<Account> {
                               break;
                             case 'My Orders':
                               return TrackOrder();
+                              break;
+                            case 'Live Tracking':
+                              return  SimpleMap();
+                              break;
                             case 'Setting Account':
                               return Setting();
                               break;
