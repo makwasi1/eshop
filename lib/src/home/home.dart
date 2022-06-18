@@ -6,15 +6,17 @@ import 'package:eshop/src/notifications/notification_list.dart';
 import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/widgets/category_view.dart';
 import 'package:eshop/src/widgets/categoty_items.dart';
+import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/message.dart';
 import 'package:eshop/src/widgets/recommended_items.dart';
 import 'package:eshop/src/widgets/recommended_view.dart';
 import 'package:eshop/src/widgets/search_bar.dart';
 import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/getwidget.dart';
 
 class Home extends StatefulWidget {
-  const Home({ Key key }) : super(key: key);
+  const Home({Key key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -39,40 +41,43 @@ class _HomeState extends State<Home> {
       // );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-        title: SearchBar(),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.message, color: kWhiteColor),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Message(),
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.notifications, color: kWhiteColor),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => NotificationList(),
-              ),
-            ),
-          ),
-        ],
+      appBar: const DefaultAppBar(
+        title: "",
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            GFSearchBar(
+              searchList: labels,
+              searchQueryBuilder: (query, list) {
+                return list
+                    .where((item) =>
+                        item.toLowerCase().contains(query.toLowerCase()))
+                    .toList();
+              },
+              overlaySearchListItemBuilder: (item) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    item,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                );
+              },
+              onItemSelected: (item) {
+                setState(() {
+                  print('$item');
+                });
+              },
+            ),
             Stack(
               children: [
-                Container(
+                SizedBox(
                   height: 250.0,
                   child: PageView.builder(
                     // controller: pageController,
@@ -116,13 +121,13 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            StickyLabel(text: "Menu"),
+            // StickyLabel(text: "Menu"),
             Container(
               height: 220.0,
               padding: EdgeInsets.only(top: 14.0),
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+                  crossAxisCount: 1,
                   childAspectRatio: 1.5,
                   mainAxisSpacing: 0.0,
                   crossAxisSpacing: 0.0,

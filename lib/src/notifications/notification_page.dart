@@ -1,6 +1,7 @@
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -15,9 +16,8 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(
-        title: 'Notification',
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: 'NOTIFICATIONS',
       ),
       body: FittedBox(
         child: Container(
@@ -29,7 +29,9 @@ class _NotificationPageState extends State<NotificationPage> {
               color: kWhiteColor,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(8.0),
-              boxShadow: const [BoxShadow(color: kLightColor, blurRadius: 2.0)]),
+              boxShadow: const [
+                BoxShadow(color: kLightColor, blurRadius: 2.0)
+              ]),
           child: Column(
             children: const [
               Text(

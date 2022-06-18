@@ -3,6 +3,7 @@ import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/header_label.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:eshop/src/widgets/success.dart';
 import 'package:flutter/material.dart';
 
@@ -20,14 +21,14 @@ class _PaymentState extends State<Payment> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: DefaultAppBar(
-        title: 'Payment',
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: 'PAYMENT',
+        
       ),
       body: Column(
         children: [
-          HeaderLabel(
-            headerText: 'Choose your payment method',
+          const HeaderLabel(
+            headerText: 'Choose your payment method.',
           ),
           Expanded(
             child: ListView.separated(

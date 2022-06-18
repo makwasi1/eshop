@@ -3,8 +3,8 @@ import 'package:eshop/src/notifications/component/notification_tiles.dart';
 import 'package:eshop/src/widgets/dec_section.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
-
 
 class About extends StatefulWidget {
   About({Key key}) : super(key: key);
@@ -18,12 +18,11 @@ class _AboutState extends State<About> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(
-        title: 'About Application',
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: 'ABOUT',
       ),
       body: Column(
-        children: [
+        children: const [
           NotificationTiles(
             title: 'Shop',
             subtitle: 'Welcome to Velocity',

@@ -8,6 +8,7 @@ import 'package:eshop/src/signup/sign_in.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/header_label.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryAddress extends StatefulWidget {
@@ -22,9 +23,9 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(
-        title: "Delivery Address",
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: "DELIVERY ADDRESS",
+        
       ),
       body: SingleChildScrollView(
         child: Column(

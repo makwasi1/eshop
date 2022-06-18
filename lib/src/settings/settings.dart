@@ -1,6 +1,7 @@
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Setting extends StatefulWidget {
@@ -18,9 +19,8 @@ class _SettingState extends State<Setting> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: kWhiteColor,
-      appBar: DefaultAppBar(
-        title: 'Setting Account',
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: 'ACCOUNT SETTINGS',
       ),
       body: ListView.separated(
         padding: EdgeInsets.zero,

@@ -8,43 +8,46 @@ class IntroData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
-        Expanded(
-          flex: 0,
-          child: Stack(
-            children: [
-              SvgPicture.asset(
-                whiteShape,
-                color: kWhiteColor,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                top: 175.0,
-                right: 0,
-                left: 0,
-                child: Image(
-                  image: AssetImage(introImage),
-                  height: 150.0,
+      Column(
+        children: [
+          Expanded(
+            flex: 0,
+            child: Stack(
+              children: [
+                SvgPicture.asset(
+                  whiteShape,
+                  color: kWhiteColor,
+                  fit: BoxFit.cover,
                 ),
-              ),
-            ],
+                Positioned(
+                  top: 175.0,
+                  right: 0,
+                  left: 0,
+                  child: Image(
+                    image: AssetImage(introImage),
+                    height: 150.0,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Text(
-          headText,
-          textAlign: TextAlign.center,
-          style: kHeadTextStyle,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(kDefaultPadding),
-          child: Text(
-            descText,
+          Text(
+            headText,
             textAlign: TextAlign.center,
-            style: kSubTextStyle,
+            style: kHeadTextStyle,
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Text(
+              descText,
+              textAlign: TextAlign.center,
+              style: kSubTextStyle,
+            ),
+          ),
+        ],
+      ),]
     );
   }
 }

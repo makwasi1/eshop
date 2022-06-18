@@ -3,8 +3,10 @@ import 'package:eshop/src/cart/cart.dart';
 import 'package:eshop/src/category/category.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/home/home.dart';
+import 'package:eshop/src/search/search_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomNavBar extends StatefulWidget {
   int currentIndex;
@@ -20,8 +22,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<Widget> _children = [
     Home(),
     Category(),
+    Search(),
     Cart(),
-    Account(),
+    
   ];
 
   void onTapTapped(int index) {
@@ -47,20 +50,23 @@ class _BottomNavBarState extends State<BottomNavBar> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.menu),
+            label: 'Menu',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            label: 'Category',
+            icon: Icon(
+              Icons.list_outlined,
+              size: 30,
+            ),
+            label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag_outlined),
             label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Account',
           ),
         ],
       ),

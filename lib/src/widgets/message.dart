@@ -1,8 +1,8 @@
-
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/empty_section.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Message extends StatefulWidget {
@@ -15,11 +15,10 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: DefaultAppBar(
-        title: 'Message',
-        child: DefaultBackButton(),
+      appBar: GeneralAppBar(
+        title: 'MESSAGES',
       ),
       body: EmptySection(
         emptyImg: chatBubble,

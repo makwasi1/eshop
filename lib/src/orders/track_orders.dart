@@ -1,11 +1,10 @@
-
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/main.dart';
 import 'package:im_stepper/stepper.dart';
-
 
 class TrackOrder extends StatefulWidget {
   TrackOrder({Key key}) : super(key: key);
@@ -19,13 +18,15 @@ class _TrackOrderState extends State<TrackOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(
+      appBar: const GeneralAppBar(
         title: "TRACK MY ORDER",
-        child: DefaultBackButton(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 25,
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(

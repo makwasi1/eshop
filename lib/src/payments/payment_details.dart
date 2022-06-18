@@ -1,6 +1,7 @@
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_card/awesome_card.dart';
@@ -22,13 +23,14 @@ class _PaymentDetailsState extends State<PaymentDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: DefaultAppBar(
-        title: "Payment Details",
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: "PAYMENT DETAILS",
+        
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 20,),
             CreditCard(
               cardNumber: cardNumber,
               cardExpiry: cardExpiry,

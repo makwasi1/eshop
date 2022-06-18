@@ -1,12 +1,11 @@
-
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/notifications/notification_page.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'component/notification_tiles.dart';
 
 import 'package:flutter/material.dart';
-
 
 class NotificationList extends StatefulWidget {
   NotificationList({Key key}) : super(key: key);
@@ -20,12 +19,11 @@ class _NotificationListState extends State<NotificationList> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(
-        title: 'Notifications',
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: 'NOTIFICATIONS',
       ),
       body: ListView.separated(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.zero,
           itemCount: 12,
           itemBuilder: (context, index) {

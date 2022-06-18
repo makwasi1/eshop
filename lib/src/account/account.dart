@@ -91,7 +91,7 @@ class _AccountState extends State<Account> {
                               return TrackOrder();
                               break;
                             case 'Live Tracking':
-                              return  SimpleMap();
+                              return SimpleMap();
                               break;
                             case 'Setting Account':
                               return Setting();

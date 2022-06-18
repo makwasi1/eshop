@@ -359,67 +359,67 @@ final cartItems = [
       desc: "60.96 cm (24-inch) (8-core Apple M1 chip/8 GB/256 GB), MJV93HN/A",
       price: 1712.34,
       quantity: 0),
-  CartModal(
-      image: "assets/images/watch.jpg",
-      title: "SEIKO",
-      desc: "Presage SRPD37J1",
-      price: 557.84,
-      quantity: 0),
+  // CartModal(
+  //     image: "assets/images/watch.jpg",
+  //     title: "SEIKO",
+  //     desc: "Presage SRPD37J1",
+  //     price: 557.84,
+  //     quantity: 0),
   CartModal(
       image: "assets/images/book.jpg",
       title: "Carpe Diem",
       desc: "Paperback – Import, 26 May 2009",
       price: 24.89,
       quantity: 0),
-  CartModal(
-      image: "assets/images/joyStick.jpg",
-      title: "Xbox Wireless Controller",
-      desc: "Carbon Black",
-      price: 76.12,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/shoes.jpg",
-      title: "Nike Air Max 270",
-      desc: "React Marathon Running Shoes/Sneakers Multi-Color DA2610-161",
-      price: 120.00,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/dumbbell.jpg",
-      title: "Cockatoo Dumbbell",
-      desc: "Rubber Coated Professional Hex Dumbbell Set",
-      price: 78.56,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/football.jpg",
-      title: "Nivia Simbolo Football",
-      desc: "Size 5 (White/Yellow)",
-      price: 18.00,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/shirt.jpg",
-      title: "Checked Casual Shirt",
-      desc: "Flying Machine Men Yellow & Blue Regular Fit",
-      price: 21.45,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/furniture.jpg",
-      title: "Wolper Lounge Chair",
-      desc: "Ivory Nude",
-      price: 315.00,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/headPhone.jpg",
-      title: "Sony WH-XB700 Wireless Bluetooth Headphones",
-      desc:
-          "Extra Bass Headphones with 30 Hours Battery Life, Passive Operation, Quick Charge, Headset with mic for Phone Calls with Alexa - (Black)",
-      price: 128.26,
-      quantity: 0),
-  CartModal(
-      image: "assets/images/camera.jpg",
-      title: "Canon EOS M50 Mirrorless Camera",
-      desc: "Camera with 15-45 mm Lens Kit",
-      price: 756.22,
-      quantity: 0),
+  // CartModal(
+  //     image: "assets/images/joyStick.jpg",
+  //     title: "Xbox Wireless Controller",
+  //     desc: "Carbon Black",
+  //     price: 76.12,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/shoes.jpg",
+  //     title: "Nike Air Max 270",
+  //     desc: "React Marathon Running Shoes/Sneakers Multi-Color DA2610-161",
+  //     price: 120.00,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/dumbbell.jpg",
+  //     title: "Cockatoo Dumbbell",
+  //     desc: "Rubber Coated Professional Hex Dumbbell Set",
+  //     price: 78.56,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/football.jpg",
+  //     title: "Nivia Simbolo Football",
+  //     desc: "Size 5 (White/Yellow)",
+  //     price: 18.00,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/shirt.jpg",
+  //     title: "Checked Casual Shirt",
+  //     desc: "Flying Machine Men Yellow & Blue Regular Fit",
+  //     price: 21.45,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/furniture.jpg",
+  //     title: "Wolper Lounge Chair",
+  //     desc: "Ivory Nude",
+  //     price: 315.00,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/headPhone.jpg",
+  //     title: "Sony WH-XB700 Wireless Bluetooth Headphones",
+  //     desc:
+  //         "Extra Bass Headphones with 30 Hours Battery Life, Passive Operation, Quick Charge, Headset with mic for Phone Calls with Alexa - (Black)",
+  //     price: 128.26,
+  //     quantity: 0),
+  // CartModal(
+  //     image: "assets/images/camera.jpg",
+  //     title: "Canon EOS M50 Mirrorless Camera",
+  //     desc: "Camera with 15-45 mm Lens Kit",
+  //     price: 756.22,
+  //     quantity: 0),
 ];
 
 final categoryList = [

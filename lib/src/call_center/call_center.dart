@@ -4,6 +4,7 @@ import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/empty_section.dart';
+import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:eshop/src/widgets/sub_title.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +20,8 @@ class _CallCenterState extends State<CallCenter> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(
-        title: "Call Center",
-        child: DefaultBackButton(),
+      appBar: const GeneralAppBar(
+        title: "CALL CENTER",
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
