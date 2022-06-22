@@ -44,19 +44,3 @@ class Categoryview extends StatelessWidget {
   }
 }
 
-//  Container(
-//       height: height,
-//       width: width,
-//       color: color,
-//       child: GridView.builder(
-//           padding: EdgeInsets.all(kLess),
-//           scrollDirection: direction,
-//           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//             crossAxisCount: column,
-//             childAspectRatio: ratio,
-//             mainAxisSpacing: 0.0,
-//             crossAxisSpacing: 0.0,
-//           ),
-//           itemCount: items,
-//           itemBuilder: itemBuilder),
-//     );

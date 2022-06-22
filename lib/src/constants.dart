@@ -1,4 +1,5 @@
 import 'package:eshop/src/models/category_modal.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'models/cart_model.dart';
@@ -161,22 +162,20 @@ final List<String> sliderImages = [
   "assets/images/cameras.jpg",
   "assets/images/mensShoes.jpg",
   "assets/images/watches.jpg",
-  
 ];
 
 final menuLabels = [
-  'Camera',
-  "Furniture",
+  'Free Delivery',
+  "90 Day Return",
   'Headphone',
   'Gaming',
   'Fashion',
   'Health Care',
-
 ];
 
 final menuIcons = [
   Icons.camera,
-  Icons.home,
+  Icons.autorenew,
   Icons.headset,
   Icons.games,
   Icons.format_shapes,

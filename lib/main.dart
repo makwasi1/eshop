@@ -4,7 +4,6 @@ import 'package:eshop/src/intro/intro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
@@ -17,15 +16,14 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
- 
- SystemChrome.setSystemUIOverlayStyle(
+
+  SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: kTransparent,
     ),
   );
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -40,10 +38,10 @@ class MyApp extends StatelessWidget {
       },
       theme: ThemeData(
         primaryColor: kPrimaryColor,
-        fontFamily: 'Roboto', colorScheme: ColorScheme.fromSwatch().copyWith(secondary: kAccentColor),
+        fontFamily: 'Raleway',
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: kAccentColor),
       ),
       home: const Intro(),
     );
   }
 }
-

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -37,16 +38,28 @@ class RecommendedItems extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(image),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(radius),
-                topRight: Radius.circular(radius),
+          Badge(
+            badgeColor: Colors.red,
+            position: BadgePosition.topEnd(top: -10, end: -6),
+            badgeContent: const Text(
+              'sale',
+              style: TextStyle(color: Colors.white, fontSize: 22),
+            ),
+            shape: BadgeShape.square,
+            padding: EdgeInsets.only(left: 6, right: 6, top: 7, bottom: 7),
+            borderRadius: BorderRadius.circular(5),
+            elevation: 5.0,
+            child: Container(
+              height: height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(image),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(radius),
+                  topRight: Radius.circular(radius),
+                ),
               ),
             ),
           ),

@@ -5,13 +5,16 @@ import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/notifications/notification_list.dart';
 import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/widgets/category_view.dart';
+import 'package:eshop/src/widgets/category_view_home.dart';
 import 'package:eshop/src/widgets/categoty_items.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
+import 'package:eshop/src/widgets/items_view.dart';
 import 'package:eshop/src/widgets/message.dart';
 import 'package:eshop/src/widgets/recommended_items.dart';
 import 'package:eshop/src/widgets/recommended_view.dart';
 import 'package:eshop/src/widgets/search_bar.dart';
 import 'package:eshop/src/widgets/sticky_label.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
@@ -24,26 +27,75 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentIndex = 0;
+  Timer _timer;
+  Duration myDuration = Duration(days: 5);
+  bool countDown = true;
   // PageController pageController = PageController(initialPage: 0);
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 3), (Timer timer) {
-      if (currentIndex < sliderImages.length) {
-        currentIndex++;
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (!mounted) {
+        setState(() {
+          countDown = false;
+        });
       } else {
-        currentIndex = 0;
+        // setCountDown();
+        // setState(() {
+        //   countDown = true;
+        // });
       }
-      // pageController.animateToPage(
-      //   currentIndex,
-      //   duration: Duration(milliseconds: 350),
-      //   curve: Curves.easeIn,
-      // );
     });
+    // Timer.periodic(Duration(seconds: 3), (Timer timer) {
+    //   if (currentIndex < sliderImages.length) {
+    //     currentIndex++;
+    //   } else {
+    //     currentIndex = 0;
+    //   }
+    //   // pageController.animateToPage(
+    //   //   currentIndex,
+    //   //   duration: Duration(milliseconds: 350),
+    //   //   curve: Curves.easeIn,
+    //   // );
+    // });
+
+    // startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void setCountDown() {
+    const reduceSecondsBy = 1;
+    if (mounted) {
+      setState(() {
+        final seconds = myDuration.inSeconds - reduceSecondsBy;
+        if (seconds < 0) {
+          _timer.cancel();
+        } else {
+          myDuration = Duration(seconds: seconds);
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    String strDigits(int n) => n.toString().padLeft(2, '0');
+    final days = strDigits(myDuration.inDays);
+    final hours = strDigits(myDuration.inHours.remainder(24));
+    final minutes = strDigits(myDuration.inMinutes.remainder(60));
+    final seconds = strDigits(myDuration.inSeconds.remainder(60));
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: const DefaultAppBar(
@@ -123,28 +175,34 @@ class _HomeState extends State<Home> {
             ),
             // StickyLabel(text: "Menu"),
             Container(
-              height: 220.0,
-              padding: EdgeInsets.only(top: 14.0),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  childAspectRatio: 1.5,
-                  mainAxisSpacing: 0.0,
-                  crossAxisSpacing: 0.0,
-                ),
-                itemCount: menuLabels.length,
+              height: 110.0,
+              padding: const EdgeInsets.only(top: 14.0, left: 1.8),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                //   crossAxisCount: 1,
+                //   childAspectRatio: 1.5,
+                //   mainAxisSpacing: 0.0,
+                //   crossAxisSpacing: 0.0,
+                // ),
+                itemCount: 2,
                 itemBuilder: (context, index) {
-                  return Column(
+                  return Row(
                     children: [
                       Icon(
                         menuIcons[index],
                         color: kPrimaryColor,
-                        size: 34.0,
+                        size: 50.0,
                       ),
                       Text(
                         menuLabels[index],
-                        style: TextStyle(color: kLightColor),
+                        style:
+                            const TextStyle(color: kLightColor, fontSize: 18),
                       ),
+                      const VerticalDivider(
+                        endIndent: 20.0,
+                      )
                     ],
                   );
                 },
@@ -154,24 +212,107 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                StickyLabel(text: "Week Promotion"),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Products(false),
+                const Padding(
+                  padding: EdgeInsets.only(left: 12.0),
+                  child: Text(
+                    "Deal Of the day",
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w400,
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: kDefaultPadding),
-                    child:
-                        StickyLabel(text: "View All", textColor: kPrimaryColor),
+                    textAlign: TextAlign.justify,
                   ),
                 ),
               ],
             ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      color: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 3.0, left: 10.0, top: 3.0),
+                        child: Text(
+                          "End in: $days: $hours: $minutes: $seconds",
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 28.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Products(false),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 58.0, bottom: 30.0),
+                        child: Text("View all",
+                            style: TextStyle(
+                                color: Colors.black,
+                                decoration: TextDecoration.underline,
+                                fontSize: 20.0)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              thickness: 0,
+              color: kLightColor,
+              indent: 10.0,
+              endIndent: 10.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+              child: RecommendedView(
+                direction: Axis.horizontal,
+                heights: 315.0,
+                widths: MediaQuery.of(context).size.width,
+                top: 0.0,
+                bottom: 0.0,
+                left: 0.0,
+                right: 0.0,
+                column: 1,
+                ratio: 1.8,
+                items: 6,
+                itemBuilder: (context, index) {
+                  return RecommendedItems(
+                    height: 225.0,
+                    radius: 8.0,
+                    top: 8.0,
+                    bottom: 8.0,
+                    left: 4.0,
+                    right: 4.0,
+                    image: recommendedList[index].image,
+                    title: recommendedList[index].title,
+                    price: recommendedList[index].price,
+                    rating: recommendedList[index].rating,
+                    sale: recommendedList[index].sale,
+                  );
+                },
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Categoryview(
+              child: CategoryViewHome(
                 direction: Axis.horizontal,
                 height: 200.0,
                 width: MediaQuery.of(context).size.width,
@@ -180,7 +321,7 @@ class _HomeState extends State<Home> {
                 ratio: 1.5,
                 items: 6,
                 itemBuilder: (context, index) {
-                  return CategoryItems(
+                  return ItemsView(
                     height: MediaQuery.of(context).size.height,
                     width: 400.0,
                     paddingVertical: 4.0,
@@ -197,15 +338,15 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                StickyLabel(text: "Category"),
+                const StickyLabel(text: "Category"),
                 GestureDetector(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => BottomNavBar(1),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: kDefaultPadding),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: kDefaultPadding),
                     child:
                         StickyLabel(text: "View All", textColor: kPrimaryColor),
                   ),
@@ -214,7 +355,7 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Categoryview(
+              child: CategoryViewHome(
                 direction: Axis.horizontal,
                 height: 300.0,
                 width: MediaQuery.of(context).size.width,
@@ -223,7 +364,7 @@ class _HomeState extends State<Home> {
                 ratio: 1.0,
                 items: 8,
                 itemBuilder: (context, index) {
-                  return CategoryItems(
+                  return ItemsView(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     paddingHorizontal: 0.0,
