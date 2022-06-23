@@ -1,4 +1,5 @@
 import 'package:eshop/src/models/category_modal.dart';
+import 'package:eshop/src/models/poster_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -158,10 +159,10 @@ List<String> chipsCategory = [
 ];
 
 final List<String> sliderImages = [
-  "assets/images/books.jpg",
-  "assets/images/cameras.jpg",
+  "assets/images/poster3.jpg",
+  "assets/images/poster1.jpg",
+  "assets/images/poster2.jpg",
   "assets/images/mensShoes.jpg",
-  "assets/images/watches.jpg",
 ];
 
 final menuLabels = [
@@ -419,6 +420,21 @@ final cartItems = [
   //     desc: "Camera with 15-45 mm Lens Kit",
   //     price: 756.22,
   //     quantity: 0),
+];
+
+final posterList = [
+  // PosterModal(
+  //   image: "assets/images/poster1.jpg",
+  // ),
+  // PosterModal(
+  //   image: "assets/images/poster2.jpg",
+  // ),
+  PosterModal(
+    image: "assets/images/promotion-2.jpg",
+  ),
+  PosterModal(
+    image: "assets/images/promotion-1.jpg",
+  ),
 ];
 
 final categoryList = [

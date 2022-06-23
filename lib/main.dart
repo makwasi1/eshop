@@ -18,7 +18,7 @@ void main() async {
   // SettingsView.
 
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
+    const SystemUiOverlayStyle(
       statusBarColor: kTransparent,
     ),
   );
