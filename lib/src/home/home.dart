@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
     //   // );
     // });
 
-    startTimer();
+    // startTimer();
   }
 
   void startTimer() {
