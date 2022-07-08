@@ -23,38 +23,51 @@ class RecommendedItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: top,
-        bottom: bottom,
-        left: left,
-        right: right,
-      ),
-      decoration: BoxDecoration(
-        color: kAccentColor,
+    return Card(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: kAccentColor),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Badge(
-            badgeColor: Colors.red,
-            position: BadgePosition.topEnd(top: -10, end: -6),
-            badgeContent: const Text(
-              'sale',
-              style: TextStyle(color: Colors.white, fontSize: 22),
+      child: Container(
+        margin: EdgeInsets.only(
+          top: top,
+          bottom: bottom,
+          left: left,
+          right: right,
+        ),
+        decoration: BoxDecoration(
+          color: kWhiteColor,
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(color: kWhiteColor),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Icon(
+                    Icons.favorite_border,
+                    size: 30,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 5, left: 65),
+                  child: Icon(
+                    Icons.compare_arrows,
+                    size: 30,
+                  ),
+                ),
+              ],
             ),
-            shape: BadgeShape.square,
-            padding: EdgeInsets.only(left: 6, right: 6, top: 7, bottom: 7),
-            borderRadius: BorderRadius.circular(5),
-            elevation: 5.0,
-            child: Container(
+            Container(
               height: height,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(image),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(radius),
@@ -62,67 +75,99 @@ class RecommendedItems extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              right: kLessPadding,
-              left: kLessPadding,
-            ),
-            child: Text(
-              title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: kDarkColor.withOpacity(0.8),
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                right: kLessPadding,
+                left: kLessPadding,
+              ),
+              child: Text(
+                title,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    color: kDarkColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: kLessPadding,
-              left: kLessPadding,
+            Padding(
+              padding: const EdgeInsets.only(
+                right: kLessPadding,
+                left: kLessPadding,
+              ),
+              child: Text(
+                "\$ ${price.toString()}",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
             ),
-            child: Text("\$ ${price.toString()}"),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: kLessPadding,
-              left: kLessPadding,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: rating.toString(),
-                          style: TextStyle(
-                            color: kDarkColor.withOpacity(0.4),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: kLessPadding,
+                left: kLessPadding,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: rating.toString(),
+                            style: TextStyle(
+                              color: kDarkColor.withOpacity(0.4),
+                            ),
                           ),
-                        ),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.top,
-                          child: Icon(
-                            Icons.star,
-                            size: 16.0,
-                            color: Colors.orange,
+                          const WidgetSpan(
+                            alignment: PlaceholderAlignment.top,
+                            child: Icon(
+                              Icons.star,
+                              size: 16.0,
+                              color: Colors.orange,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  "${sale.toString()} Sale",
-                  style: TextStyle(
-                    color: kDarkColor.withOpacity(0.4),
+                  Text(
+                    "${sale.toString()} Sale",
+                    style: TextStyle(
+                      color: kDarkColor.withOpacity(0.4),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            // SizedBox(
+            //   height: 10,
+            //   width: 10,
+            // ),
+            Container(
+              height: 30,
+              width: 150,
+              child: MaterialButton(
+                color: kPrimaryColor,
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.add_shopping_cart,
+                      color: kWhiteColor,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "ADD TO CART",
+                      style: TextStyle(color: kWhiteColor, fontSize: 14),
+                    ),
+                  ],
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

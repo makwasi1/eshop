@@ -22,7 +22,7 @@ class _ProductsState extends State<Products> {
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: DefaultAppBar(
-        title: widget.isRecommended ? "Recommended" : "Week Promotion",
+        title: widget.isRecommended ? "RECOMENDED" : "WEEK PROMOTION",
         child: DefaultBackButton(),
       ),
       body: widget.isRecommended

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/delivery/delivery.dart';
+import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  bool get isRecommended => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,11 +35,10 @@ class _CartState extends State<Cart> {
                 color: kPrimaryColor,
                 textColor: Colors.black,
                 child:
-                    const Text("View Cart", style: TextStyle(fontSize: 18.0)),
+                    const Text("Continue Shopping", style: TextStyle(fontSize: 18.0)),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    //TODO:either return to home page or the cart page
-                    builder: (context) => Cart(),
+                    builder: (context) => Products(isRecommended),
                   ),
                 ),
               ),
@@ -44,19 +46,19 @@ class _CartState extends State<Cart> {
               // child: Text("Total : UGX 97500",
               //     textAlign: TextAlign.center, style: kSubTextStyle)
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
           
             Expanded(
               child: FlatButton(
-                padding: EdgeInsets.symmetric(vertical: kLessPadding),
+                padding: const EdgeInsets.symmetric(vertical: kLessPadding),
                 color: kDarkColor,
                 textColor: kWhiteColor,
-                child: Text("Checkout", style: TextStyle(fontSize: 18.0)),
+                child: const Text("Checkout", style: TextStyle(fontSize: 18.0)),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => DeliveryAddress(),
+                    builder: (context) => const DeliveryAddress(),
                   ),
                 ),
               ),

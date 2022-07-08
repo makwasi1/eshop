@@ -25,7 +25,15 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: const DefaultAppBar(title: ""),
+      appBar: AppBar(
+          backgroundColor: kWhiteColor,
+          elevation: 0.4,
+          title: Text(
+            "Sign Up",
+            style: TextStyle(color: kDarkColor, fontSize: 35),
+            textAlign: TextAlign.center,
+          ),
+        ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,

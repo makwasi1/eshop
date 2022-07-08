@@ -9,7 +9,7 @@ import 'models/recommended_modal.dart';
 import 'models/review_modal.dart';
 import 'models/track_order_modal.dart';
 
-const kPrimaryColor = Color(0xFFFCB800);
+const kPrimaryColor = Color(0xff309a6d);
 const kAccentColor = Color(0xFFF1F1F1);
 const kWhiteColor = Color(0xFFFFFFFF);
 const kLightColor = Color(0xFF808080);
@@ -91,6 +91,13 @@ List<Map<String, String>> introData = [
 ];
 
 final labels = [
+  'Profile',
+  'Orders',
+  'Downlodable Products',
+  'Wishlist',
+  'Compare',
+  'Reviews',
+  'Address',
   'Notifications',
   'Payments',
   'Message',
@@ -102,6 +109,13 @@ final labels = [
 ];
 
 final icons = [
+  Icons.person,
+  Icons.list_alt_outlined,
+  Icons.download_outlined,
+  Icons.favorite_border_outlined,
+  Icons.compare_arrows_outlined,
+  Icons.star_border_outlined,
+  Icons.location_on_outlined,
   Icons.notifications,
   Icons.payment,
   Icons.message,

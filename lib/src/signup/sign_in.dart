@@ -21,7 +21,15 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: kWhiteColor,
-        appBar: const DefaultAppBar(title:""),
+        appBar: AppBar(
+          backgroundColor: kWhiteColor,
+          elevation: 0.4,
+          title: Text(
+            "Sign In",
+            style: TextStyle(color: kDarkColor, fontSize: 35),
+            textAlign: TextAlign.center,
+          ),
+        ),
         body: SingleChildScrollView(
             child: SizedBox(
           height: MediaQuery.of(context).size.height,

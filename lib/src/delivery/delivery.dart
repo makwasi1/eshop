@@ -29,48 +29,48 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            HeaderLabel(
+          children:  [
+            const HeaderLabel(
               headerText: "Where are your ordered items shipped?",
             ),
-            DefaultTextField(
+            const DefaultTextField(
               hintText: "State",
               icon: Icons.map,
               obscureText: false,
               keyboardType: TextInputType.text,
             ),
-            SizedBox(
+             const SizedBox(
               height: kFixPadding,
             ),
-            DefaultTextField(
+             const DefaultTextField(
               hintText: "City",
               icon: Icons.location_city,
               obscureText: false,
               keyboardType: TextInputType.text,
             ),
-            SizedBox(
+             const SizedBox(
               height: kFixPadding,
             ),
-            DefaultTextField(
+            const DefaultTextField(
               hintText: "Locality",
               icon: Icons.landscape,
               obscureText: false,
               keyboardType: TextInputType.text,
             ),
-            SizedBox(
+            const SizedBox(
               height: kFixPadding,
             ),
-            DefaultTextField(
+            const DefaultTextField(
               hintText: "Pincode",
               icon: Icons.location_city,
               obscureText: false,
               keyboardType: TextInputType.number,
             ),
-            SizedBox(
+            const SizedBox(
               height: kDefaultPadding,
             ),
             DefaultButton(
-              btnText: "Go to payment",
+              btnText: "Proceed to payment",
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   // builder: (context) => SignIn(),

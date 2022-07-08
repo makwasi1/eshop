@@ -23,8 +23,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     Home(),
     Category(),
     Search(),
-    Cart(),
-    
+    Account(),
   ];
 
   void onTapTapped(int index) {
@@ -50,23 +49,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
+            icon: FaIcon(FontAwesomeIcons.store),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.list_outlined,
-              size: 30,
-            ),
+            icon: FaIcon(FontAwesomeIcons.listCheck),
             label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            label: 'Cart',
+            icon: FaIcon(FontAwesomeIcons.user),
+            label: 'Profile',
           ),
         ],
       ),

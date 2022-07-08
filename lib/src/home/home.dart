@@ -106,28 +106,8 @@ class _HomeState extends State<Home> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              GFSearchBar(
-                searchList: labels,
-                searchQueryBuilder: (query, list) {
-                  return list
-                      .where((item) =>
-                          item.toLowerCase().contains(query.toLowerCase()))
-                      .toList();
-                },
-                overlaySearchListItemBuilder: (item) {
-                  return Container(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      item,
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  );
-                },
-                onItemSelected: (item) {
-                  setState(() {
-                    print('$item');
-                  });
-                },
+              const SizedBox(
+                height: 10,
               ),
               Stack(
                 children: [
@@ -228,7 +208,7 @@ class _HomeState extends State<Home> {
                               ),
                             ),
                             Text(
-                              "If goods are damaged",
+                              "If goods have problems",
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w500,
@@ -248,7 +228,7 @@ class _HomeState extends State<Home> {
                   Padding(
                     padding: EdgeInsets.only(left: 12.0),
                     child: Text(
-                      "Deal Of the day",
+                      "Featured Products",
                       style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.w400,
@@ -259,54 +239,54 @@ class _HomeState extends State<Home> {
                 ],
               ),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: Card(
-                        elevation: 5.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        color: Colors.red,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 3.0, left: 10.0, top: 3.0),
-                          child: Text(
-                            "End in: $days: $hours: $minutes: $seconds",
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 28.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => Products(false),
-                          ),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 58.0, bottom: 30.0),
-                          child: Text("View all",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 20.0)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Row(
+              //     children: [
+              //       SizedBox(
+              //         width: MediaQuery.of(context).size.width * 0.6,
+              //         height: MediaQuery.of(context).size.height * 0.05,
+              //         child: Card(
+              //           elevation: 5.0,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(5.0),
+              //           ),
+              //           color: Colors.red,
+              //           child: Padding(
+              //             padding: const EdgeInsets.only(
+              //                 bottom: 3.0, left: 10.0, top: 3.0),
+              //             child: Text(
+              //               "End in: $days: $hours: $minutes: $seconds",
+              //               textAlign: TextAlign.left,
+              //               style: const TextStyle(
+              //                 color: Colors.white,
+              //                 fontSize: 28.0,
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       Expanded(
+              //         flex: 1,
+              //         child: GestureDetector(
+              //           onTap: () => Navigator.of(context).push(
+              //             MaterialPageRoute(
+              //               builder: (context) => Products(false),
+              //             ),
+              //           ),
+              //           child: const Padding(
+              //             padding: EdgeInsets.only(left: 58.0, bottom: 30.0),
+              //             child: Text("View all",
+              //                 style: TextStyle(
+              //                     color: Colors.black,
+              //                     decoration: TextDecoration.underline,
+              //                     fontSize: 20.0)),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               const Divider(
                 thickness: 0,
                 color: kLightColor,
@@ -328,7 +308,7 @@ class _HomeState extends State<Home> {
                   items: 6,
                   itemBuilder: (context, index) {
                     return RecommendedItems(
-                      height: 225.0,
+                      height: 145.0,
                       radius: 8.0,
                       top: 8.0,
                       bottom: 8.0,
@@ -425,23 +405,32 @@ class _HomeState extends State<Home> {
                 ),
               ),
               kDivider,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  StickyLabel(text: "Recommended"),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Products(true),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("New Products",
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        textAlign: TextAlign.center),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Products(true),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: kDefaultPadding),
+                        child: StickyLabel(
+                            text: "View All", textColor: kPrimaryColor),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: kDefaultPadding),
-                      child: StickyLabel(
-                          text: "View All", textColor: kPrimaryColor),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
@@ -458,7 +447,7 @@ class _HomeState extends State<Home> {
                   items: 6,
                   itemBuilder: (context, index) {
                     return RecommendedItems(
-                      height: 225.0,
+                      height: 145.0,
                       radius: 8.0,
                       top: 8.0,
                       bottom: 8.0,
@@ -472,7 +461,37 @@ class _HomeState extends State<Home> {
                     );
                   },
                 ),
-              )
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+              //   child: RecommendedView(
+              //     direction: Axis.horizontal,
+              //     heights: 315.0,
+              //     widths: MediaQuery.of(context).size.width,
+              //     top: 0.0,
+              //     bottom: 0.0,
+              //     left: 0.0,
+              //     right: 0.0,
+              //     column: 1,
+              //     ratio: 1.8,
+              //     items: 6,
+              //     itemBuilder: (context, index) {
+              //       return RecommendedItems(
+              //         height: 225.0,
+              //         radius: 8.0,
+              //         top: 8.0,
+              //         bottom: 8.0,
+              //         left: 4.0,
+              //         right: 4.0,
+              //         image: recommendedList[index].image,
+              //         title: recommendedList[index].title,
+              //         price: recommendedList[index].price,
+              //         rating: recommendedList[index].rating,
+              //         sale: recommendedList[index].sale,
+              //       );
+              //     },
+              //   ),
+              // )
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
@@ -30,13 +31,25 @@ class _SimpleMapState extends State<SimpleMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  GeneralAppBar(
+      appBar:  const GeneralAppBar(
       title: "LIVE TRACKING",
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: kPrimaryColor,
+        hoverColor: Colors.cyan,
+        elevation: 12,
+        heroTag: 'uniqueTag',
+        onPressed: (){},
+        label: Row(
+          children: const [Icon(Icons.add),
+            Text('Track Order')],
+        ),
       ),
       body: GoogleMap(
         initialCameraPosition: _kInitialPosition,
         onMapCreated: onMapCreated,
       ),
+      bottomSheet: BottomSheet(onClosing: onClosing, builder: builder),
     );
   }
 }

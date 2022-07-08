@@ -9,7 +9,6 @@ import 'package:eshop/src/settings/settings.dart';
 import 'package:eshop/src/widgets/message.dart';
 import 'package:flutter/material.dart';
 
-
 class Account extends StatefulWidget {
   Account({Key key}) : super(key: key);
 
@@ -31,11 +30,12 @@ class _AccountState extends State<Account> {
             alignment: Alignment.center,
             children: [
               Container(
-                height: 250.0,
-                child: Image(
-                  image: AssetImage(bg),
-                  fit: BoxFit.cover,
-                ),
+                height: 150.0,
+                color: kPrimaryColor,
+                // child: Image(
+                //   image: AssetImage(bg),
+                //   fit: BoxFit.cover,
+                // ),
               ),
               Positioned(
                 bottom: -60.0,
@@ -45,7 +45,7 @@ class _AccountState extends State<Account> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
                     border: Border.all(
-                      color: kWhiteColor,
+                      color: kDarkColor,
                       width: kLess,
                     ),
                     image: DecorationImage(
@@ -78,6 +78,20 @@ class _AccountState extends State<Account> {
                     onTap: () => Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
                           switch (labels[index]) {
+                            case 'Profile':
+                              return About();
+                            case 'Orders':
+                              return TrackOrder();
+                            case 'Downlodable Products':
+                              return PaymentDetails();
+                            case 'Wishlist':
+                              return About();
+                            case 'Compare':
+                              return About();
+                            case 'Reviews':
+                              return About();
+                            case 'Address':
+                              return About();
                             case 'Notifications':
                               return NotificationList();
                               break;
