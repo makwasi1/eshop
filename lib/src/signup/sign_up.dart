@@ -6,6 +6,7 @@ import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/home/home.dart';
 import 'package:eshop/src/intro/components/empty_app_bar.dart';
 import 'package:eshop/src/landing/components/top_logo.dart';
+import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/signup/components/bottom_widget.dart';
 import 'package:eshop/src/signup/components/center_text_fields.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
@@ -21,19 +22,33 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  AuthRepository auth = AuthRepository();
+  @override
+  void initState() {
+    auth.register(
+    'yesnebula1yu2@galaxy.com',
+    'Nebula8',
+    'John90',
+    'Doe',
+    'johnDoe123',
+    'johnDoe123'
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(
-          backgroundColor: kWhiteColor,
-          elevation: 0.4,
-          title: Text(
-            "Sign Up",
-            style: TextStyle(color: kDarkColor, fontSize: 35),
-            textAlign: TextAlign.center,
-          ),
+        backgroundColor: kWhiteColor,
+        elevation: 0.4,
+        title: Text(
+          "Sign Up",
+          style: TextStyle(color: kDarkColor, fontSize: 35),
+          textAlign: TextAlign.center,
         ),
+      ),
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,

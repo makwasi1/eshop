@@ -1,7 +1,9 @@
 
 
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/models/address_model.dart';
 import 'package:eshop/src/payments/payments.dart';
+import 'package:eshop/src/services/address_rep.dart';
 import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/signup/components/default_text_field.dart';
 import 'package:eshop/src/signup/sign_in.dart';
@@ -19,6 +21,13 @@ class DeliveryAddress extends StatefulWidget {
 }
 
 class _DeliveryAddressState extends State<DeliveryAddress> {
+  AddressRepository add = AddressRepository();
+  @override
+  void initState() {
+    // add.getAddresses();
+    add.addAddress(Address(address1: ['kisasi'], city: "New York", state: "NY", postcode: "10001", country: "USA", phone: "1234567890"));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

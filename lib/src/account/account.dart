@@ -2,11 +2,14 @@ import 'package:eshop/src/about/about.dart';
 import 'package:eshop/src/call_center/call_center.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/notifications/notification_list.dart';
+import 'package:eshop/src/orders/map.dart';
 import 'package:eshop/src/orders/track_map.dart';
 import 'package:eshop/src/orders/track_orders.dart';
 import 'package:eshop/src/payments/payment_details.dart';
 import 'package:eshop/src/settings/settings.dart';
+import 'package:eshop/src/vendor/live_video.dart';
 import 'package:eshop/src/widgets/message.dart';
+import 'package:eshop/src/widgets/video_stream.dart';
 import 'package:flutter/material.dart';
 
 class Account extends StatefulWidget {
@@ -108,7 +111,7 @@ class _AccountState extends State<Account> {
                               return SimpleMap();
                               break;
                             case 'Setting Account':
-                              return Setting();
+                              return LiveStreaming();
                               break;
                             case 'Call Center':
                               return CallCenter();

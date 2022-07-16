@@ -1,6 +1,7 @@
 import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/landing/components/top_logo.dart';
+import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/social_buttons.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'components/default_button.dart';
 import 'components/default_text_field.dart';
 
 class SignIn extends StatefulWidget {
+  AuthRepositoryService _authRepositoryService;
   SignIn({Key key}) : super(key: key);
 
   @override
@@ -17,6 +19,13 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  AuthRepository auth = AuthRepository();
+  @override
+  void initState() {
+    auth.login('crisengoma12@gmail.com', '@makwasi12');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +65,7 @@ class _SignInState extends State<SignIn> {
               ),
               const DefaultTextField(
                 obscureText: false,
-                hintText: 'Username or email',
+                hintText: 'Email',
                 icon: Icons.email,
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -68,12 +77,7 @@ class _SignInState extends State<SignIn> {
                 keyboardType: TextInputType.visiblePassword,
               ),
               const SizedBox(height: kFixPadding),
-              DefaultButton(
-                  btnText: 'Login',
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BottomNavBar(0)));
-                  }),
+              DefaultButton(btnText: 'Login', onPressed: () {}),
 
               // ClearFullButton(
               //   darkText: 'I forgot my',
