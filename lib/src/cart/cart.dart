@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/delivery/delivery.dart';
 import 'package:eshop/src/products/products.dart';
+import 'package:eshop/src/services/auth_repo.dart';
+import 'package:eshop/src/signup/sign_in.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -58,12 +60,13 @@ class _CartState extends State<Cart> {
                 child: const Text("Checkout", style: TextStyle(fontSize: 18.0)),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const DeliveryAddress(),
+                    builder: (context) => SignIn(authRepository: AuthRepository(),),
+                    // builder: (context) => const DeliveryAddress(),
                   ),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             )
           ],
@@ -74,8 +77,8 @@ class _CartState extends State<Cart> {
           itemCount: cartItems.length,
           itemBuilder: (context, index) {
             return Container(
-              margin: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-              padding: EdgeInsets.all(8.0),
+              margin: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: const BoxDecoration(),
               child: Row(
                 children: [

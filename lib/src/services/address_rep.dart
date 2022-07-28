@@ -18,7 +18,7 @@ class AddressRepository implements AddressRepositoryService {
   AddressRepository();
   String url = 'http://eshoptag.com';
   String addAddressEndPoint = '/api/addresses/create';
-  String getAddressEndPoint = '/api/addresses/{$id}';
+  String getAddressEndPoint = '/api/addresses/';
   String getAddressesEndPoint = '/api/addresses';
   String updateAddressEndPoint = '/api/addresses/{$id}';
   @override
@@ -35,7 +35,7 @@ class AddressRepository implements AddressRepositoryService {
   @override
   Future<Address> getAddress(String id) async {
     final response = await HttpUtils.getRequest(
-        url + getAddressEndPoint.replaceAll('{id}', id));
+        url + getAddressEndPoint + id);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       Address profile = Address.fromJson(data['data']);

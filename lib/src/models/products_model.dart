@@ -1,17 +1,16 @@
-import 'dart:convert';
 
-class Products {
-  List<Data> data;
+class ProductModel {
+  List<Products> data;
   Links links;
   Meta meta;
 
-  Products({this.data, this.links, this.meta});
+  ProductModel({this.data, this.links, this.meta});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  ProductModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <Products>[];
       json['data'].forEach((v) {
-        data.add(Data.fromJson(v));
+        data.add(Products.fromJson(v));
       });
     }
     links = json['links'] != null ? Links.fromJson(json['links']) : null;
@@ -33,7 +32,7 @@ class Products {
   }
 }
 
-class Data {
+class Products {
   int id;
   String type;
   String name;
@@ -52,7 +51,7 @@ class Data {
   String createdAt;
   String updatedAt;
 
-  Data(
+  Products(
       {this.id,
         this.type,
         this.name,
@@ -71,7 +70,7 @@ class Data {
         this.createdAt,
         this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
     name = json['name'];
@@ -217,7 +216,7 @@ class BaseImage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['small_image_url'] = smallImageUrl;
     data['medium_image_url'] = mediumImageUrl;
     data['large_image_url'] = largeImageUrl;
@@ -247,7 +246,7 @@ class Reviews {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['total'] = total;
     data['total_rating'] = totalRating;
     data['average_rating'] = averageRating;

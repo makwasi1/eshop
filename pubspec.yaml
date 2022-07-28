@@ -29,6 +29,10 @@ dependencies:
   build_runner: ^2.2.0
   shared_preferences: ^2.0.15
   flutter_secure_storage: ^5.0.2
+  flutter_bloc: ^8.0.1
+  bloc: ^8.0.3
+  formz: ^0.4.1
+  eva_icons_flutter: ^3.1.0
   # flutter_logs: ^2.1.7
 
 dev_dependencies:

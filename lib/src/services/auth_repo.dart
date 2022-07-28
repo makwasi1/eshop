@@ -6,7 +6,7 @@ import 'package:eshop/src/services/auth_credentials.dart';
 import 'package:eshop/src/services/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 // import 'package:flutter_logs/flutter_logs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -15,7 +15,7 @@ abstract class AuthRepositoryService {
   Future<dynamic> login(String username, String password);
   Future<String> getCurrentUserToken();
   Future<UserModel> getCurrentLoggedInUser();
-
+  Future<bool> hasToken();
   Future<void> logout();
   Future<void> storeLoggedInUser(UserModel user);
   Future<HttpMsg> sendPasswordReset(String accountIdentifier,
@@ -42,19 +42,24 @@ class AuthRepository implements AuthRepositoryService {
   String registerEnPoint = '/api/customer/register';
   String loginEndPoint = '/api/customer/login?token=true';
   String getProfileEndPoint = '/api/customer/get';
-  String getCustomerByIdEndPoint = '/api/customer/{id}';
+  String getCustomerByIdEndPoint = '/api/customer/';
   String updateProfileEndPoint = '/api/customer/profile';
-  String logOutEndpOint = '/api/customer/logout';
+  String logOutEndPoint = '/api/customer/logout';
   String forgotPasswordEndpoint = '/api/customer/forgot-password';
 
   ///user login with email and password
   @override
-  Future login(String email, String password) async {
-    final response = await HttpUtils.postRequest<Map<String, dynamic>>(
-        url + loginEndPoint, {"email": email, "password": password});
+  Future<dynamic> login(String email, String password) async {
+    final response = await http.post(
+        Uri.parse(url + loginEndPoint),
+        body: jsonEncode({"email": email, "password": password}),
+        headers: {
+      'Content-type': 'application/json',
+    });
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       User profile = User.fromJson(data['data']);
+      // String accessToken = User.fromJson(data['token']) as String;
 
       UserModel user = UserModel(token: data['token'], data: profile);
 
@@ -69,22 +74,17 @@ class AuthRepository implements AuthRepositoryService {
   }
 
   //register a new user
-  Future<String> register(
-      String email,
-      String firstName,
-      String lastName,
-      String name,
-      String password,
-      String passwordConfirmation) async {
-    final response = await HttpUtils.postRequest<Map<String, dynamic>>(
-        url + registerEnPoint, {
-      "email": email,
-      "name": name,
-      "first_name": firstName,
-      "last_name": lastName,
-      "password": password,
-      "password_confirmation": passwordConfirmation
-    });
+  Future<String> register(String email, String firstName, String lastName,
+      String password, String passwordConfirmation) async {
+    final response = await http.post(Uri.parse(url + registerEnPoint),
+        body: jsonEncode({
+          "email": email,
+          "first_name": firstName,
+          "last_name": lastName,
+          "password": password,
+          "password_confirmation": passwordConfirmation
+        }),
+        headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = json.decode(response.body);
       //return snackbar with success message
@@ -135,7 +135,7 @@ class AuthRepository implements AuthRepositoryService {
   @override
   Future<UserModel> getCurrentLoggedInUser() async {
     try {
-      FlutterSecureStorage storage = FlutterSecureStorage();
+      FlutterSecureStorage storage = const FlutterSecureStorage();
       String username = await storage.read(key: HttpUtils.keyForUsername);
       String token = await storage.read(key: HttpUtils.keyForJWTToken);
 
@@ -149,16 +149,17 @@ class AuthRepository implements AuthRepositoryService {
   @override
   Future<String> getCurrentUserToken() {
     try {
-      FlutterSecureStorage storage = FlutterSecureStorage();
+      FlutterSecureStorage storage = const FlutterSecureStorage();
       return storage.read(key: HttpUtils.keyForJWTToken);
     } catch (e) {
       return null;
     }
   }
 
+  @override
   Future<bool> hasToken() async {
     try {
-      FlutterSecureStorage storage = FlutterSecureStorage();
+      FlutterSecureStorage storage = const FlutterSecureStorage();
       String token = await storage.read(key: HttpUtils.keyForJWTToken);
       return token != null;
     } catch (e) {
@@ -168,7 +169,7 @@ class AuthRepository implements AuthRepositoryService {
 
   @override
   Future<void> logout() async {
-    FlutterSecureStorage storage = FlutterSecureStorage();
+    FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.deleteAll();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -187,7 +188,7 @@ class AuthRepository implements AuthRepositoryService {
   @override
   Future<void> storeLoggedInUser(UserModel user) async {
     try {
-      FlutterSecureStorage storage = FlutterSecureStorage();
+      FlutterSecureStorage storage = const FlutterSecureStorage();
       await storage.write(key: HttpUtils.keyForJWTToken, value: user.token);
       await storage.write(
           key: HttpUtils.keyForUsername, value: json.encode(user.data));

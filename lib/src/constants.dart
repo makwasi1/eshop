@@ -367,24 +367,24 @@ final reviewList = [
 ];
 
 final cartItems = [
-  CartModal(
-      image: "assets/images/iMac.jpg",
-      title: "Apple iMac All-In-One Desktop",
-      desc: "60.96 cm (24-inch) (8-core Apple M1 chip/8 GB/256 GB), MJV93HN/A",
-      price: 1712.34,
-      quantity: 0),
+  // CartModal(
+  //     image: "assets/images/iMac.jpg",
+  //     title: "Apple iMac All-In-One Desktop",
+  //     desc: "60.96 cm (24-inch) (8-core Apple M1 chip/8 GB/256 GB), MJV93HN/A",
+  //     price: 1712.34,
+  //     quantity: 0),
   // CartModal(
   //     image: "assets/images/watch.jpg",
   //     title: "SEIKO",
   //     desc: "Presage SRPD37J1",
   //     price: 557.84,
   //     quantity: 0),
-  CartModal(
-      image: "assets/images/book.jpg",
-      title: "Carpe Diem",
-      desc: "Paperback – Import, 26 May 2009",
-      price: 24.89,
-      quantity: 0),
+  // CartModal(
+  //     image: "assets/images/book.jpg",
+  //     title: "Carpe Diem",
+  //     desc: "Paperback – Import, 26 May 2009",
+  //     price: 24.89,
+  //     quantity: 0),
   // CartModal(
   //     image: "assets/images/joyStick.jpg",
   //     title: "Xbox Wireless Controller",

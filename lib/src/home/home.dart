@@ -1,23 +1,25 @@
+// ignore_for_file: empty_statements
+
 import 'dart:async';
 
-import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:eshop/src/bloc/products/product_bloc.dart';
+import 'package:eshop/src/cart/cart.dart';
 import 'package:eshop/src/constants.dart';
-import 'package:eshop/src/notifications/notification_list.dart';
-import 'package:eshop/src/products/products.dart';
-import 'package:eshop/src/widgets/category_view.dart';
+// import 'package:eshop/src/models/cart_model.dart';
+import 'package:eshop/src/models/products_model.dart';
+// import 'package:eshop/src/products/products.dart';
+import 'package:eshop/src/services/products_repo.dart';
 import 'package:eshop/src/widgets/category_view_home.dart';
-import 'package:eshop/src/widgets/categoty_items.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/items_view.dart';
-import 'package:eshop/src/widgets/message.dart';
 import 'package:eshop/src/widgets/poster_view.dart';
 import 'package:eshop/src/widgets/recommended_items.dart';
 import 'package:eshop/src/widgets/recommended_view.dart';
-import 'package:eshop/src/widgets/search_bar.dart';
 import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -27,13 +29,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final ProductBloc productBloc = ProductBloc(ProductRepository());
+
+  List<Products> products;
+  //get cart items also
   int currentIndex = 0;
   Timer _timer;
   Duration myDuration = Duration(days: 5);
   bool countDown = true;
-  // PageController pageController = PageController(initialPage: 0);
+
   @override
   void initState() {
+    // productBloc.add(ProductsFetchedEvent());
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) {
@@ -420,7 +427,7 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => Products(true),
+                          builder: (context) => Cart(),
                         ),
                       ),
                       child: const Padding(

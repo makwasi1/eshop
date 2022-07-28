@@ -13,22 +13,10 @@ class OutlineDefaultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-      child: OutlineButton(
-        padding: EdgeInsets.symmetric(vertical: kLessPadding),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kShape),
-        ),
-        borderSide: BorderSide(
-          color: kPrimaryColor,
-          style: BorderStyle.solid,
-        ),
-        splashColor: kTransparent,
-        highlightColor: kTransparent,
-        highlightedBorderColor: kPrimaryColor,
-        textColor: kPrimaryColor,
+      padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+      child: ElevatedButton(
+        child: Text(btnText),
         onPressed: press,
-        child: Text(btnText.toUpperCase()),
       ),
     );
   }

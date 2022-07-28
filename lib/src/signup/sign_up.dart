@@ -1,96 +1,31 @@
 import 'dart:ui';
 
-import 'package:eshop/src/account/account.dart';
-import 'package:eshop/src/cart/cart.dart';
-import 'package:eshop/src/constants.dart';
-import 'package:eshop/src/home/home.dart';
-import 'package:eshop/src/intro/components/empty_app_bar.dart';
-import 'package:eshop/src/landing/components/top_logo.dart';
+import 'package:eshop/src/bloc/login/login_bloc.dart';
 import 'package:eshop/src/services/auth_repo.dart';
-import 'package:eshop/src/signup/components/bottom_widget.dart';
-import 'package:eshop/src/signup/components/center_text_fields.dart';
-import 'package:eshop/src/widgets/default_app_bar.dart';
-import 'package:eshop/src/widgets/social_buttons.dart';
+import 'package:eshop/src/signup/register_form.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignUp extends StatefulWidget {
-  SignUp({Key key}) : super(key: key);
 
-  @override
-  _SignUpState createState() => _SignUpState();
-}
-
-class _SignUpState extends State<SignUp> {
-  AuthRepository auth = AuthRepository();
-  @override
-  void initState() {
-    auth.register(
-    'yesnebula1yu2@galaxy.com',
-    'Nebula8',
-    'John90',
-    'Doe',
-    'johnDoe123',
-    'johnDoe123'
-    );
-    super.initState();
-  }
+class SignUp extends StatelessWidget {
+  final AuthRepository authRepository;
+  const SignUp({Key key, @required this.authRepository})
+      : assert(authRepository != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kWhiteColor,
-      appBar: AppBar(
-        backgroundColor: kWhiteColor,
-        elevation: 0.4,
-        title: Text(
-          "Sign Up",
-          style: TextStyle(color: kDarkColor, fontSize: 35),
-          textAlign: TextAlign.center,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              // TopLogo(),
-              SizedBox(
-                height: 100,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 24, bottom: 5),
-                child: Text(
-                  "Register An Account",
-                  style: TextStyle(
-                    fontSize: 19,
-                    color: Colors.black,
-                  ),
-                  // textDirection: TextDirection.ltr,
-                  textAlign: TextAlign.right,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              CenterTextfields(),
-              BottomWidgets(),
-              Padding(
-                padding: EdgeInsets.only(left: 24, bottom: 10),
-                child: Text(
-                  "Connect with:",
-                  style: TextStyle(fontSize: 17),
-                  textDirection: TextDirection.ltr,
-                  textAlign: TextAlign.right,
-                ),
-              ),
-              SocialMedia(),
-            ],
-          ),
-        ),
+      body: BlocProvider(
+        create: (context) {
+          return LoginBloc(
+            // authBloc: BlocProvider.of<AuthenticationBloc>(context),
+            authRepository: authRepository,
+          );
+        },
+        child: RegisterForm(userRepository: authRepository,),
       ),
     );
   }
 }
+

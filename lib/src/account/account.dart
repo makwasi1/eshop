@@ -29,8 +29,7 @@ class _AccountState extends State<Account> {
       body: Column(
         children: [
           Stack(
-            overflow: Overflow.visible,
-            alignment: Alignment.center,
+            clipBehavior: Clip.none, alignment: Alignment.center,
             children: [
               Container(
                 height: 150.0,
@@ -85,7 +84,7 @@ class _AccountState extends State<Account> {
                               return About();
                             case 'Orders':
                               return TrackOrder();
-                            case 'Downlodable Products':
+                            case 'Downloadable Products':
                               return PaymentDetails();
                             case 'Wishlist':
                               return About();
