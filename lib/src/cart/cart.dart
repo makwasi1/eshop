@@ -1,192 +1,276 @@
 import 'dart:ui';
 
+import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/delivery/delivery.dart';
+import 'package:eshop/src/models/cart_model.dart';
 import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/signup/sign_in.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
+import 'package:eshop/src/widgets/price_checkout.dart';
+import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-class Cart extends StatefulWidget {
-  Cart({Key key}) : super(key: key);
+class CartScreen extends StatefulWidget {
+  CartScreen({Key key}) : super(key: key);
 
   @override
-  _CartState createState() => _CartState();
+  _CartScreenState createState() => _CartScreenState();
 }
 
-class _CartState extends State<Cart> {
+class _CartScreenState extends State<CartScreen> {
   bool get isRecommended => null;
+  Cart cartItem;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kWhiteColor,
-      appBar: const GeneralAppBar(title: "SHOPPING CART"),
-      bottomNavigationBar: Material(
-        elevation: kLess,
-        color: kWhiteColor,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 10),
-            Expanded(
-              child: FlatButton(
-                padding: const EdgeInsets.symmetric(vertical: kLessPadding),
-                color: kPrimaryColor,
-                textColor: Colors.black,
-                child:
-                    const Text("Continue Shopping", style: TextStyle(fontSize: 18.0)),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Products(isRecommended),
-                  ),
-                ),
-              ),
+    return BlocBuilder<CartBloc, CartBlocState>(
+      builder: (context, state) {
+        if (state is CartLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is CartLoadedState) {
+          cartItem = state.cart;
+          return Scaffold(
+            backgroundColor: kWhiteColor,
+            appBar: const GeneralAppBar(title: "SHOPPING CART"),
+            bottomNavigationBar: SizedBox(
+              height: 100,
+              child: Material(
+                elevation: kLess,
+                color: kWhiteColor,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: FlatButton(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: kLessPadding),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        child: Text("Total ${cartItem.formatedGrandTotal}",
+                            style: const TextStyle(
+                                fontSize: 24.0, fontWeight: FontWeight.bold)),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductsPage(isRecommended),
+                          ),
+                        ),
+                      ),
 
-              // child: Text("Total : UGX 97500",
-              //     textAlign: TextAlign.center, style: kSubTextStyle)
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-          
-            Expanded(
-              child: FlatButton(
-                padding: const EdgeInsets.symmetric(vertical: kLessPadding),
-                color: kDarkColor,
-                textColor: kWhiteColor,
-                child: const Text("Checkout", style: TextStyle(fontSize: 18.0)),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SignIn(authRepository: AuthRepository(),),
-                    // builder: (context) => const DeliveryAddress(),
-                  ),
+                      // child: Text("Total : UGX 97500",
+                      //     textAlign: TextAlign.center, style: kSubTextStyle)
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: FlatButton(
+                        padding:
+                            const EdgeInsets.symmetric(vertical: kLessPadding),
+                        color: kPrimaryColor,
+                        textColor: kWhiteColor,
+                        child: const Text("Checkout",
+                            style: TextStyle(fontSize: 18.0)),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const DeliveryAddress()
+                              // builder: (context) => const DeliveryAddress(),
+                              ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    )
+                  ],
                 ),
               ),
             ),
-            const SizedBox(
-              width: 10,
-            )
-          ],
-        ),
-      ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: cartItems.length,
-          itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-              padding: const EdgeInsets.all(8.0),
-              decoration: const BoxDecoration(),
-              child: Row(
-                children: [
-                  Image(
-                    image: AssetImage(cartItems[index].image),
-                    height: 70.0,
-                    width: 70.0,
-                    fit: BoxFit.cover,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, left: 40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            body: Center(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: cartItem.items.length,
+                itemBuilder: (context, index) {
+                  var product2 = cartItem.items[index].product;
+                  var subTotal = cartItem.subTotal;
+                  return Card(
+                    elevation: kLess,
+                    shadowColor: kPrimaryColor,
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                          top: 8.0, left: 8.0, right: 8.0),
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: const BoxDecoration(),
+                      child: Row(
                         children: [
-                          Text(cartItems[index].title,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                  height: 1.4,
-                                  fontSize: kFixPadding,
-                                  color: Colors.lightBlue)),
-                          RichText(
-                            textAlign: TextAlign.center,
-                            softWrap: false,
-                            overflow: TextOverflow.clip,
-                            text: const TextSpan(
-                                text: "Sold By: ",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
+                          Image(
+                            image:
+                                NetworkImage(product2.images[0].smallImageUrl),
+                            height: 70.0,
+                            width: 70.0,
+                            fit: BoxFit.cover,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10, left: 40),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  //get vendor name from the endpoint
-                                  TextSpan(
-                                      text: "Velocity Shop",
-                                      style: TextStyle(
+                                  Text(product2.name,
+                                      maxLines: 2,
+                                      style: const TextStyle(
                                           height: 1.4,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 17))
-                                ]),
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.lightBlue)),
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                    softWrap: false,
+                                    overflow: TextOverflow.clip,
+                                    text: TextSpan(
+                                        text: "UGX",
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17),
+                                        children: [
+                                          //get vendor name from the endpoint
+                                          TextSpan(
+                                              text: product2.formatedPrice
+                                                  .replaceAll('UGX', ''),
+                                              style: const TextStyle(
+                                                  height: 1.4,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 17))
+                                        ]),
+                                  ),
+                                  // Text(
+                                  //   "UGX ${product2.price}",
+                                  //   style: const TextStyle(height: 2.3),
+                                  // ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              if (cartItem
+                                                      .items[index].quantity >
+                                                  0) {
+                                                cartItem
+                                                    .items[index].quantity--;
+                                              }
+                                            });
+
+                                            context.read<CartBloc>().add(
+                                                CartUpdated(
+                                                    cartItem.items[index].id
+                                                        .toString(),
+                                                    cartItem.items[index]
+                                                        .quantity));
+                                            showTopSnackBar(
+                                              context,
+                                              const CustomSnackBar.success(
+                                                message: "Cart Items Updated",
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.remove_circle_outline,
+                                            color: kPrimaryColor,
+                                          )),
+                                      Container(
+                                          width: 44.0,
+                                          height: 44.0,
+                                          padding: EdgeInsets.only(top: 22.0),
+                                          color: kAccentColor,
+                                          child: TextField(
+                                            enabled: false,
+                                            textAlign: TextAlign.center,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: cartItem
+                                                    .items[index].quantity
+                                                    .toString(),
+                                                hintStyle: const TextStyle(
+                                                    color: kDarkColor)),
+                                          )),
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              cartItem.items[index].quantity++;
+                                            });
+                                            context.read<CartBloc>().add(
+                                                CartUpdated(
+                                                    cartItem.items[index].id
+                                                        .toString(),
+                                                    cartItem.items[index]
+                                                        .quantity));
+                                            showTopSnackBar(
+                                              context,
+                                              const CustomSnackBar.success(
+                                                message: "Cart Items Updated",
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.add_circle_outline,
+                                            color: kPrimaryColor,
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          Text(
-                            "3 X  \$ ${cartItems[index].price.toString()}",
-                            style: TextStyle(height: 2.3),
+                          //remove from cart
+                          IconButton(
+                            onPressed: () {
+                              context.read<CartBloc>().add(
+                                  CartItemRemoved(cartItem.items[index].id));
+                              showTopSnackBar(
+                                context,
+                                const CustomSnackBar.error(
+                                  message: "Cart Item Removed",
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.delete_outlined),
+                            color: kDarkColor,
                           ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.start,
-                          //   children: [
-                          //     IconButton(
-                          //         onPressed: () {
-                          //           setState(() {
-                          //             if (cartItems[index].quantity > 0) {
-                          //               cartItems[index].quantity--;
-                          //             }
-                          //           });
-                          //         },
-                          //         icon: const Icon(
-                          //           Icons.remove_circle_outline,
-                          //           color: kPrimaryColor,
-                          //         )),
-                          //     Container(
-                          //         width: 44.0,
-                          //         height: 44.0,
-                          //         padding: EdgeInsets.only(top: 22.0),
-                          //         color: kAccentColor,
-                          //         child: TextField(
-                          //           enabled: false,
-                          //           textAlign: TextAlign.center,
-                          //           decoration: InputDecoration(
-                          //               border: InputBorder.none,
-                          //               hintText: cartItems[index]
-                          //                   .quantity
-                          //                   .toString(),
-                          //               hintStyle:
-                          //                   TextStyle(color: kDarkColor)),
-                          //         )),
-                          //     IconButton(
-                          //         onPressed: () {
-                          //           setState(() {
-                          //             // Max 5
-                          //             if (cartItems[index].quantity <= 4) {
-                          //               cartItems[index].quantity++;
-                          //             }
-                          //           });
-                          //         },
-                          //         icon: const Icon(
-                          //           Icons.add_circle_outline,
-                          //           color: kPrimaryColor,
-                          //         )),
-                          //   ],
-                          // ),
                         ],
                       ),
                     ),
-                  ),
-                  //remove from cart
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.close),
-                    color: kDarkColor,
-                  ),
-                ],
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
+            ),
+          );
+        } else if (state is CartEmptyState) {
+          return const Scaffold(
+            appBar: GeneralAppBar(
+              title: "SHOPPING CART",
+            ),
+            body: Center(child: Text("Cart is empty")),
+          );
+        } else {
+          return const Scaffold(
+            appBar: GeneralAppBar(
+              title: "SHOPPING CART",
+            ),
+            body: Text("Cart is empty"),
+          );
+        }
+      },
     );
   }
 }

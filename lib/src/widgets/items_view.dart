@@ -41,11 +41,11 @@ class ItemsView extends StatelessWidget {
               width: width,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(radius),
-                image: DecorationImage(
-                  image: AssetImage(image),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(color, blendMode),
-                ),
+               // image: DecorationImage(
+              //    image: NetworkImage(image),
+                 // fit: BoxFit.cover,
+                 // colorFilter: ColorFilter.mode(color, blendMode),
+              //  ),
               ),
             ),
             Align(
@@ -55,7 +55,7 @@ class ItemsView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: title,
-                      style: TextStyle(color: kWhiteColor, fontSize: titleSize),
+                      style: TextStyle(color: kDarkColor, fontSize: titleSize),
                     ),
                     WidgetSpan(
                       child: Container(

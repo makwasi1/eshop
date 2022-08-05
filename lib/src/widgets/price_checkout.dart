@@ -4,7 +4,7 @@ import 'package:eshop/src/delivery/delivery.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutButton extends StatefulWidget {
-  const CheckoutButton({ Key key }) : super(key: key);
+  const CheckoutButton({Key key}) : super(key: key);
 
   @override
   State<CheckoutButton> createState() => _CheckoutButtonState();
@@ -14,9 +14,8 @@ class _CheckoutButtonState extends State<CheckoutButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Column(
-        children:[
-          Row(
+      child: Column(children: [
+        Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(width: 10),
@@ -30,7 +29,7 @@ class _CheckoutButtonState extends State<CheckoutButton> {
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     //TODO:either return to home page or the cart page
-                    builder: (context) => Cart(),
+                    builder: (context) => CartScreen(),
                   ),
                 ),
               ),
@@ -41,7 +40,6 @@ class _CheckoutButtonState extends State<CheckoutButton> {
             SizedBox(
               width: 5,
             ),
-          
             Expanded(
               child: FlatButton(
                 padding: const EdgeInsets.symmetric(vertical: kLessPadding),
@@ -59,9 +57,8 @@ class _CheckoutButtonState extends State<CheckoutButton> {
               width: 10,
             )
           ],
-          )
-        ]
-      ),
+        )
+      ]),
     );
   }
 }

@@ -24,7 +24,7 @@ class _ProductsPageState extends State<ProductsPage> {
   List<Products> productItem = [];
   List<Images> images;
   @override
-  Widget build(BuildContext cxt) {
+  Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state is ProductLoading) {
@@ -42,8 +42,8 @@ class _ProductsPageState extends State<ProductsPage> {
             body: widget.isRecommended
                 ? RecommendedView(
                     direction: Axis.vertical,
-                    heights: MediaQuery.of(cxt).size.height,
-                    widths: 400,
+                    heights: MediaQuery.of(context).size.height,
+                    widths: MediaQuery.of(context).size.width,
                     top: 0.0,
                     bottom: 0.0,
                     left: 0.0,
@@ -51,24 +51,15 @@ class _ProductsPageState extends State<ProductsPage> {
                     column: 2,
                     ratio: 0.8,
                     items: productItem.length,
-                    itemBuilder: (cxt, index) {
+                    itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {
-                          context.read<ProductBloc>().add(
-                                ProductSelectedEvent(
-                                  productItem[index].id,
-                                ),
-                              );
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetails(productItem[index].id),
-                            ),
-                          );
-                        },
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetails(),
+                          ),
+                        ),
                         child: RecommendedItems(
-                          height: 100.0,
-                          width: 80.0,
+                          height: 145.0,
                           radius: 8.0,
                           top: 8.0,
                           bottom: 8.0,
@@ -78,7 +69,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           title: productItem[index].name,
                           price: productItem[index].formatedPrice,
                           rating: productItem[index].formatedPrice,
-                          // sale: productItem[index].reviews.total,
+                          sale: productItem[index].reviews.total,
                         ),
                       );
                     },

@@ -118,8 +118,8 @@ class _SearchState extends State<Search> {
                   radius: kLessPadding,
                   image: recommendedList[index].image,
                   title: recommendedList[index].title,
-                  price: recommendedList[index].price,
-                  rating: recommendedList[index].rating,
+                  price: '',
+                  rating:'',
                   sale: recommendedList[index].sale,
                 );
               },

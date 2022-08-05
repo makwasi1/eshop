@@ -1,8 +1,10 @@
 import 'package:eshop/src/account/account.dart';
+import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/cart/cart.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:badges/badges.dart';
 import 'package:getwidget/getwidget.dart';
@@ -41,27 +43,47 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
       iconTheme: const IconThemeData(color: kDarkColor),
       // leading: const Image(image: AssetImage(logo)),
       actions: [
-        Badge(
-          // will be updated by the cart state incase of increase
-          badgeContent: const Text("1",
-              style: TextStyle(color: Colors.white, fontSize: 20)),
-          badgeColor: Colors.black,
-          position: BadgePosition.bottomEnd(bottom: 19, end: 10),
-          animationDuration: Duration(milliseconds: 300),
-          animationType: BadgeAnimationType.slide,
-          child: IconButton(
-            icon: const Icon(Icons.favorite_border_outlined),
-            iconSize: 35.0,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Cart(), //search page
+        CartBadge(),
+        CartNewWidget(),
+      ],
+    );
+  }
+}
+
+class CartNewWidget extends StatelessWidget {
+  const CartNewWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int itemCount;
+    return BlocBuilder<CartBloc, CartBlocState>(
+      builder: (context, state) {
+        if (state is CartLoadedState) {
+          itemCount = state.cart.itemsCount;
+          return Badge(
+            // will be updated by the cart state incase of increase
+            badgeContent: Text('$itemCount',
+                style: const TextStyle(color: Colors.white, fontSize: 20)),
+            badgeColor: Colors.black,
+            position: BadgePosition.bottomEnd(bottom: 19, end: 10),
+            animationDuration: Duration(milliseconds: 300),
+            animationType: BadgeAnimationType.slide,
+            child: IconButton(
+              icon: const Icon(Icons.shopping_cart_outlined),
+              iconSize: 35.0,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CartScreen(), //search page
+                ),
               ),
             ),
-          ),
-        ),
-        Badge(
+          );
+        }
+        return Badge(
           // will be updated by the cart state incase of increase
-          badgeContent: const Text("2",
+          badgeContent: const Text("0",
               style: TextStyle(color: Colors.white, fontSize: 20)),
           badgeColor: Colors.black,
           position: BadgePosition.bottomEnd(bottom: 19, end: 10),
@@ -72,21 +94,41 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
             iconSize: 35.0,
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => Cart(), //search page
+                builder: (context) => CartScreen(), //search page
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+}
+
+class CartBadge extends StatelessWidget {
+  const CartBadge({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int cartNumber = 2;
+    return Badge(
+      // will be updated by the cart state incase of increase
+      badgeContent: Text("$cartNumber",
+          style: const TextStyle(color: Colors.white, fontSize: 20)),
+      badgeColor: Colors.black,
+      position: BadgePosition.bottomEnd(bottom: 19, end: 10),
+      animationDuration: Duration(milliseconds: 300),
+      animationType: BadgeAnimationType.slide,
+      child: IconButton(
+        icon: const Icon(Icons.favorite_border_outlined),
+        iconSize: 35.0,
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CartScreen(), //search page
+          ),
         ),
-        // IconButton(
-        //   icon: const FaIcon(FontAwesomeIcons.user),
-        //   iconSize: 30.0,
-        //   onPressed: () => Navigator.of(context).push(
-        //     MaterialPageRoute(
-        //       builder: (context) => Account(), //search page
-        //     ),
-        //   ),
-        // ),
-      ],
+      ),
     );
   }
 }

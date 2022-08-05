@@ -25,7 +25,7 @@ class _DeliveryAddressState extends State<DeliveryAddress> {
   @override
   void initState() {
     // add.getAddresses();
-    add.addAddress(Address(address1: ['kisasi'], city: "New York", state: "NY", postcode: "10001", country: "USA", phone: "1234567890"));
+    // add.addAddress(Address(address1: ['kisasi'], city: "New York", state: "NY", postcode: "10001", country: "USA", phone: "1234567890"));
     super.initState();
   }
   @override

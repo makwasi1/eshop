@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 // import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 
-class Reviews extends StatefulWidget {
-  Reviews({Key key}) : super(key: key);
+class ReviewsScreen extends StatefulWidget {
+  ReviewsScreen({Key key}) : super(key: key);
 
   @override
-  _ReviewsState createState() => _ReviewsState();
+  _ReviewsScreenState createState() => _ReviewsScreenState();
 }
 
-class _ReviewsState extends State<Reviews> {
+class _ReviewsScreenState extends State<ReviewsScreen> {
   bool isMore = false;
   List<double> ratings = [0.1, 0.3, 0.5, 0.7, 0.9];
 

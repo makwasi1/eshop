@@ -52,11 +52,11 @@ class AuthRepository implements AuthRepositoryService {
   Future<dynamic> login(String email, String password) async {
     final response = await http.post(
         Uri.parse(url + loginEndPoint),
-        body: jsonEncode({"email": email, "password": password}),
+        body: {"email": email, "password": password},
         headers: {
-      'Content-type': 'application/json',
+      "Content-Type" : "application/json",
     });
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 ) {
       var data = json.decode(response.body);
       User profile = User.fromJson(data['data']);
       // String accessToken = User.fromJson(data['token']) as String;
@@ -64,7 +64,12 @@ class AuthRepository implements AuthRepositoryService {
       UserModel user = UserModel(token: data['token'], data: profile);
 
       return user;
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 302) {
+      var res = await http.get(Uri.parse(url));
+      print(res.body);
+      return res.body;
+    }
+     else if (response.statusCode == 401) {
       return "Wrong Credentials";
     } else if (response.statusCode == 500) {
       return "System Currently unavailable, please try again later";

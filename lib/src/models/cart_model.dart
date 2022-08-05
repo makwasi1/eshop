@@ -435,7 +435,7 @@ class Product {
   String shortDescription;
   String description;
   String sku;
-  List<Images> images;
+  List<CartImages> images;
   BaseImage baseImage;
   List<Variants> variants;
   bool inStock;
@@ -474,9 +474,9 @@ class Product {
     description = json['description'];
     sku = json['sku'];
     if (json['images'] != null) {
-      images = <Images>[];
+      images = <CartImages>[];
       json['images'].forEach((v) {
-        images.add(Images.fromJson(v));
+        images.add(CartImages.fromJson(v));
       });
     }
     baseImage = json['base_image'] != null
@@ -527,7 +527,7 @@ class Product {
   }
 }
 
-class Images {
+class CartImages {
   int id;
   String path;
   String url;
@@ -536,7 +536,7 @@ class Images {
   String mediumImageUrl;
   String largeImageUrl;
 
-  Images(
+  CartImages(
       {this.id,
         this.path,
         this.url,
@@ -545,7 +545,7 @@ class Images {
         this.mediumImageUrl,
         this.largeImageUrl});
 
-  Images.fromJson(Map<String, dynamic> json) {
+  CartImages.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     path = json['path'];
     url = json['url'];
