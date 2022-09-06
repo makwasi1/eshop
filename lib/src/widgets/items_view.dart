@@ -40,6 +40,7 @@ class ItemsView extends StatelessWidget {
               height: height,
               width: width,
               decoration: BoxDecoration(
+                // color: Colors.kPrimaryColor,
                 borderRadius: BorderRadius.circular(radius),
                // image: DecorationImage(
               //    image: NetworkImage(image),

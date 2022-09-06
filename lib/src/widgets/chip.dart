@@ -19,7 +19,7 @@ class Chips extends StatelessWidget {
         shape: StadiumBorder(
           side: BorderSide(
             width: 4.0,
-            color: kLightColor.withOpacity(0.1),
+            color: kDarkColor.withOpacity(0.3),
           ),
         ),
         label: Text(

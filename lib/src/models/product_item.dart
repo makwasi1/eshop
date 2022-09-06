@@ -6,11 +6,11 @@ class ProductItemModel {
   ProductItemModel({this.data});
 
   ProductItemModel.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? new ProductItem.fromJson(json['data']) : null;
+    data = json['data'] != null ? ProductItem.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.data != null) {
       data['data'] = this.data.toJson();
     }
@@ -91,31 +91,31 @@ class ProductItem {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['type'] = this.type;
-    data['name'] = this.name;
-    data['url_key'] = this.urlKey;
-    data['price'] = this.price;
-    data['formated_price'] = this.formatedPrice;
-    data['short_description'] = this.shortDescription;
-    data['description'] = this.description;
-    data['sku'] = this.sku;
-    if (this.images != null) {
-      data['images'] = this.images.map((v) => v.toJson()).toList();
+    data['id'] = id;
+    data['type'] = type;
+    data['name'] = name;
+    data['url_key'] = urlKey;
+    data['price'] = price;
+    data['formated_price'] = formatedPrice;
+    data['short_description'] = shortDescription;
+    data['description'] = description;
+    data['sku'] = sku;
+    if (images != null) {
+      data['images'] = images.map((v) => v.toJson()).toList();
     }
-    if (this.baseImage != null) {
-      data['base_image'] = this.baseImage.toJson();
+    if (baseImage != null) {
+      data['base_image'] = baseImage.toJson();
     }
-    if (this.variants != null) {
-      data['variants'] = this.variants.map((v) => v.toJson()).toList();
+    if (variants != null) {
+      data['variants'] = variants.map((v) => v.toJson()).toList();
     }
-    data['in_stock'] = this.inStock;
-    if (this.reviews != null) {
-      data['reviews'] = this.reviews.toJson();
+    data['in_stock'] = inStock;
+    if (reviews != null) {
+      data['reviews'] = reviews.toJson();
     }
-    data['is_saved'] = this.isSaved;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['is_saved'] = isSaved;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -149,14 +149,14 @@ class Images {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['path'] = this.path;
-    data['url'] = this.url;
-    data['original_image_url'] = this.originalImageUrl;
-    data['small_image_url'] = this.smallImageUrl;
-    data['medium_image_url'] = this.mediumImageUrl;
-    data['large_image_url'] = this.largeImageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['path'] = path;
+    data['url'] = url;
+    data['original_image_url'] = originalImageUrl;
+    data['small_image_url'] = smallImageUrl;
+    data['medium_image_url'] = mediumImageUrl;
+    data['large_image_url'] = largeImageUrl;
     return data;
   }
 }
@@ -181,11 +181,11 @@ class BaseImage {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['small_image_url'] = this.smallImageUrl;
-    data['medium_image_url'] = this.mediumImageUrl;
-    data['large_image_url'] = this.largeImageUrl;
-    data['original_image_url'] = this.originalImageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['small_image_url'] = smallImageUrl;
+    data['medium_image_url'] = mediumImageUrl;
+    data['large_image_url'] = largeImageUrl;
+    data['original_image_url'] = originalImageUrl;
     return data;
   }
 }
@@ -212,11 +212,11 @@ class Reviews {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['total'] = this.total;
-    data['total_rating'] = this.totalRating;
-    data['average_rating'] = this.averageRating;
-    if (this.percentage != null) {
-      data['percentage'] = this.percentage.map((v) => v.toJson()).toList();
+    data['total'] = total;
+    data['total_rating'] = totalRating;
+    data['average_rating'] = averageRating;
+    if (percentage != null) {
+      data['percentage'] = percentage.map((v) => v.toJson()).toList();
     }
     return data;
   }

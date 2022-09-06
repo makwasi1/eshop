@@ -1,13 +1,17 @@
+import 'package:eshop/src/bloc/products/product_bloc.dart';
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/models/products_model.dart';
 import 'package:eshop/src/widgets/chip.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/header_label.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
+import 'package:eshop/src/widgets/product_widget.dart';
 import 'package:eshop/src/widgets/recommended_items.dart';
 import 'package:eshop/src/widgets/recommended_view.dart';
 import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -17,11 +21,13 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+   List<Products> productItem = [];
+  List<Images> images;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: GeneralAppBar(title: "SEARCH"),
+      appBar: const GeneralAppBar(title: "SEARCH"),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -29,36 +35,36 @@ class _SearchState extends State<Search> {
             //   headerText:
             //       "Hello, i am E-Commerce. What would you like to search?",
             // ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-              margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+              margin: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               decoration: BoxDecoration(
                 border: Border.all(width: 4.0, color: kAccentColor),
               ),
-              child: TextField(
+              child: const TextField(
                 cursorColor: kPrimaryColor,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.search,
                     color: kDarkColor,
                     size: 29.0,
                   ),
-                  hintText: "Search Something...",
+                  hintText: "Search Products...",
                   hintStyle: TextStyle(
                     fontSize: 18.0,
-                    color: kLightColor.withOpacity(0.4),
+                    color: kLightColor,
                   ),
                 ),
               ),
             ),
-            StickyLabel(
+            const StickyLabel(
               text: "Popular Keyword",
-              textColor: kLightColor.withOpacity(0.4),
+              textColor: kLightColor,
             ),
             Container(
-              margin: EdgeInsets.only(
+              margin: const EdgeInsets.only(
                 top: 16.0,
                 left: kFixPadding,
                 right: kDefaultPadding,
@@ -75,8 +81,9 @@ class _SearchState extends State<Search> {
                 ),
               ),
             ),
+
             Container(
-              margin: EdgeInsets.only(
+              margin: const EdgeInsets.only(
                 top: 8.0,
                 left: kFixPadding,
                 right: kDefaultPadding,
@@ -93,37 +100,23 @@ class _SearchState extends State<Search> {
                 ),
               ),
             ),
-            StickyLabel(
-              text: "Favorite",
-              textColor: kLightColor.withOpacity(0.4),
+            const StickyLabel(
+              text: "Recently Viewed",
+              textColor: kDarkColor,
             ),
-            RecommendedView(
-              direction: Axis.horizontal,
-              heights: 210.0,
-              widths: MediaQuery.of(context).size.width,
-              top: 16.0,
-              bottom: 4.0,
-              left: kDefaultPadding,
-              right: kDefaultPadding,
-              column: 1,
-              ratio: 1.4,
-              items: recommendedList.length,
-              itemBuilder: (context, index) {
-                return RecommendedItems(
-                  height: 130.0,
-                  top: 0.0,
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: kLessPadding,
-                  radius: kLessPadding,
-                  image: recommendedList[index].image,
-                  title: recommendedList[index].title,
-                  price: '',
-                  rating:'',
-                  sale: recommendedList[index].sale,
-                );
+
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if(state is ProductsLoadedState){
+                  productItem = state.product;
+                  images = state.product.first.images;
+                  ProductWidget(productItem: productItem);
+                }
+                return ProductWidget(productItem: productItem);
               },
             ),
+
+            
           ],
         ),
       ),

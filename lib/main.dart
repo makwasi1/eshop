@@ -1,3 +1,4 @@
+import 'package:eshop/src/bloc/address/bloc/address_bloc.dart';
 import 'package:eshop/src/bloc/auth/authentication_bloc.dart';
 import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/bloc/login/login_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:eshop/src/custom_behaviour.dart';
 import 'package:eshop/src/home/home.dart';
 import 'package:eshop/src/intro/intro.dart';
 import 'package:eshop/src/intro/splash.dart';
+import 'package:eshop/src/services/address_rep.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/services/cart_repo.dart';
 import 'package:eshop/src/services/products_repo.dart';
@@ -35,8 +37,11 @@ void main() async {
       RepositoryProvider(
         create: (context) => CartRepository(),
       ),
+      RepositoryProvider(
+        create: (context) => AddressRepository(),
+      ),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
@@ -73,6 +78,10 @@ class MyApp extends StatelessWidget {
           //   create: (context) =>
           //       AuthenticationBloc(authRepository: AuthRepository()),
           // ),
+          BlocProvider(
+              create: (_) =>
+                  AddressBloc(addressRepository: AddressRepository())
+                    ..add(AddressStartedEvent())),
           BlocProvider(
             create: (context) =>
                 CartBloc(cartRepository: CartRepository())..add(CartStarted()),

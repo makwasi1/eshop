@@ -53,15 +53,14 @@ class AuthRepository implements AuthRepositoryService {
     final response = await http.post(
         Uri.parse(url + loginEndPoint),
         body: {"email": email, "password": password},
-        headers: {
-      "Content-Type" : "application/json",
-    });
+      );
     if (response.statusCode == 200 ) {
       var data = json.decode(response.body);
       User profile = User.fromJson(data['data']);
       // String accessToken = User.fromJson(data['token']) as String;
 
       UserModel user = UserModel(token: data['token'], data: profile);
+      storeLoggedInUser(user);
 
       return user;
     } else if (response.statusCode == 302) {
@@ -174,14 +173,27 @@ class AuthRepository implements AuthRepositoryService {
 
   @override
   Future<void> logout() async {
+    final res = await  http.get(Uri.parse(url + logOutEndPoint),headers: {
+      "Authorization": "Bearer " + await getCurrentUserToken(),
+    });
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    await storage.deleteAll();
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Set keys = prefs.getKeys();
-    for (var key in keys) {
-      await prefs.remove(key);
+    if (res.statusCode == 200) {
+      await storage.delete(key: HttpUtils.keyForJWTToken);
+      await storage.delete(key: HttpUtils.keyForUsername);
+      await storage.deleteAll();
+    } else{
+      await storage.delete(key: HttpUtils.keyForJWTToken);
+      await storage.delete(key: HttpUtils.keyForUsername);
+      await storage.deleteAll();
     }
+    // FlutterSecureStorage storage = const FlutterSecureStorage();
+    // await storage.deleteAll();
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Set keys = prefs.getKeys();
+    // for (var key in keys) {
+    //   await prefs.remove(key);
+    // }
   }
 
   @override
@@ -196,12 +208,14 @@ class AuthRepository implements AuthRepositoryService {
       FlutterSecureStorage storage = const FlutterSecureStorage();
       await storage.write(key: HttpUtils.keyForJWTToken, value: user.token);
       await storage.write(
-          key: HttpUtils.keyForUsername, value: json.encode(user.data));
-      await storage.delete(key: HttpUtils.keyForJWTToken);
+        key: HttpUtils.keyForUsername, value: json.encode(user.data));
+      // await storage.delete(key: HttpUtils.keyForJWTToken);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      if (user != null)
+      if (user != null) {
         await prefs.setString(HttpUtils.keyForUsername, json.encode(user.data));
+        await storage.write(key: HttpUtils.keyForJWTToken, value: user.token);
+      }
     } catch (e) {
       e.toString();
     }

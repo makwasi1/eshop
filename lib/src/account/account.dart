@@ -50,13 +50,13 @@ class _AccountState extends State<Account> {
                       color: kDarkColor,
                       width: kLess,
                     ),
-                    image: DecorationImage(
+                    image: const DecorationImage(
                       image: AssetImage(profile),
                     ),
                   ),
                 ),
               ),
-              Positioned(
+              const Positioned(
                 bottom: -88.0,
                 child: Text(
                   'Username',
@@ -67,7 +67,7 @@ class _AccountState extends State<Account> {
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.only(top: 88.0),
+              padding: const EdgeInsets.only(top: 88.0),
               itemCount: labels.length,
               itemBuilder: (context, index) {
                 return ListTile(
@@ -92,65 +92,19 @@ class _AccountState extends State<Account> {
                               return About();
                             case 'Reviews':
                               return About();
-                            case 'Address':
-                              return About();
-                            case 'Notifications':
-                              return NotificationList();
-                              break;
-                            case 'Payments':
-                              return PaymentDetails();
-                              break;
-                            case 'Message':
-                              return Message();
-                              break;
-                            case 'My Orders':
-                              return TrackOrder();
-                              break;
+                            case 'Live Streaming':
+                              return  const LiveStreaming();
                             case 'Live Tracking':
-                              return SimpleMap();
+                              return  const SimpleMap();
                               break;
-                            case 'Setting Account':
-                              return LiveStreaming();
-                              break;
-                            case 'Call Center':
-                              return CallCenter();
-                            case 'About Application':
-                              return About();
+                            case 'Settings':
+                              return  Setting();
                               break;
                             default:
                               return null;
                           }
                         }))
-                    // onTap: () => this.setState(
-                    //   () {
-                    //     switch (labels[index]) {
-                    //       case 'Notifications':
-                    //         return snackBarMsg(context, 'Notifications');
-                    //         break;
-                    //       case 'Payments':
-                    //         return snackBarMsg(context, 'Payments');
-                    //         break;
-                    //       case 'Message':
-                    //         return snackBarMsg(context, 'Message');
-                    //         break;
-                    //       case 'My Orders':
-                    //         return snackBarMsg(context, 'My Orders');
-                    //         break;
-                    //       case 'Setting Account':
-                    //         return snackBarMsg(context, 'Setting Account');
-                    //         break;
-                    //       case 'Call Center':
-                    //         return snackBarMsg(context, 'Call Center');
-                    //         break;
-                    //       case 'About Application':
-                    //         return snackBarMsg(context, 'About Application');
-                    //         break;
-                    //       default:
-                    //         return snackBarMsg(context, 'Notifications');
-                    //         break;
-                    //     }
-                    //   },
-                    // ),
+                  
                     );
               },
             ),
@@ -164,7 +118,7 @@ class _AccountState extends State<Account> {
     var sb = SnackBar(
       elevation: kRadius,
       content: Text(msg),
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       action: SnackBarAction(
         // textColor: kWhiteColor,
         label: 'OK',

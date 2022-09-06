@@ -5,6 +5,7 @@ import 'package:eshop/src/models/product_item.dart';
 import 'package:eshop/src/models/products_model.dart';
 import 'package:eshop/src/services/http_utils.dart';
 import 'package:eshop/src/shared/app_exception.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth_repo.dart';
@@ -20,6 +21,7 @@ class ProductRepository extends ProductServiceRepository {
   String getProductByIdEndpoint = '/api/products/';
   String categoriesEndpoint = '/api/categories?page=1';
   String getCategoryByIdEndpoint = '/api/categories/';
+  String getProductReviewsEndpoint = '/api/reviews?product_id=';
 
   @override
   Future<ProductModel> downloadProducts() async {
@@ -35,6 +37,12 @@ class ProductRepository extends ProductServiceRepository {
     );
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
+      //get cookie from response
+      final cookie = response.headers['set-cookie'];
+      //store cookie in secure storage
+      FlutterSecureStorage storage = new FlutterSecureStorage();
+      await storage.write(key: 'cookie', value: cookie);
+      print(cookie);
       return ProductModel.fromJson(data);
     } else if (response.body == null) {
       throw UnknownResponseException('No Products Found.');
@@ -115,4 +123,7 @@ class ProductRepository extends ProductServiceRepository {
       throw Exception('Failed to download category');
     }
   }
+
+  //get reviews for product
+  
 }

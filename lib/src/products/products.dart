@@ -33,7 +33,6 @@ class _ProductsPageState extends State<ProductsPage> {
           );
         } else if (state is ProductsLoadedState) {
           productItem = state.product;
-          images = state.product.first.images;
           return Scaffold(
             backgroundColor: kWhiteColor,
             appBar: GeneralAppBar(
@@ -50,15 +49,15 @@ class _ProductsPageState extends State<ProductsPage> {
                     right: 0.0,
                     column: 2,
                     ratio: 0.8,
-                    items: productItem.length,
+                    items: state.product.length,
                     itemBuilder: (cxt, index) {
                       return GestureDetector(
                         onTap: () {
-                          context.read<ProductBloc>().add(
-                                ProductSelectedEvent(
-                                  productItem[index].id,
-                                ),
-                              );
+                          // context.read<ProductBloc>().add(
+                          //       ProductSelectedEvent(
+                          //         productItem[index].id,
+                          //       ),
+                          //     );
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
@@ -74,7 +73,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           bottom: 8.0,
                           left: 4.0,
                           right: 4.0,
-                          image: productItem[index].images[index].smallImageUrl,
+                          image: productItem[index].baseImage.smallImageUrl,
                           title: productItem[index].name,
                           price: productItem[index].formatedPrice,
                           rating: productItem[index].formatedPrice,

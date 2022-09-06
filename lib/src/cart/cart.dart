@@ -1,18 +1,20 @@
 import 'dart:ui';
 
 import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
+import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/delivery/address_list.dart';
 import 'package:eshop/src/delivery/delivery.dart';
 import 'package:eshop/src/models/cart_model.dart';
 import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/services/auth_repo.dart';
+import 'package:eshop/src/services/http_utils.dart';
 import 'package:eshop/src/signup/sign_in.dart';
-import 'package:eshop/src/widgets/default_app_bar.dart';
+import 'package:eshop/src/widgets/circular_loading_widget.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
-import 'package:eshop/src/widgets/price_checkout.dart';
-import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -26,85 +28,108 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   bool get isRecommended => null;
   Cart cartItem;
-
+  bool hasToken;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartBlocState>(
       builder: (context, state) {
         if (state is CartLoadingState) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularLoading(),
           );
         } else if (state is CartLoadedState) {
-          cartItem = state.cart;
-          return Scaffold(
-            backgroundColor: kWhiteColor,
-            appBar: const GeneralAppBar(title: "SHOPPING CART"),
-            bottomNavigationBar: SizedBox(
-              height: 100,
-              child: Material(
-                elevation: kLess,
-                color: kWhiteColor,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: FlatButton(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: kLessPadding),
-                        color: Colors.white,
-                        textColor: Colors.black,
-                        child: Text("Total ${cartItem.formatedGrandTotal}",
-                            style: const TextStyle(
-                                fontSize: 24.0, fontWeight: FontWeight.bold)),
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProductsPage(isRecommended),
-                          ),
-                        ),
-                      ),
-
-                      // child: Text("Total : UGX 97500",
-                      //     textAlign: TextAlign.center, style: kSubTextStyle)
+          if (state.cart?.formatedGrandTotal == null) {
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: kPrimaryColor,
+                elevation: kRadius,
+                leading: IconButton(
+                  padding: const EdgeInsets.only(left: kDefaultPadding),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BottomNavBar(0), //search page
                     ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: FlatButton(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: kLessPadding),
-                        color: kPrimaryColor,
-                        textColor: kWhiteColor,
-                        child: const Text("Checkout",
-                            style: TextStyle(fontSize: 18.0)),
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const DeliveryAddress()
-                              // builder: (context) => const DeliveryAddress(),
-                              ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    )
-                  ],
+                  ),
+                ),
+                title: const Text(
+                  'SHOPPING CART',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            body: Center(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: cartItem.items.length,
-                itemBuilder: (context, index) {
-                  var product2 = cartItem.items[index].product;
-                  var subTotal = cartItem.subTotal;
-                  return Card(
-                    elevation: kLess,
-                    shadowColor: kPrimaryColor,
-                    child: Container(
+              body: const Center(child: Text("Cart is empty")),
+            );
+          } else {
+            cartItem = state?.cart;
+            return Scaffold(
+              backgroundColor: kWhiteColor,
+              appBar: const GeneralAppBar(title: "SHOPPING CART"),
+              bottomNavigationBar: SizedBox(
+                height: 100,
+                child: Material(
+                  elevation: kLess,
+                  color: kWhiteColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: FlatButton(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: kLessPadding),
+                          color: Colors.white,
+                          textColor: Colors.black,
+                          child: Text("Sub Total:     ${cartItem.formatedGrandTotal}",
+                              style: const TextStyle(
+                                  fontSize: 24.0, fontWeight: FontWeight.w400)),
+                          onPressed: () {}
+                        ),
+
+                        // child: Text("Total : UGX 97500",
+                        //     textAlign: TextAlign.center, style: kSubTextStyle)
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Expanded(
+                        child: FlatButton(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: kLessPadding),
+                            color: kPrimaryColor,
+                            textColor: kWhiteColor,
+                            child: const Text("CHECKOUT",
+                                style: TextStyle(fontSize: 18.0)),
+                            onPressed: () {
+                              setState((){
+                                //check if user is logged in
+                                 checkLogged(context);
+                              
+                              });
+                            }),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              body: Center(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: cartItem.items.length,
+                  itemBuilder: (context, index) {
+                    var product2 = cartItem.items[index].product;
+                    var subTotal = cartItem.subTotal;
+                    return Container(
                       margin: const EdgeInsets.only(
                           top: 8.0, left: 8.0, right: 8.0),
                       padding: const EdgeInsets.all(8.0),
@@ -112,15 +137,16 @@ class _CartScreenState extends State<CartScreen> {
                       child: Row(
                         children: [
                           Image(
-                            image:
-                                NetworkImage(product2.images[0].smallImageUrl),
+                            image: NetworkImage(
+                                product2.images[0].smallImageUrl),
                             height: 70.0,
                             width: 70.0,
                             fit: BoxFit.cover,
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 10, left: 40),
+                              padding:
+                                  const EdgeInsets.only(top: 10, left: 40),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -158,7 +184,8 @@ class _CartScreenState extends State<CartScreen> {
                                   //   style: const TextStyle(height: 2.3),
                                   // ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
                                     children: [
                                       IconButton(
                                           onPressed: () {
@@ -177,12 +204,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         .toString(),
                                                     cartItem.items[index]
                                                         .quantity));
-                                            showTopSnackBar(
-                                              context,
-                                              const CustomSnackBar.success(
-                                                message: "Cart Items Updated",
-                                              ),
-                                            );
+                                            updateSnack(context);
                                           },
                                           icon: const Icon(
                                             Icons.remove_circle_outline,
@@ -207,7 +229,8 @@ class _CartScreenState extends State<CartScreen> {
                                       IconButton(
                                           onPressed: () {
                                             setState(() {
-                                              cartItem.items[index].quantity++;
+                                              cartItem
+                                                  .items[index].quantity++;
                                             });
                                             context.read<CartBloc>().add(
                                                 CartUpdated(
@@ -215,12 +238,7 @@ class _CartScreenState extends State<CartScreen> {
                                                         .toString(),
                                                     cartItem.items[index]
                                                         .quantity));
-                                            showTopSnackBar(
-                                              context,
-                                              const CustomSnackBar.success(
-                                                message: "Cart Items Updated",
-                                              ),
-                                            );
+                                            updateSnack(context);
                                           },
                                           icon: const Icon(
                                             Icons.add_circle_outline,
@@ -237,24 +255,19 @@ class _CartScreenState extends State<CartScreen> {
                             onPressed: () {
                               context.read<CartBloc>().add(
                                   CartItemRemoved(cartItem.items[index].id));
-                              showTopSnackBar(
-                                context,
-                                const CustomSnackBar.error(
-                                  message: "Cart Item Removed",
-                                ),
-                              );
+                              updateSnack(context);
                             },
                             icon: const Icon(Icons.delete_outlined),
                             color: kDarkColor,
                           ),
                         ],
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          );
+            );
+          }
         } else if (state is CartEmptyState) {
           return const Scaffold(
             appBar: GeneralAppBar(
@@ -267,10 +280,44 @@ class _CartScreenState extends State<CartScreen> {
             appBar: GeneralAppBar(
               title: "SHOPPING CART",
             ),
-            body: Text("Cart is empty"),
+            body: Center(child: Text("Cart is empty")),
           );
         }
       },
     );
+  }
+
+  void updateSnack(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+               const SnackBar(
+                 content: Text('Cart Updated'),
+                 duration: Duration(seconds: 2),
+               ),
+             );
+  }
+
+  Future<void> checkLogged(BuildContext context) async {
+    FlutterSecureStorage storage =
+        const FlutterSecureStorage();
+    String token = await storage.read(
+        key: HttpUtils.keyForJWTToken);
+    
+    if (token == null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => SignIn(
+              authRepository: AuthRepository()),
+          // builder: (context) => const DeliveryAddress(),
+        ),
+      );
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          // builder: (context) => SignIn(authRepository: AuthRepository()),
+          builder: (context) =>
+              const DeliveryAddressList(),
+        ),
+      );
+    }
   }
 }

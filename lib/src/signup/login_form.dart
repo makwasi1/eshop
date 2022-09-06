@@ -2,8 +2,10 @@ import 'package:eshop/src/bloc/login/login_bloc.dart';
 import 'package:eshop/src/bloc/login/login_state.dart';
 import 'package:eshop/src/bloc/login/login_event.dart';
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/delivery/address_list.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/signup/sign_up.dart';
+import 'package:eshop/src/widgets/circular_loading_widget.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,18 +51,35 @@ class _LoginFormState extends State<LoginForm> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          if(state is LoginLoading){
-            return const Center (
-              child: CircularProgressIndicator(),
+          if (state is LoginLoading) {
+            return const Center(
+              child: CircularLoading(),
             );
           }
           if (state is LoginSuccess) {
-            Navigator.of(context).pop();
+            
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   const SnackBar(
+              //     content: Text("Successfully Loged In."),
+              //     backgroundColor: Colors.green,
+              //   ),
+              // );
+              Future.delayed(const Duration(milliseconds: 500), () {
+                      setState(() {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const DeliveryAddressList()),
+                            (route) => false);
+                      });
+                    });
+            
+         
           }
 
-          if(state is UnAuthenticated){
+          if (state is UnAuthenticated) {
             return Padding(
-              padding: const EdgeInsets.only(right: 20.0, left: 20.0, top: 80.0),
+              padding:
+                  const EdgeInsets.only(right: 20.0, left: 20.0, top: 80.0),
               child: Form(
                 child: Column(
                   children: [
@@ -98,15 +117,16 @@ class _LoginFormState extends State<LoginForm> {
                       controller: _usernameController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        prefixIcon:
-                        Icon(EvaIcons.emailOutline, color: Colors.black26),
+                        prefixIcon: const Icon(EvaIcons.emailOutline,
+                            color: Colors.black26),
                         enabledBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.black12),
+                            borderSide: BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(30.0)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: kPrimaryColor),
+                            borderSide: BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        contentPadding:
+                            EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "E-Mail",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -141,7 +161,7 @@ class _LoginFormState extends State<LoginForm> {
                             borderSide: const BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
                         contentPadding:
-                        const EdgeInsets.only(left: 10.0, right: 10.0),
+                            const EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "Password",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -163,8 +183,8 @@ class _LoginFormState extends State<LoginForm> {
                       child: InkWell(
                           child: const Text(
                             "Forget password?",
-                            style:
-                            TextStyle(color: Colors.black45, fontSize: 12.0),
+                            style: TextStyle(
+                                color: Colors.black45, fontSize: 12.0),
                           ),
                           onTap: () {}),
                     ),
@@ -177,37 +197,40 @@ class _LoginFormState extends State<LoginForm> {
                               height: 45,
                               child: state is LoginLoading
                                   ? Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        children: const [
-                                          SizedBox(
-                                            height: 25.0,
-                                            width: 25.0,
-                                            child: CupertinoActivityIndicator(),
-                                          )
-                                        ],
-                                      ))
-                                ],
-                              )
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Center(
+                                            child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            SizedBox(
+                                              height: 25.0,
+                                              width: 25.0,
+                                              child:
+                                                  CupertinoActivityIndicator(),
+                                            )
+                                          ],
+                                        ))
+                                      ],
+                                    )
                                   : RaisedButton(
-                                  color: kPrimaryColor,
-                                  disabledColor: kPrimaryColor,
-                                  disabledTextColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  onPressed: _onLoginButtonPressed,
-                                  child: const Text("LOG IN",
-                                      style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)))),
+                                      color: kPrimaryColor,
+                                      disabledColor: kPrimaryColor,
+                                      disabledTextColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                      onPressed: _onLoginButtonPressed,
+                                      child: const Text("LOG IN",
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)))),
                         ],
                       ),
                     ),
@@ -216,7 +239,8 @@ class _LoginFormState extends State<LoginForm> {
                       children: const [
                         Text(
                           "Or connect using",
-                          style: TextStyle(color: Colors.black26, fontSize: 12.0),
+                          style:
+                              TextStyle(color: Colors.black26, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -248,7 +272,7 @@ class _LoginFormState extends State<LoginForm> {
                                     width: 5.0,
                                   ),
                                   Text("Facebook",
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white)),
@@ -277,7 +301,7 @@ class _LoginFormState extends State<LoginForm> {
                                     width: 5.0,
                                   ),
                                   Text("Google",
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white)),
@@ -310,10 +334,12 @@ class _LoginFormState extends State<LoginForm> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SignUp(authRepository: AuthRepository(),)));
+                                              builder: (context) => SignUp(
+                                                    authRepository:
+                                                        AuthRepository(),
+                                                  )));
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       "Register",
                                       style: TextStyle(
                                           color: kPrimaryColor,
@@ -323,7 +349,7 @@ class _LoginFormState extends State<LoginForm> {
                             )),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     )
                   ],
@@ -331,7 +357,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             );
           }
-         return const Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

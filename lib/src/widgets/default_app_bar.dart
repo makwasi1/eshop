@@ -51,17 +51,23 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 }
 
 class CartNewWidget extends StatelessWidget {
-  const CartNewWidget({
+   CartNewWidget({
     Key key,
   }) : super(key: key);
 
+  int itemCount = 0;
   @override
   Widget build(BuildContext context) {
-    int itemCount;
+
     return BlocBuilder<CartBloc, CartBlocState>(
       builder: (context, state) {
         if (state is CartLoadedState) {
-          itemCount = state.cart.itemsCount;
+          if(state.cart?.itemsCount == null){
+            itemCount = 0;
+          } else{
+            itemCount = state.cart.itemsCount;
+          }
+          itemCount = state.cart?.itemsCount;
           return Badge(
             // will be updated by the cart state incase of increase
             badgeContent: Text('$itemCount',

@@ -25,7 +25,7 @@ class _AboutState extends State<About> {
         children: const [
           NotificationTiles(
             title: 'Shop',
-            subtitle: 'Welcome to Velocity',
+            subtitle: 'Welcome to Eshop',
             enable: false,
           ),
           Divider(),

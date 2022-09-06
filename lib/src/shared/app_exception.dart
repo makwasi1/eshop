@@ -1,9 +1,10 @@
-class AppException implements Exception {
+class AppException implements Exception { 
   final message;
   final prefix;
 
   AppException([this.message, this.prefix]);
 
+  @override
   String toString() {
     return "$prefix$message";
   }

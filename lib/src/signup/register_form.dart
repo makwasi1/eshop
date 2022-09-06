@@ -1,6 +1,7 @@
 import 'package:eshop/src/bloc/login/login_bloc.dart';
 import 'package:eshop/src/bloc/login/login_state.dart';
 import 'package:eshop/src/bloc/login/login_event.dart';
+import 'package:eshop/src/delivery/delivery.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -61,7 +62,14 @@ class _RegisterFormState extends State<RegisterForm> {
             );
           }
           if (state is LoginSuccess) {
-            Navigator.of(context).pop();
+              setState(() {
+                Navigator.push(
+                    context,
+            MaterialPageRoute(
+                builder: (context) =>
+                   const DeliveryAddress()));
+              });
+            
           }
 
           if(state is UnAuthenticated){
@@ -339,12 +347,12 @@ class _RegisterFormState extends State<RegisterForm> {
                               onPressed: _onRegisterButtonPressed,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
+                                children: const [
+                                  Icon(
                                     EvaIcons.facebook,
                                     color: Colors.white,
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 5.0,
                                   ),
                                   Text("Facebook",

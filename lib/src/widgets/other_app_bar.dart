@@ -1,6 +1,4 @@
-import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/constants.dart';
-import 'package:eshop/src/home/home.dart';
 import 'package:flutter/material.dart';
 
 class GeneralAppBar extends StatelessWidget implements PreferredSizeWidget {

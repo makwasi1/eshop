@@ -97,15 +97,15 @@ final labels = [
   'Wishlist',
   'Compare',
   'Reviews',
-  'Address',
-  'Notifications',
-  'Payments',
-  'Message',
-  'My Orders',
+  'Live Streaming',
   'Live Tracking',
-  'Setting Account',
-  'Call Center',
-  'About Application',
+  'Settings'
+  // 'Message',
+  // 'My Orders',
+  // 'Live Tracking',
+  // 'Setting Account',
+  // 'Call Center',
+  // 'About Application',
 ];
 
 final icons = [
@@ -115,15 +115,15 @@ final icons = [
   Icons.favorite_border_outlined,
   Icons.compare_arrows_outlined,
   Icons.star_border_outlined,
-  Icons.location_on_outlined,
   Icons.notifications,
   Icons.payment,
-  Icons.message,
-  Icons.local_dining,
-  Icons.local_shipping,
   Icons.settings,
-  Icons.person,
-  Icons.info,
+  // Icons.message,
+  // Icons.local_dining,
+  // Icons.local_shipping,
+  // Icons.settings,
+  // Icons.person,
+  // Icons.info,
 ];
 
 final paymentLabels = [

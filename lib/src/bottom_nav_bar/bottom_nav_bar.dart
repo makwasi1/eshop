@@ -4,6 +4,7 @@ import 'package:eshop/src/category/category.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/home/home.dart';
 import 'package:eshop/src/search/search_page.dart';
+import 'package:eshop/src/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,8 +21,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   // int _currentIndex = 0;
 
   final List<Widget> _children = [
-    Home(),
-    Category(),
+    const Home(),
+    const Category(),
     Search(),
     Account(),
   ];

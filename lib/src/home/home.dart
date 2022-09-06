@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:eshop/check_button.dart';
 import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/bloc/products/product_bloc.dart';
 
@@ -15,6 +16,8 @@ import 'package:eshop/src/services/cart_repo.dart';
 // import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/services/products_repo.dart';
 import 'package:eshop/src/widgets/category_view_home.dart';
+import 'package:eshop/src/widgets/chip.dart';
+import 'package:eshop/src/widgets/circular_loading_widget.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/items_view.dart';
 import 'package:eshop/src/widgets/poster_view.dart';
@@ -26,6 +29,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -52,40 +56,40 @@ class _HomeState extends State<Home> {
   void initState() {
     // productBloc.add(ProductsFetchedEvent());
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (!mounted) {
-        setState(() {
-          countDown = false;
-        });
-      } else {}
-    });
+    // _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    //   if (!mounted) {
+    //     setState(() {
+    //       countDown = false;
+    //     });
+    //   } else {}
+    // });
     // startTimer();
   }
 
   void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
+    // _timer = Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   void setCountDown() {
-    const reduceSecondsBy = 1;
-    if (mounted) {
-      setState(() {
-        final seconds = myDuration.inSeconds - reduceSecondsBy;
-        if (seconds < 0) {
-          _timer.cancel();
-        } else {
-          myDuration = Duration(seconds: seconds);
-        }
-      });
-    }
+    // const reduceSecondsBy = 1;
+    // if (mounted) {
+    //   setState(() {
+    //     final seconds = myDuration.inSeconds - reduceSecondsBy;
+    //     if (seconds < 0) {
+    //       _timer.cancel();
+    //     } else {
+    //       myDuration = Duration(seconds: seconds);
+    //     }
+    //   });
+    // }
   }
 
   @override
   void dispose() {
-    if (_timer != null) {
-      _timer.cancel();
-      _timer = null;
-    }
+    // if (_timer != null) {
+    //   _timer.cancel();
+    //   _timer = null;
+    // }
     super.dispose();
   }
 
@@ -105,14 +109,25 @@ class _HomeState extends State<Home> {
         body: BlocBuilder<ProductBloc, ProductState>(
           builder: (context, state) {
             if (state is ProductLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const CircularLoading();
             }
 
             if (state is ProductFailure) {
-              return const Center(
-                child: Text('failed to fetch products'),
+              return   Center(
+                // child: DefaultButton(
+                //   text: "Try Again",
+                //   press: () => productBloc.add(ProductsFetchedEvent()),
+                // ),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kPrimaryColor,
+                  ),
+                child: const Text('Opps! Try Again'),
+                  onPressed: () {
+                    productBloc.add(ProductsFetchedEvent());
+                  },
+                ),
+                
               );
             }
 
@@ -179,40 +194,40 @@ class _HomeState extends State<Home> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       width: MediaQuery.of(context).size.width * 1.9,
                       padding: const EdgeInsets.only(
-                          top: 10.0, left: 10.6, right: 2.0),
+                          top: 8.0, left: 8.6, right: 2.0),
                       child: Row(
                         children: [
                           const Icon(
                             Icons.credit_card,
                             color: kPrimaryColor,
-                            size: 50.0,
+                            size: 30.0,
                           ),
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
                                 Text(
-                                  "  Secure Payment",
+                                  " Secure Payment",
                                   style: TextStyle(
-                                    fontSize: 22.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  "100% secure payment",
+                                  " 100% Secure payment",
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 13.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ]),
                           const VerticalDivider(
-                            endIndent: 20.0,
+                            endIndent: 30.0,
                           ),
                           const Icon(
                             Icons.autorenew,
                             color: kPrimaryColor,
-                            size: 50.0,
+                            size: 30.0,
                           ),
                           Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -221,14 +236,14 @@ class _HomeState extends State<Home> {
                                 Text(
                                   "90 Days Return",
                                   style: TextStyle(
-                                    fontSize: 22.0,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
                                   "If goods have problems",
                                   style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 13.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -248,8 +263,8 @@ class _HomeState extends State<Home> {
                         child: Text(
                           "Featured Products",
                           style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.w400,
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.justify,
                         ),
@@ -345,10 +360,10 @@ class _HomeState extends State<Home> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: const [
-                        Text("Top Categories Of The Month",
+                        Text("Top Categories",
                             style: TextStyle(
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.w800,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center),
                         // GestureDetector(
@@ -366,33 +381,52 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: CategoryViewHome(
-                      direction: Axis.horizontal,
-                      height: 300.0,
-                      width: MediaQuery.of(context).size.width,
-                      color: kWhiteColor,
-                      column: 2,
-                      ratio: 0.78,
-                      items: categories.length,
-                      itemBuilder: (context, index) {
-                        return ItemsView(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          paddingHorizontal: 0.0,
-                          paddingVertical: 0.0,
-                          radius: 8.0,
-                          blendMode: BlendMode.hardLight,
-                          color: kDarkColor,
-                          //image: categories[index]?.imageUrl,
-                          title: categories[index].name,
-                          titleSize: kFixPadding,
-                          align: Alignment.center,
-                        );
-                      },
-                    ),
+                  Container(
+              margin: const EdgeInsets.only(
+                top: 16.0,
+                left: kFixPadding,
+                right: kDefaultPadding,
+                bottom: 19
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List<Widget>.generate(
+                    categories.length,
+                    (int index) {
+                      return Chips(text: categories[index].name);
+                    },
                   ),
+                ),
+              ),
+            ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 8.0),
+                  //   child: CategoryViewHome(
+                  //     direction: Axis.horizontal,
+                  //     height: 300.0,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     color: kWhiteColor,
+                  //     column: 2,
+                  //     ratio: 0.78,
+                  //     items: categories.length,
+                  //     itemBuilder: (context, index) {
+                  //       return ItemsView(
+                  //         height: MediaQuery.of(context).size.height,
+                  //         width: MediaQuery.of(context).size.width,
+                  //         paddingHorizontal: 0.0,
+                  //         paddingVertical: 0.0,
+                  //         radius: 8.0,
+                  //         blendMode: BlendMode.hardLight,
+                  //         color: kDarkColor,
+                  //         //image: categories[index]?.imageUrl,
+                  //         title: categories[index].name,
+                  //         titleSize: kFixPadding,
+                  //         align: Alignment.center,
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                   kDivider,
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -402,7 +436,7 @@ class _HomeState extends State<Home> {
                       children: [
                         const Text("New Products",
                             style: TextStyle(
-                              fontSize: 30.0,
+                              fontSize: 22.0,
                               fontWeight: FontWeight.w800,
                             ),
                             textAlign: TextAlign.center),

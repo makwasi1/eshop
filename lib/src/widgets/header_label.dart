@@ -15,7 +15,7 @@ class HeaderLabel extends StatelessWidget {
       padding: const EdgeInsets.all(kDefaultPadding),
       child: Text(
         headerText,
-        style: TextStyle(color: kLightColor, fontSize: 28.0),
+        style: const TextStyle(color: kDarkColor, fontSize: 28.0),
       ),
     );
   }

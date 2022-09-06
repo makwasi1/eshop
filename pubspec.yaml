@@ -35,6 +35,9 @@ dependencies:
   eva_icons_flutter: ^3.1.0
   top_snackbar_flutter: ^2.1.1
   html: ^0.15.0
+  intl: ^0.17.0
+  loading_animation_widget:
+  
   # flutter_logs: ^2.1.7
 
 dev_dependencies:
@@ -47,6 +50,7 @@ dev_dependencies:
   google_maps_flutter:
   permission_handler:
 
+  webview_flutter: ^3.0.4
   awesome_card: ^1.1.7
   getwidget: ^1.2.4
   font_awesome_flutter: ^10.1.0

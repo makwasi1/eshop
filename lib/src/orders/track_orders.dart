@@ -47,8 +47,8 @@ class _TrackOrderState extends State<TrackOrder> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
+          const Padding(
+            padding: EdgeInsets.only(
               left: 16.0,
               right: 16.0,
               top: 16.0,
@@ -62,7 +62,7 @@ class _TrackOrderState extends State<TrackOrder> {
           ),
           Row(
             children: [
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width / 6,
                 child: IconStepper(
@@ -77,7 +77,7 @@ class _TrackOrderState extends State<TrackOrder> {
                   lineLength: 70.0,
                   lineDotRadius: 2.0,
                   stepRadius: 16.0,
-                  icons: [
+                  icons: const [
                     Icon(Icons.radio_button_checked, color: Colors.green),
                     Icon(Icons.check, color: kWhiteColor),
                     Icon(Icons.check, color: kWhiteColor),
@@ -93,11 +93,11 @@ class _TrackOrderState extends State<TrackOrder> {
                   itemBuilder: (context, index) {
                     return Row(
                       children: [
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width / 1.5,
                           child: ListTile(
                             contentPadding:
-                                EdgeInsets.symmetric(vertical: 16.0),
+                                const EdgeInsets.symmetric(vertical: 16.0),
                             leading: Icon(
                               trackOrderList[index].icon,
                               size: 48.0,
@@ -105,11 +105,11 @@ class _TrackOrderState extends State<TrackOrder> {
                             ),
                             title: Text(
                               trackOrderList[index].title,
-                              style: TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 18.0),
                             ),
                             subtitle: Text(
                               trackOrderList[index].subtitle,
-                              style: TextStyle(fontSize: 16.0),
+                              style: const TextStyle(fontSize: 16.0),
                             ),
                           ),
                         ),
@@ -125,8 +125,8 @@ class _TrackOrderState extends State<TrackOrder> {
             ],
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
-            padding: EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
             decoration: BoxDecoration(
               color: kWhiteColor,
               border: Border.all(
@@ -137,35 +137,33 @@ class _TrackOrderState extends State<TrackOrder> {
             ),
             child: Row(
               children: [
-                Icon(Icons.home, size: 64.0, color: kPrimaryColor),
-                SizedBox(width: 32.0),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Delivery Address",
-                        style: TextStyle(fontSize: 20.0),
+                const Icon(Icons.home, size: 64.0, color: kPrimaryColor),
+                const SizedBox(width: 32.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Delivery Address",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    Text(
+                      "Home, Work & Other Address",
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        color: kDarkColor.withOpacity(0.7),
                       ),
-                      Text(
-                        "Home, Work & Other Address",
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 1.8,
+                      child: Text(
+                        "House No: 1234, 2nd Floor Sector 18, Silicon Valey Amerika Serikat",
                         style: TextStyle(
-                          fontSize: 17.0,
-                          color: kDarkColor.withOpacity(0.7),
+                          fontSize: 15.0,
+                          color: kDarkColor.withOpacity(0.5),
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width / 1.8,
-                        child: Text(
-                          "House No: 1234, 2nd Floor Sector 18, Silicon Valey Amerika Serikat",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: kDarkColor.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

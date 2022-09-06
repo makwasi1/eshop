@@ -5,7 +5,7 @@ import 'package:eshop/src/widgets/empty_section.dart';
 import 'package:flutter/material.dart';
 
 class Chat extends StatefulWidget {
-  Chat({Key key}) : super(key: key);
+  const Chat({Key key}) : super(key: key);
 
   @override
   _ChatState createState() => _ChatState();
@@ -36,24 +36,24 @@ class _ChatState extends State<Chat> {
               elevation: kLess,
               color: kWhiteColor,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: kLess),
+                padding: const EdgeInsets.symmetric(vertical: kLess),
                 child: Row(
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add,
                         color: kPrimaryColor,
                       ),
                     ),
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: kLess),
-                        padding: EdgeInsets.symmetric(horizontal: kLessPadding),
+                        margin: const EdgeInsets.symmetric(horizontal: kLess),
+                        padding: const EdgeInsets.symmetric(horizontal: kLessPadding),
                         decoration: BoxDecoration(
                             border: Border.all(color: kAccentColor),
                             color: kWhiteColor),
-                        child: TextField(
+                        child: const TextField(
                           cursorColor: kPrimaryColor,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
@@ -66,7 +66,7 @@ class _ChatState extends State<Chat> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.email,
                         color: kPrimaryColor,
                       ),

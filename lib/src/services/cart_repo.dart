@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:eshop/src/models/address_model.dart';
 import 'package:eshop/src/services/auth_repo.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:eshop/src/models/cart_model.dart';
-import 'package:eshop/src/models/categories_model.dart';
 import 'package:eshop/src/services/http_utils.dart';
 import 'package:eshop/src/shared/app_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class CartServiceRepository {
   // Future<List<Cart>> addToCart(int productId, int quantity);
+  Future<String> addPaymentMethod(String paymentMethod);
 }
 
 class CartRepository implements CartServiceRepository {
@@ -25,20 +25,24 @@ class CartRepository implements CartServiceRepository {
   String moveToWishlistEndpoint = '/api/checkout/cart/move-to-wishlist/';
   String saveAddressEndpoint = '/api/checkout/save-address';
   String shippingMethodEndpoint = '/api/checkout/cart/save-shipping';
-  String paymentMethodEndpoint = '/api/checkout/cart/save-payment';
   String placeOrderEndpoint = '/api/checkout/cart/save-order';
+  String shippingMethod = '/api/checkout/save-shipping';
+  String paymentMethod = '/api/checkout/save-payment';
 
-  var headers = {
-    'Content-Type': 'application/json',
-    "Cookie":"eshop_tag_session=eyJpdiI6ImorbG5BOWNIb3hRZUkrSmljVEp6QWc9PSIsInZhbHVlIjoiYTJ4MmdUTTVVOXJnRUNNdHNCUVNyN29OR2pYVmdDU2Mrcmp3OHJFRDVydDNXK1FURFFxU2xHQVZlUTBhWFwvUFoxU0JBS1wvUWdETkZLaFVzaXR3S2h5YnRaTWRYZnVTblFGTGZXcXZndXRmRVVXaWxxMlI1TkZzSDl6a3R4bTdYUSIsIm1hYyI6IjdlMTU0ZWE3YzliZjg5YTg2NGExNjMzMjk1ZWZjZGNkYTMyNmUxNmI4YjhmOTRlYzhiMGZiNTU2MGE4OWFmNGIifQ%3D%3D",
-  };
+ 
 
+  
   Future<Cart> addToCart(int productId, int quantity) async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
     final res = await http.post(
       Uri.parse(url + addSimpleProductEndpoint + productId.toString()),
       body: jsonEncode({"product_id": productId, "quantity": quantity}),
-      headers: headers,
+      headers: {
+        "Content-type": "application/json",
+        "Cookie": cookie,
+      },
     );
 
     if (res.statusCode == 200) {
@@ -60,48 +64,29 @@ class CartRepository implements CartServiceRepository {
   }
 
   Future<Cart> getCartDetails() async {
-    // String guestCart;
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-   
-    // String guestCart = prefs.getString('cart');
-    // if (guestCart != null) {
-    //   var data = json.decode(guestCart);
-    //   Cart cart = Cart.fromJson(data);
-    //   return cart;
-    // } else {
-      final res = await http.get(Uri.parse(url + getCartDetailsEnpoint),
-      headers: headers,
-      );
-      if (res.statusCode == 200) {
-        var data = json.decode(res.body);
-        Cart cart = CartModel.fromJson(data).data;
-        // prefs.setString('cart', json.encode(cart.toJson()));
-        return cart;
-      } else if (res.body == null) {
-        throw UnknownResponseException('No Cart Found.');
-      } else if (res.statusCode == 401) {
-        throw UnknownResponseException('Failed to get cart');
-      } else if (res.statusCode == 403) {
-        throw UnknownResponseException('Invalid User Token');
-      } else {
-        throw Exception('Failed to get cart');
-      }
-    
-
-    // final res = await HttpUtils.getRequest(url + getCartDetailsEnpoint, true);
-    // if (res.statusCode == 200) {
-    //   var data = json.decode(res.body);
-    //   Cart cart = CartModel.fromJson(data).data;
-    //   return cart;
-    // } else if (res.body == null) {
-    //   throw UnknownResponseException('No Cart Found.');
-    // } else if (res.statusCode == 401) {
-    //   throw UnknownResponseException('Failed to get cart details');
-    // } else if (res.statusCode == 403) {
-    //   throw UnknownResponseException('Invalid User Token');
-    // } else {
-    //   throw Exception('Failed to get cart details');
-    // }
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
+    final res = await http.get(
+      Uri.parse(url + getCartDetailsEnpoint),
+      headers: {
+        "Content-type": "application/json",
+        "Cookie": cookie,
+      },
+    );
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      Cart cart = CartModel.fromJson(data).data;
+      // prefs.setString('cart', json.encode(cart.toJson()));
+      return cart;
+    } else if (res.body == null) {
+      throw UnknownResponseException('No Cart Found.');
+    } else if (res.statusCode == 401) {
+      throw UnknownResponseException('Failed to get cart');
+    } else if (res.statusCode == 403) {
+      throw UnknownResponseException('Invalid User Token');
+    } else {
+      throw Exception('Failed to get cart');
+    }
   }
 
   Future<List<Cart>> getCartDetailsUserLogged() async {
@@ -147,11 +132,18 @@ class CartRepository implements CartServiceRepository {
 
   Future<Cart> updateCart(String cartItemId, int quantity) async {
     //get request that returns a string
-    final res = await http.put(Uri.parse(url + updateCartEndpoint), body: jsonEncode({
-      "qty": {
-        cartItemId: quantity,
-      }, 
-    }), headers: headers);
+     FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
+    final res = await http.put(Uri.parse(url + updateCartEndpoint),
+        body: jsonEncode({
+          "qty": {
+            cartItemId: quantity,
+          },
+        }),
+        headers: {
+          "Content-type": "application/json",
+          "Cookie": cookie,
+        });
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       Cart cart = CartModel.fromJson(data).data;
@@ -169,18 +161,25 @@ class CartRepository implements CartServiceRepository {
 
   Future<String> applyCoupon(String couponCode) async {
     //get request that returns a string
-    final res = await HttpUtils.postRequest(
-        url + applyCouponEndpoint, {"code": couponCode}, true);
+     FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
+    final res = await http.post(
+      Uri.parse(  url + applyCouponEndpoint),body: jsonEncode({"code": couponCode}),
+      headers: {
+        "Content-type": "application/json",
+        "Cookie": cookie,
+      },
+      );
     if (res.statusCode == 200) {
       return res.body;
     } else if (res.body == null) {
-      throw UnknownResponseException('No Cart Items Found.');
+      throw UnknownResponseException('Coupon Not Valid.');
     } else if (res.statusCode == 401) {
-      throw UnknownResponseException('Failed to get cart details');
+      throw UnknownResponseException('Coupon Not Valid');
     } else if (res.statusCode == 403) {
       throw UnknownResponseException('Invalid User Token');
     } else {
-      throw Exception('Failed to get cart details');
+      throw Exception('Coupon Not Valid');
     }
   }
 
@@ -200,12 +199,67 @@ class CartRepository implements CartServiceRepository {
     }
   }
 
+  Future<String> addShippingMethod(String method) async {
+    //get request that returns a string
+     FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
+    final res = await http.post(Uri.parse(url + shippingMethod),
+        body: jsonEncode({"shipping_method": method}), headers: {
+      "Content-type": "application/json",
+      "Cookie": cookie,
+        });
+
+    if (res.statusCode == 200) {
+      return res.body;
+    } else if (res.body == null) {
+      throw UnknownResponseException('No Cart Items Found.');
+    } else if (res.statusCode == 401) {
+      throw UnknownResponseException('Failed to get cart details');
+    } else if (res.statusCode == 403) {
+      throw UnknownResponseException('Invalid User Token');
+    } else {
+      throw Exception('Failed to get cart details');
+    }
+  }
+
+  @override
+  Future<String> addPaymentMethod(String method) async {
+    //get request that returns a string
+     FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
+    final res = await http.post(Uri.parse(url + paymentMethod),
+        body: jsonEncode({
+          "payment": {"method": method}
+        }),
+        headers: {
+          "Content-type": "application/json",
+          "Cookie": cookie,
+        });
+
+    if (res.statusCode == 200) {
+      return res.body;
+    } else if (res.body == null) {
+      throw UnknownResponseException('No Cart Items Found.');
+    } else if (res.statusCode == 401) {
+      throw UnknownResponseException('Failed to get cart details');
+    } else if (res.statusCode == 403) {
+      throw UnknownResponseException('Invalid User Token');
+    } else {
+      throw Exception('Failed to get cart details');
+    }
+}
+
   Future<Cart> removeCartItem(int cartItemId) async {
     //get request that returns a string
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+      String cookie = await storage.read(key: 'cookie');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cartId = cartItemId.toString();
-    final res =
-        await http.get(Uri.parse(url + removeCartItemEndpoint + cartId), headers: headers);
+    final res = await http.get(Uri.parse(url + removeCartItemEndpoint + cartId),
+        headers: {
+          "Content-type": "application/json",
+          "Cookie": cookie,
+        });
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
       Cart cart = CartModel.fromJson(data).data;
@@ -278,45 +332,6 @@ class CartRepository implements CartServiceRepository {
     }
   }
 
-  //save shipping method
-  Future<String> saveShippingMethod(String shippingMethod) async {
-    //get request that returns a string
-    final res = await HttpUtils.postRequest(url + shippingMethodEndpoint,
-        {"shipping_method": shippingMethod}, true);
-    if (res.statusCode == 200) {
-      return res.body;
-    } else if (res.body == null) {
-      throw UnknownResponseException('No Cart Items Found.');
-    } else if (res.statusCode == 401) {
-      throw UnknownResponseException('Failed to get cart details');
-    } else if (res.statusCode == 403) {
-      throw UnknownResponseException('Invalid User Token');
-    } else {
-      throw Exception('Failed to get cart details');
-    }
-  }
-
-  //save payment method
-  Future<String> savePaymentMethod(String paymentMethod) async {
-    //get request that returns a string
-    final res = await HttpUtils.postRequest(
-        url + paymentMethodEndpoint,
-        {
-          "payment": {"method": paymentMethod}
-        },
-        true);
-    if (res.statusCode == 200) {
-      return res.body;
-    } else if (res.body == null) {
-      throw UnknownResponseException('No Cart Items Found.');
-    } else if (res.statusCode == 401) {
-      throw UnknownResponseException('Failed to get cart details');
-    } else if (res.statusCode == 403) {
-      throw UnknownResponseException('Invalid User Token');
-    } else {
-      throw Exception('Failed to get cart details');
-    }
-  }
 
   //save order
   Future<String> saveOrder() async {

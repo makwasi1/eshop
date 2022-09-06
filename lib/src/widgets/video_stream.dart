@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:eshop/src/widgets/vendor_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LiveStreaming extends StatefulWidget {
   const LiveStreaming({Key key}) : super(key: key);
@@ -11,55 +14,35 @@ class LiveStreaming extends StatefulWidget {
 }
 
 class _LiveStreamingState extends State<LiveStreaming> {
-  VideoPlayerController videoPlayerController;
-  Future<void> videoPlayerFuture;
+  
+  WebViewController _controller;
+  
   @override
   void initState() {
     super.initState();
-    videoPlayerController = VideoPlayerController.network(
-        'http://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4');
-    videoPlayerFuture = videoPlayerController.initialize();
-    videoPlayerController.setLooping(true);
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: GeneralAppBar(
-          title: "PRODUCT PREVIEW",
-        ),
-        body: FutureBuilder(
-          future: videoPlayerFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return AspectRatio(
-                aspectRatio: videoPlayerController.value.aspectRatio,
-                child: VideoPlayer(videoPlayerController),
-              );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
+      appBar: const GeneralAppBar(
+        title: "PRODUCT PREVIEW",
+      ),
+      body: Center(
+        child: WebView(
+          initialUrl: 'https://katale.net/livestreams',
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller = webViewController;
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              videoPlayerController.value.isPlaying
-                  ? videoPlayerController.pause()
-                  : videoPlayerController.play();
-            });
-          },
-          child: Icon(
-            videoPlayerController.value.isPlaying
-                ? Icons.pause
-                : Icons.play_arrow,
-          ),
-        ));
+      ),
+    );
   }
 
   @override
   void dispose() {
-    videoPlayerController.dispose();
     super.dispose();
   }
 }
