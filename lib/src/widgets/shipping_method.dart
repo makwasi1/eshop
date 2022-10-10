@@ -130,16 +130,16 @@ CartRepository cartRepo = CartRepository();
             ),
               
             const Divider(),
-            const HeaderLabel(
-              headerText: 'Apply Coupon',
-            ),
+            // const HeaderLabel(
+            //   headerText: 'Apply Coupon',
+            // ),
               
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Enter Coupon Code',
-              ),
-              controller: _code,
-            ),
+            // TextFormField(
+            //   decoration: const InputDecoration(
+            //     labelText: 'Enter Coupon Code',
+            //   ),
+            //   controller: _code,
+            // ),
             //button
             // const SizedBox(height: 20),
             DefaultButton(

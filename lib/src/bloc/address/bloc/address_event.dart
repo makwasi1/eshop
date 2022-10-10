@@ -26,6 +26,13 @@ class AddressAddEvent extends AddressEvent {
   List<Object> get props => [address,city,state,country,postcode,phone];
 }
 
+class AddWishLIstItemEvent extends AddressEvent {
+  final int id;
+  const AddWishLIstItemEvent(this.id);
+  @override
+  List<Object> get props => [id];
+}
+
 class AddressDeleteEvent extends AddressEvent {
   final String address;
   const AddressDeleteEvent(this.address);

@@ -311,7 +311,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     borderRadius: BorderRadius.circular(30.0),
                                   ),
                                   onPressed: _onRegisterButtonPressed,
-                                  child: const Text("LOG IN",
+                                  child: const Text("REGISTER",
                                       style: TextStyle(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.bold,

@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:eshop/src/models/categories_model.dart';
 import 'package:eshop/src/models/product_item.dart';
 import 'package:eshop/src/models/products_model.dart';
+import 'package:eshop/src/models/review_modal.dart';
+import 'package:eshop/src/models/wishlist_model.dart';
 import 'package:eshop/src/services/http_utils.dart';
 import 'package:eshop/src/shared/app_exception.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import 'auth_repo.dart';
 
@@ -22,6 +25,8 @@ class ProductRepository extends ProductServiceRepository {
   String categoriesEndpoint = '/api/categories?page=1';
   String getCategoryByIdEndpoint = '/api/categories/';
   String getProductReviewsEndpoint = '/api/reviews?product_id=';
+  String addToWishListEndpoint = '/api/wishlist/add/'; //example.com/api/wishlist/add/{product_id}
+  String getWishListEndpoint = 'http://eshoptag.com/api/wishlist?page=1&token=true';
 
   @override
   Future<ProductModel> downloadProducts() async {
@@ -125,5 +130,87 @@ class ProductRepository extends ProductServiceRepository {
   }
 
   //get reviews for product
+  Future<List<Data>> getProductReviews(int id) async {
+    final res = await http.get(
+      Uri.parse(url + getProductReviewsEndpoint + id.toString()
+      ));
+
+    if (res.statusCode == 200) {
+      var data = json.decode(res.body);
+      print(data);
+      ReviewsModal.fromJson(data);
+      List<Data> reviews = ReviewsModal.fromJson(data).data;
+      return reviews;
+    } else if (res.body == null) {
+      throw UnknownResponseException('No Reviews Found.');
+    } else if (res.statusCode == 401) {
+      throw UnknownResponseException('Failed to download reviews');
+    } else if (res.statusCode == 403) { 
+      throw UnknownResponseException('Invalid User Token');
+    } else {
+      throw Exception('Failed to download reviews');
+    }
+  }
+
+  //add to wishlist
+  Future<WishlistModel> addToWishList(int id) async {
+    final token = await AuthRepository().getCurrentUserToken();
+    final response = await http.get(
+      Uri.parse('http://eshoptag.com/api/wishlist/add/$id?token=true'),
+      // Send authorization headers to the backend.
+      headers: {
+        "Content-type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Bearer " +token,
+      },
+    );
+
+    bool isTokenExpired = JwtDecoder.isExpired(token);
+    print(isTokenExpired);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      final wishList = WishlistModel.fromJson(data);
+      // print(data["message"]);
+      return wishList;
+    } else if (response.body == null) {
+      throw UnknownResponseException('No Reviews Found.');
+    } else if (response.statusCode == 401) {
+      throw UnknownResponseException('Failed to download reviews');
+    } else if (response.statusCode == 403) {
+      throw UnknownResponseException('Invalid User Token');
+    } else {
+      throw Exception('Failed to download reviews');
+    }
+  }
+
+  //get wishlist items
+  Future<WishlistModel> getWishList() async {
+    final token  = await AuthRepository().getCurrentUserToken();
+    final response = await http.get(
+      Uri.parse(getWishListEndpoint),
+      // Send authorization headers to the backend.
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": "Bearer " +token,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+    
+     return WishlistModel.fromJson(data);
+    } else if (response.body == null) {
+      throw UnknownResponseException('No Reviews Found.');
+    } else if (response.statusCode == 401) {
+      throw UnknownResponseException('Failed to download reviews');
+    } else if (response.statusCode == 403) {
+      throw UnknownResponseException('Invalid User Token');
+    } else {
+      throw Exception('Failed to download reviews');
+    }
+  }
+
+  
   
 }

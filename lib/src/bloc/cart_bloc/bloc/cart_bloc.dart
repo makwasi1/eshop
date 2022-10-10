@@ -26,24 +26,12 @@ class CartBloc extends Bloc<CartEvent, CartBlocState> {
       CartStarted event, Emitter<CartBlocState> emit) async {
     emit(CartLoadingState());
     try {
-      // final token = await authRepository.getCurrentUserToken();
-      // if (token != null) {
-      //   final cart = await cartRepository.getCartDetails();
-      //   if (cart != null) {
-      //     emit(CartLoadedState(cart: cart));
-      //   } else {
-      //     emit(CartEmptyState());
-      //   }
-      // } else {
         final cart = await cartRepository.getCartDetails();
         if (cart != null) {
           emit(CartLoadedState(cart: cart));
         } else {
           emit(CartEmptyState());
         }
-      // }
-
-      // emit(CartLoadedState(cart: cart));
     } catch (_) {
       emit(const CartLoadError(message: 'Error Loading Cart Items'));
     }

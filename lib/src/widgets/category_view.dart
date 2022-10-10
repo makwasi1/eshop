@@ -2,8 +2,10 @@ import 'package:eshop/src/bloc/products/product_bloc.dart';
 import 'package:eshop/src/category/category.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/models/categories_model.dart';
+import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/services/products_repo.dart';
 import 'package:eshop/src/widgets/categoty_items.dart';
+import 'package:eshop/src/widgets/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,9 +34,7 @@ class Categoryview extends StatelessWidget {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state is ProductLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const ShimmerWidget();
         }
         if (state is ProductsLoadedState){
             return ListView.builder(
@@ -45,7 +45,10 @@ class Categoryview extends StatelessWidget {
               return Column(children: <Widget>[
                 GestureDetector(
                   onTap: () {
-                    print("taped");
+                    Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProductsPage(false),
+                            ));
                   },
                   child: CategoryItems(
                     title: state.categories[index].name,

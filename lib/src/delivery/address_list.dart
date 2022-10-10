@@ -6,10 +6,12 @@ import 'package:eshop/src/delivery/delivery.dart';
 import 'package:eshop/src/models/address_model.dart';
 import 'package:eshop/src/models/cart_model.dart';
 import 'package:eshop/src/services/address_rep.dart';
+import 'package:eshop/src/services/cart_repo.dart';
 import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/header_label.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
+import 'package:eshop/src/widgets/shipping_method.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +32,7 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
 
   getAddresses() async {
     var addresses = await AddressRepository().getAddresses();
-    print(addresses);
+    // print(addresses);
   }
    @override
   void dispose() {
@@ -101,8 +103,11 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
                     padding: const EdgeInsets.all(5),
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
-                      return ListOfAddresses(
-                        address: state.addresses[index],
+                      return GestureDetector(
+                        
+                        child: ListOfAddresses(
+                          address: state.addresses[index],
+                        ),
                       );
                     },
                   ),
@@ -146,7 +151,7 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
   }
 }
 
-class ListOfAddresses extends StatelessWidget {
+class ListOfAddresses extends StatefulWidget {
   const ListOfAddresses({
     Key key,
     @required this.address,
@@ -155,58 +160,78 @@ class ListOfAddresses extends StatelessWidget {
   final Address address;
 
   @override
+  State<ListOfAddresses> createState() => _ListOfAddressesState();
+}
+
+class _ListOfAddressesState extends State<ListOfAddresses> {
+  CartRepository cartRepo = CartRepository();
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16.0),
-        padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
-        decoration: BoxDecoration(
-          color: kWhiteColor,
-          border: Border.all(
-            width: 0.5,
-            color: kLightColor,
+      child: GestureDetector(
+        onTap: () {
+           cartRepo.saveAddress(widget.address.city, widget.address.state, widget.address.country, widget.address.phone, widget.address.postcode);
+          setState(() {
+            
+             
+          });
+          Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ShippingMethod(
+            ),
           ),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.home, size: 64.0, color: kPrimaryColor),
-            const SizedBox(width: 32.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Delivery Address",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                Text(
-                  address.city,
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    color: kDarkColor.withOpacity(0.7),
+        );},
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
+          decoration: BoxDecoration(
+            color: kWhiteColor,
+            border: Border.all(
+              width: 0.5,
+              color: kLightColor,
+            ),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.home, size: 64.0, color: kPrimaryColor),
+              const SizedBox(width: 32.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Delivery Address",
+                    style: TextStyle(fontSize: 20.0),
                   ),
-                ),
-                Text(
-                  address.state,
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    color: kDarkColor.withOpacity(0.7),
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 1.8,
-                  child: Text(
-                    address.phone,
+                  Text(
+                    widget.address.city,
                     style: TextStyle(
-                      fontSize: 15.0,
-                      color: kDarkColor.withOpacity(0.5),
+                      fontSize: 17.0,
+                      color: kDarkColor.withOpacity(0.7),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Text(
+                    widget.address.state,
+                    style: TextStyle(
+                      fontSize: 17.0,
+                      color: kDarkColor.withOpacity(0.7),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.8,
+                    child: Text(
+                      widget.address.phone,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: kDarkColor.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

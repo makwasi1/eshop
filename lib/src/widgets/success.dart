@@ -26,7 +26,7 @@ class _SuccessState extends State<Success> {
             emptyMsg: 'Successful !!',
           ),
           SubTitle(
-            subTitleText: 'Your payment was done successfully',
+            subTitleText: 'Your order was done successfully placed',
           ),
           DefaultButton(
             btnText: 'Ok',

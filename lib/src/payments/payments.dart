@@ -1,4 +1,5 @@
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/services/cart_repo.dart';
 import 'package:eshop/src/signup/components/default_button.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
@@ -15,6 +16,7 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
+  CartRepository cartRepo = CartRepository();
   int value = 0;
 
   @override
@@ -54,12 +56,15 @@ class _PaymentState extends State<Payment> {
             ),
           ),
           DefaultButton(
-            btnText: 'Pay',
-            onPressed: () => Navigator.of(context).push(
+            btnText: 'Save Order',
+            onPressed: (){
+              cartRepo.saveOrder();
+              Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => Success(),
               ),
-            ),
+            );
+            } 
           ),
         ],
       ),

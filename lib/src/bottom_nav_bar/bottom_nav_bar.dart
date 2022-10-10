@@ -24,7 +24,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     const Home(),
     const Category(),
     Search(),
-    Account(),
+    const SettingsPage2(),
   ];
 
   void onTapTapped(int index) {

@@ -70,7 +70,30 @@ class _CartScreenState extends State<CartScreen> {
             cartItem = state?.cart;
             return Scaffold(
               backgroundColor: kWhiteColor,
-              appBar: const GeneralAppBar(title: "SHOPPING CART"),
+              appBar:AppBar(
+                backgroundColor: kPrimaryColor,
+                elevation: kRadius,
+                leading: IconButton(
+                  padding: const EdgeInsets.only(left: kDefaultPadding),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BottomNavBar(0), //search page
+                    ),
+                  ),
+                ),
+                title: const Text(
+                  'SHOPPING CART',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               bottomNavigationBar: SizedBox(
                 height: 100,
                 child: Material(

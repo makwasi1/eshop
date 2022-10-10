@@ -16,11 +16,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginButtonPressed>((event , emit) async{
       emit(LoginLoading());
       try{
-       final user = await authRepository.login(event.email, event.password);
-       if(user != null){
+       final user = await authRepository.login(event.email.trim(), event.password);
+       if(user != "Wrong Credentials"){
         emit(LoginSuccess());
        } else {
         emit(const LoginFailure(error: "Error On Log in."));
+         emit(UnAuthenticated());
        }
       } catch(e){
         

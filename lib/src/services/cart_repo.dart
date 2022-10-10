@@ -28,6 +28,7 @@ class CartRepository implements CartServiceRepository {
   String placeOrderEndpoint = '/api/checkout/cart/save-order';
   String shippingMethod = '/api/checkout/save-shipping';
   String paymentMethod = '/api/checkout/save-payment';
+  String saveOrderEndpoint = '/api/checkout/save-order?token=true';
 
  
 
@@ -297,30 +298,41 @@ class CartRepository implements CartServiceRepository {
   }
 
 // save to address
-  Future<String> saveAddress(Address address) async {
+  Future<String> saveAddress(String city, String state, String country, String phone, String postcode) async {
+    // address.city, address.state, address.country, address.phone, address.postcode
+    final token =  await AuthRepository().getCurrentUserToken();
     //get request that returns a string
-    final res = await HttpUtils.postRequest(
-        url + saveAddressEndpoint,
-        {
-          "billing": {
-            "address1": {"0": "H 23"},
-            "use_for_shipping": "true",
-            "first_name": "john",
-            "last_name": "doe",
-            "email": "john@webkul.com",
-            "city": address.city,
-            "state": address.state,
-            "postcode": address.postcode,
-            "country": address.country,
-            "phone": address.phone,
-          },
-          "shipping": {
-            "address1": {"0": ""}
-          }
-        },
-        true);
-    if (res.statusCode == 200) {
-      return res.body;
+    final res = await http.post(Uri.parse(url + saveAddressEndpoint),
+        body: jsonEncode({
+            "billing": {
+              "address1": {
+                "0": "H 23"
+              },
+              "use_for_shipping": "true",
+              "first_name": "cris",
+              "last_name": "doe",
+              "email": "cris@gmail.com",
+              "city": city,
+              "state": state,
+              "postcode": postcode,
+              "phone": phone
+            },
+            "shipping": {
+              "address1": {
+                "0": "H 34"
+              },
+              "first_name": "john",
+              "last_name": "doe",
+              "email": "cris@gmail.com",
+              "address_id": 2
+            }
+        },), headers: {
+      "Accept": "application/json",
+      "Authorization": "Bearer " +token,
+        }
+      );
+    if (res.statusCode == 200 || res.statusCode == 302) {
+      return 'Success';
     } else if (res.body == null) {
       throw UnknownResponseException('No Cart Items Found.');
     } else if (res.statusCode == 401) {
@@ -335,12 +347,17 @@ class CartRepository implements CartServiceRepository {
 
   //save order
   Future<String> saveOrder() async {
+    String token = await AuthRepository().getCurrentUserToken();
     //get request that returns a string
-    final res = await HttpUtils.postRequest(url + placeOrderEndpoint, {}, true);
+    final res = await http.post(Uri.parse(url + saveOrderEndpoint),
+     headers: {
+      "Authorization": "Bearer " + token,
+    });
+  
     if (res.statusCode == 200) {
       return res.body;
     } else if (res.body == null) {
-      throw UnknownResponseException('No Cart Items Found.');
+      throw UnknownResponseException('Order Not Saved Try again..');
     } else if (res.statusCode == 401) {
       throw UnknownResponseException('Failed to get cart details');
     } else if (res.statusCode == 403) {
@@ -349,4 +366,6 @@ class CartRepository implements CartServiceRepository {
       throw Exception('Failed to get cart details');
     }
   }
+
+  //save order
 }

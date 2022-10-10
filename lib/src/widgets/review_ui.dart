@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class ReviewUI extends StatelessWidget {
   final String image, name, date, comment;
-  final double rating;
+  final String rating;
   final Function onTap, onPressed;
   final bool isLess;
   const ReviewUI({

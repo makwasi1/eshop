@@ -2,8 +2,6 @@
 
 import 'dart:async';
 
-import 'package:eshop/check_button.dart';
-import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/bloc/products/product_bloc.dart';
 
 import 'package:eshop/src/constants.dart';
@@ -12,24 +10,20 @@ import 'package:eshop/src/models/categories_model.dart';
 
 import 'package:eshop/src/models/products_model.dart';
 import 'package:eshop/src/products/products.dart';
-import 'package:eshop/src/services/cart_repo.dart';
 // import 'package:eshop/src/products/products.dart';
 import 'package:eshop/src/services/products_repo.dart';
 import 'package:eshop/src/widgets/category_view_home.dart';
 import 'package:eshop/src/widgets/chip.dart';
-import 'package:eshop/src/widgets/circular_loading_widget.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
-import 'package:eshop/src/widgets/items_view.dart';
 import 'package:eshop/src/widgets/poster_view.dart';
 import 'package:eshop/src/widgets/product_widget.dart';
-import 'package:eshop/src/widgets/recommended_items.dart';
-import 'package:eshop/src/widgets/recommended_view.dart';
+import 'package:eshop/src/widgets/shimmer.dart';
 import 'package:eshop/src/widgets/sticky_label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key key}) : super(key: key);
@@ -106,14 +100,31 @@ class _HomeState extends State<Home> {
         appBar: const DefaultAppBar(
           title: "",
         ),
-        body: BlocBuilder<ProductBloc, ProductState>(
+        body: BlocConsumer<ProductBloc, ProductState>(
+          buildWhen: (previous, current) => current is ProductsLoadedState,
+          listener: (context, state) {
+            if (state is ProductFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                ),
+              );
+            }
+            if (state is ProductsLoadedState) {
+              setState(() {
+                productItem = state.product;
+                images = state.product.first.images;
+                categories = state.categories;
+              });
+            }
+          },
           builder: (context, state) {
             if (state is ProductLoading) {
-              return const CircularLoading();
+              return const ShimmerWidget();
             }
 
             if (state is ProductFailure) {
-              return   Center(
+              return Center(
                 // child: DefaultButton(
                 //   text: "Try Again",
                 //   press: () => productBloc.add(ProductsFetchedEvent()),
@@ -122,12 +133,15 @@ class _HomeState extends State<Home> {
                   style: ElevatedButton.styleFrom(
                     primary: kPrimaryColor,
                   ),
-                child: const Text('Opps! Try Again'),
+                  child: const Text('Opps! Try Again'),
                   onPressed: () {
-                    productBloc.add(ProductsFetchedEvent());
+                    if (mounted) {
+                      setState(() {
+                        productBloc.add(ProductsFetchedEvent());
+                      });
+                    }
                   },
                 ),
-                
               );
             }
 
@@ -145,24 +159,41 @@ class _HomeState extends State<Home> {
                   Stack(
                     children: [
                       SizedBox(
-                        height: 250.0,
-                        child: PageView.builder(
-                          // controller: pageController,
-                          onPageChanged: (value) {
-                            setState(() {
-                              currentIndex = value;
-                            });
-                          },
-                          itemCount: sliderImages.length,
-                          itemBuilder: (context, index) {
-                            return Image.asset(
-                              sliderImages[index],
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
-                      ),
+                          height: 250.0,
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: 400.0,
+                              autoPlay: true,
+                              ),
+                            items: sliderImages.map((i) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Image.asset(
+                                i,
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                              );
+                                },
+                              );
+                            }).toList(),
+                          )
+                          // PageView.builder(
+                          //   // controller: pageController,
+                          //   onPageChanged: (value) {
+                          //     setState(() {
+                          //       currentIndex = value;
+                          //     });
+                          //   },
+                          //   itemCount: sliderImages.length,
+                          //   itemBuilder: (context, index) {
+                          //     return Image.asset(
+                          //       sliderImages[index],
+                          //       width: MediaQuery.of(context).size.width,
+                          //       fit: BoxFit.cover,
+                          //     );
+                          //   },
+                          // ),
+                          ),
                       Positioned(
                         bottom: 16.0,
                         left: 0.0,
@@ -172,7 +203,7 @@ class _HomeState extends State<Home> {
                           children: List.generate(
                             sliderImages.length,
                             (index) => AnimatedContainer(
-                              duration: Duration(milliseconds: 400),
+                              duration: const Duration(milliseconds: 400),
                               height: 8.0,
                               width: currentIndex == index ? 24.0 : 8.0,
                               margin: EdgeInsets.only(right: 4.0),
@@ -196,58 +227,53 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.only(
                           top: 8.0, left: 8.6, right: 2.0),
                       child: Row(
-                        children: [
-                          const Icon(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Icon(
                             Icons.credit_card,
                             color: kPrimaryColor,
                             size: 30.0,
                           ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  " Secure Payment",
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  " 100% Secure payment",
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ]),
-                          const VerticalDivider(
+                          Text(
+                            " Secure Payment",
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // const Text(
+                          //   " 100% Secure payment",
+                          //   style: TextStyle(
+                          //     fontSize: 13.0,
+                          //     fontWeight: FontWeight.w500,
+                          //   ),
+                          // ),
+                          //  SizedBox(
+                          //   width: 10.0,
+                          // ),
+                          VerticalDivider(
                             endIndent: 30.0,
                           ),
-                          const Icon(
+                          Icon(
                             Icons.autorenew,
                             color: kPrimaryColor,
                             size: 30.0,
                           ),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  "90 Days Return",
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  "If goods have problems",
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ]),
+                          Text(
+                            "90 Return policy",
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // Text(
+                          //   "If goods have problems",
+                          //   style: TextStyle(
+                          //     fontSize: 13.0,
+                          //     fontWeight: FontWeight.w500,
+                          //   ),
+                          // ),
                         ],
                       ),
 
@@ -382,24 +408,23 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
-              margin: const EdgeInsets.only(
-                top: 16.0,
-                left: kFixPadding,
-                right: kDefaultPadding,
-                bottom: 19
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List<Widget>.generate(
-                    categories.length,
-                    (int index) {
-                      return Chips(text: categories[index].name);
-                    },
+                    margin: const EdgeInsets.only(
+                        top: 16.0,
+                        left: kFixPadding,
+                        right: kDefaultPadding,
+                        bottom: 19),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List<Widget>.generate(
+                          categories.length,
+                          (int index) {
+                            return Chips(text: categories[index].name);
+                          },
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
                   // Padding(
                   //   padding: const EdgeInsets.only(top: 8.0),
                   //   child: CategoryViewHome(
@@ -443,7 +468,7 @@ class _HomeState extends State<Home> {
                         GestureDetector(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ProductsPage(true),
+                              builder: (context) => ProductsPage(false),
                             ),
                           ),
                           child: const Padding(

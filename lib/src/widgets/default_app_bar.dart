@@ -1,4 +1,5 @@
 import 'package:eshop/src/account/account.dart';
+import 'package:eshop/src/bloc/address/bloc/address_bloc.dart';
 import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/cart/cart.dart';
 import 'package:eshop/src/constants.dart';
@@ -51,20 +52,19 @@ class _DefaultAppBarState extends State<DefaultAppBar> {
 }
 
 class CartNewWidget extends StatelessWidget {
-   CartNewWidget({
+  CartNewWidget({
     Key key,
   }) : super(key: key);
 
   int itemCount = 0;
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<CartBloc, CartBlocState>(
       builder: (context, state) {
         if (state is CartLoadedState) {
-          if(state.cart?.itemsCount == null){
+          if (state.cart?.itemsCount == null) {
             itemCount = 0;
-          } else{
+          } else {
             itemCount = state.cart.itemsCount;
           }
           itemCount = state.cart?.itemsCount;
@@ -110,28 +110,46 @@ class CartNewWidget extends StatelessWidget {
   }
 }
 
-class CartBadge extends StatelessWidget {
+class CartBadge extends StatefulWidget {
   const CartBadge({
     Key key,
   }) : super(key: key);
 
   @override
+  State<CartBadge> createState() => _CartBadgeState();
+}
+
+class _CartBadgeState extends State<CartBadge> {
+  @override
   Widget build(BuildContext context) {
-    int cartNumber = 2;
-    return Badge(
-      // will be updated by the cart state incase of increase
-      badgeContent: Text("$cartNumber",
-          style: const TextStyle(color: Colors.white, fontSize: 20)),
-      badgeColor: Colors.black,
-      position: BadgePosition.bottomEnd(bottom: 19, end: 10),
-      animationDuration: Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.slide,
-      child: IconButton(
-        icon: const Icon(Icons.favorite_border_outlined),
-        iconSize: 35.0,
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => CartScreen(), //search page
+    int wishNo = 0;
+    return BlocListener<AddressBloc, AddressState>(
+      listener: (context, state) {
+        if (state is AddWishLIstItemState) {
+          // wishNo = state.wishItem.data.length;
+          print("wishNo $wishNo");
+          setState(() {
+            wishNo = state.wishItem.data.length;
+          
+          });
+        }
+      
+      },
+      child: Badge(
+        // will be updated by the cart state incase of increase
+        badgeContent: Text("$wishNo",
+            style: const TextStyle(color: Colors.white, fontSize: 20)),
+        badgeColor: Colors.black,
+        position: BadgePosition.bottomEnd(bottom: 19, end: 10),
+        animationDuration: Duration(milliseconds: 300),
+        animationType: BadgeAnimationType.slide,
+        child: IconButton(
+          icon: const Icon(Icons.favorite_border_outlined),
+          iconSize: 35.0,
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CartScreen(), //search page
+            ),
           ),
         ),
       ),

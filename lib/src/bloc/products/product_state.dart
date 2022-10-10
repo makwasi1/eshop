@@ -18,6 +18,7 @@ class ProductLoading extends ProductState {
 class ProductsLoadedState extends ProductState {
   List<Products> product;
   List<Categories> categories;
+  List<Products> wishItem;
 
   ProductsLoadedState(this.product, this.categories);
 

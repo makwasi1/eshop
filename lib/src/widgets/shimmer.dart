@@ -1,40 +1,12 @@
-import 'package:eshop/src/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-
-class Chips extends StatelessWidget {
-  final String text;
-  const Chips({
-    Key key,
-    this.text,
-  }) : super(key: key);
+class ShimmerWidget extends StatelessWidget {
+  const ShimmerWidget({ Key key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: kLessPadding),
-      child: Chip(
-        backgroundColor: kWhiteColor,
-        shadowColor: kDarkColor,
-        shape: StadiumBorder(
-          side: BorderSide(
-            width: 4.0,
-            color: kDarkColor.withOpacity(0.3),
-          ),
-        ),
-        label: Text(
-          text,
-          style: TextStyle(
-            color: kDarkColor.withOpacity(0.8),
-          ),
-        ),
-      ),
-    );
-  }
-  
-  Widget shimmer() {
-  return Container(
+    return Container(
     width: double.infinity,
     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
     child: Shimmer.fromColors(
@@ -103,5 +75,5 @@ class Chips extends StatelessWidget {
       ),
     ),
   );
-}
+  }
 }

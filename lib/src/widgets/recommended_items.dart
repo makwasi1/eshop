@@ -1,11 +1,17 @@
+import 'package:eshop/src/bloc/address/bloc/address_bloc.dart';
 import 'package:eshop/src/bloc/cart_bloc/bloc/cart_bloc.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/services/cart_repo.dart';
+import 'package:eshop/src/services/http_utils.dart';
+import 'package:eshop/src/services/products_repo.dart';
+import 'package:eshop/src/signup/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class RecommendedItems extends StatelessWidget {
+class RecommendedItems extends StatefulWidget {
   final double height, top, bottom, left, right, radius, width;
   final String price, rating;
   final String image;
@@ -32,23 +38,28 @@ class RecommendedItems extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<RecommendedItems> createState() => _RecommendedItemsState();
+}
+
+class _RecommendedItemsState extends State<RecommendedItems> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPress,
+      onTap: widget.onPress,
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(widget.radius),
         ),
         child: Container(
           margin: EdgeInsets.only(
-            top: top,
-            bottom: bottom,
-            left: left,
-            right: right,
+            top: widget.top,
+            bottom: widget.bottom,
+            left: widget.left,
+            right: widget.right,
           ),
           decoration: BoxDecoration(
             color: kWhiteColor,
-            borderRadius: BorderRadius.circular(radius),
+            borderRadius: BorderRadius.circular(widget.radius),
             border: Border.all(color: kWhiteColor),
           ),
           child: Column(
@@ -57,16 +68,20 @@ class RecommendedItems extends StatelessWidget {
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Icon(
-                      Icons.favorite_border,
-                      size: 30,
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: IconButton(
+                      icon: const Icon(Icons.favorite_border),
+                      iconSize: 30,
+                      onPressed: () {
+                        //add to wishlist
+                        checkLogged(context, widget.item);
+                      },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5, left: 65),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 5, left: 50),
                     child: Icon(
                       Icons.compare_arrows,
                       size: 30,
@@ -75,15 +90,15 @@ class RecommendedItems extends StatelessWidget {
                 ],
               ),
               Container(
-                height: height,
+                height: widget.height,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(image),
+                    image: NetworkImage(widget.image),
                     fit: BoxFit.contain,
                   ),
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(radius),
-                    topRight: Radius.circular(radius),
+                    topLeft: Radius.circular(widget.radius),
+                    topRight: Radius.circular(widget.radius),
                   ),
                 ),
               ),
@@ -95,7 +110,7 @@ class RecommendedItems extends StatelessWidget {
                   left: kLessPadding,
                 ),
                 child: Text(
-                  title,
+                  widget.title,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       color: kDarkColor,
@@ -109,8 +124,9 @@ class RecommendedItems extends StatelessWidget {
                   left: kLessPadding,
                 ),
                 child: Text(
-                  price.toString(),
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  widget.price.toString(),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -125,7 +141,7 @@ class RecommendedItems extends StatelessWidget {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: rating.toString(),
+                              text: widget.rating.toString(),
                               style: TextStyle(
                                 color: kDarkColor.withOpacity(0.4),
                               ),
@@ -155,115 +171,88 @@ class RecommendedItems extends StatelessWidget {
               //   height: 10,
               //   width: 10,
               // ),
-              BlocBuilder<CartBloc, CartBlocState>(
-                builder: (context, state) {
-                  if (state is CartLoadedState) {
-                    return SizedBox(
-                      height: 30,
-                      width: 150,
-                      child: MaterialButton(
-                        color: kPrimaryColor,
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.add_shopping_cart,
-                              color: kWhiteColor,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "ADD TO CART",
-                              style: TextStyle(color: kWhiteColor, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          context.read<CartBloc>().add(CartItemAdded(item));
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            backgroundColor: kPrimaryColor,
-                            content: Text("Successfully added to cart.",
-                                style: TextStyle(color: kWhiteColor),
-                                textAlign: TextAlign.center),
-                            duration: Duration(seconds: 1),
-                          ));
-                        },
+              SizedBox(
+                height: 30,
+                width: 150,
+                child: MaterialButton(
+                  color: kPrimaryColor,
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.add_shopping_cart,
+                        color: kWhiteColor,
                       ),
-                    );
-                  } else if (state is CartEmptyState) {
-                    return SizedBox(
-                      height: 30,
-                      width: 150,
-                      child: MaterialButton(
-                        color: kPrimaryColor,
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.add_shopping_cart,
-                              color: kWhiteColor,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "ADD TO CART",
-                              style: TextStyle(color: kWhiteColor, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        onPressed: ()  {
-                          
-                          
-                          context.read<CartBloc>().add(CartItemAdded(item));
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            backgroundColor: kPrimaryColor,
-                            content: Text("Successfuly added to cart."),
-                            duration: Duration(seconds: 1),
-                          ));
-                        },
+                      SizedBox(
+                        width: 10,
                       ),
-                    );
-                  }
-                  return SizedBox(
-                    height: 30,
-                    width: 150,
-                    child: MaterialButton(
-                        color: kPrimaryColor,
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.add_shopping_cart,
-                              color: kWhiteColor,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "ADD TO CART",
-                              style: TextStyle(color: kWhiteColor, fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          //show snackbar
-                          context.read<CartBloc>().add(CartItemAdded(item));
-                          // CartRepository().addToCart(item,1);
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            backgroundColor: kPrimaryColor,
-                            content: Text("Successfuly added to cart."),
-                            duration: Duration(seconds: 1),
-                          ));
-                        }),
-                  );
-                },
+                      Text(
+                        "ADD TO CART",
+                        style: TextStyle(color: kWhiteColor, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    checkLogged2(context, widget.item);
+                  },
+                ),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+
+}
+
+Future<void> checkLogged(BuildContext context, int id) async {
+  final token = await AuthRepository().getCurrentUserToken();
+  bool isTokenExpired = JwtDecoder.isExpired(token);
+
+  if (isTokenExpired || token == null) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor:  Colors.orange,
+      content: Text("Please login to add to wishlist."),
+      duration: Duration(seconds: 1),
+    ));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SignIn(authRepository: AuthRepository()),
+      ),
+    );
+  } else {
+    // ProductRepository().addToWishList(id);
+    context.read<AddressBloc>().add(AddWishLIstItemEvent(id));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: kPrimaryColor,
+      content: Text("Successfully added to wishlist."),
+      duration: Duration(seconds: 1),
+    ));
+  }
+}
+
+Future<void> checkLogged2(BuildContext context, int id) async {
+  final token = await AuthRepository().getCurrentUserToken();
+  bool isTokenExpired = JwtDecoder.isExpired(token);
+
+  if (isTokenExpired || token == null) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: Colors.orange,
+      content: Text("Please login to add to cart!!."),
+      duration: Duration(seconds: 1),
+    ));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SignIn(authRepository: AuthRepository()),
+      ),
+    );
+  } else{
+    context.read<CartBloc>().add(CartItemAdded(id));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      backgroundColor: kPrimaryColor,
+      content: Text("Successfully added to cart."),
+      duration: Duration(seconds: 1),
+    ));
   }
 }

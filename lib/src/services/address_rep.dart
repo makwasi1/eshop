@@ -40,8 +40,7 @@ class AddressRepository implements AddressRepositoryService {
    final token =  await AuthRepository().getCurrentUserToken();
     final response = await http.post(Uri.parse('http://eshoptag.com/api/addresses/create?token=true'),
         headers: {
-          "Authorization":
-              "Bearer "+ token,
+          "Authorization": "Bearer "+ token,
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: json.encode(body));
@@ -67,7 +66,6 @@ class AddressRepository implements AddressRepositoryService {
   Future<List<Address>> getAddresses() async {
      final token = await AuthRepository().getCurrentUserToken();
     final response = await http.get(Uri.parse(url + getAddressesEndPoint),
-    
         headers: {
           "Content-type": "application/json",
           "Authorization": "Bearer "+token

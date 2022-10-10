@@ -20,9 +20,10 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var reviewList;
     return Scaffold(
       backgroundColor: kWhiteColor,
-      appBar: DefaultAppBar(
+      appBar: const DefaultAppBar(
         title: "Reviews",
         child: DefaultBackButton(),
       ),
@@ -30,7 +31,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         children: [
           Container(
             color: kAccentColor,
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
               vertical: 16.0,
             ),
@@ -40,7 +41,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text.rich(
+                    const Text.rich(
                       TextSpan(
                         children: [
                           TextSpan(

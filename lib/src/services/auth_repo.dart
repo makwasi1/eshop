@@ -7,9 +7,9 @@ import 'package:eshop/src/services/http_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 // import 'package:flutter_logs/flutter_logs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 abstract class AuthRepositoryService {
   Future<dynamic> login(String username, String password);
@@ -53,7 +53,8 @@ class AuthRepository implements AuthRepositoryService {
     final response = await http.post(
         Uri.parse(url + loginEndPoint),
         body: {"email": email, "password": password},
-      );
+        headers: {"Accept": "application/json"});
+      
     if (response.statusCode == 200 ) {
       var data = json.decode(response.body);
       User profile = User.fromJson(data['data']);
@@ -152,9 +153,15 @@ class AuthRepository implements AuthRepositoryService {
 
   @override
   Future<String> getCurrentUserToken() {
+    // const tokn= 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lc2hvcHRhZy5jb21cL2FwaVwvY3VzdG9tZXJcL2xvZ2luIiwiaWF0IjoxNjYzNzQzMTczLCJleHAiOjE2NjM3NDY3NzMsIm5iZiI6MTY2Mzc0MzE3MywianRpIjoiUHZJQlN5cmliUWc5anlxNCIsInN1YiI6NSwicHJ2IjoiOGZjYTA4OGFiYWUyZjlhOGY4NGE1ZjBiZjZhNjUyNDQ5MDU1YmUwMCJ9.nAfSv3Tlhfz_RpQkm6XdsQVFH0Bcw7pwel5HcKSdfuk';
     try {
       FlutterSecureStorage storage = const FlutterSecureStorage();
-      return storage.read(key: HttpUtils.keyForJWTToken);
+      final token  = storage.read(key: HttpUtils.keyForJWTToken);
+      // bool isTokenExpired = JwtDecoder.isExpired(token as String);
+      //  DateTime expirationDate = JwtDecoder.getExpirationDate(token as String);
+      // print('token is expired: $isTokenExpired');
+      // print(expirationDate);
+      return token;
     } catch (e) {
       return null;
     }
@@ -173,18 +180,13 @@ class AuthRepository implements AuthRepositoryService {
 
   @override
   Future<void> logout() async {
-    final res = await  http.get(Uri.parse(url + logOutEndPoint),headers: {
-      "Authorization": "Bearer " + await getCurrentUserToken(),
-    });
+    
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    if (res.statusCode == 200) {
+    
       await storage.delete(key: HttpUtils.keyForJWTToken);
       await storage.delete(key: HttpUtils.keyForUsername);
       await storage.deleteAll();
-    } else{
-      await storage.delete(key: HttpUtils.keyForJWTToken);
-      await storage.delete(key: HttpUtils.keyForUsername);
-      await storage.deleteAll();
+
     }
     // FlutterSecureStorage storage = const FlutterSecureStorage();
     // await storage.deleteAll();
@@ -194,7 +196,7 @@ class AuthRepository implements AuthRepositoryService {
     // for (var key in keys) {
     //   await prefs.remove(key);
     // }
-  }
+  
 
   @override
   Future<HttpMsg> sendPasswordReset(String accountIdentifier,
@@ -207,6 +209,7 @@ class AuthRepository implements AuthRepositoryService {
     try {
       FlutterSecureStorage storage = const FlutterSecureStorage();
       await storage.write(key: HttpUtils.keyForJWTToken, value: user.token);
+      await storage.write(key: 'id', value: user.data.id.toString());
       await storage.write(
         key: HttpUtils.keyForUsername, value: json.encode(user.data));
       // await storage.delete(key: HttpUtils.keyForJWTToken);
@@ -214,10 +217,17 @@ class AuthRepository implements AuthRepositoryService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (user != null) {
         await prefs.setString(HttpUtils.keyForUsername, json.encode(user.data));
+        await prefs.setString(HttpUtils.keyForJWTToken, json.encode(user.token));
         await storage.write(key: HttpUtils.keyForJWTToken, value: user.token);
       }
     } catch (e) {
       e.toString();
     }
+  }
+
+  Future<String> checkLogged() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+        String token = await storage.read(key: HttpUtils.keyForJWTToken);
+            return token;
   }
 }

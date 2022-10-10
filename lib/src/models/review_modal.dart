@@ -1,27 +1,54 @@
-class ReviewModal {
-  String image;
-  String name;
-  double rating;
-  String date;
-  String comment;
+class ReviewsModal {
+  List<Data> data;
 
-  ReviewModal({this.image, this.name, this.rating, this.date, this.comment});
+  ReviewsModal({this.data});
 
-  ReviewModal.fromJson(Map<String, dynamic> json) {
-    image = json['image'];
-    name = json['name'];
-    rating = json['rating'];
-    date = json['date'];
-    comment = json['comment'];
+  ReviewsModal.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data.add(Data.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['image'] = this.image;
-    data['name'] = this.name;
-    data['rating'] = this.rating;
-    data['date'] = this.date;
-    data['comment'] = this.comment;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Data {
+  int id;
+  String title;
+  String rating;
+  String comment;
+  String name;
+  String status;
+
+  Data(
+      {this.id, this.title, this.rating, this.comment, this.name, this.status});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    rating = json['rating'];
+    comment = json['comment'];
+    name = json['name'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['rating'] = rating;
+    data['comment'] = comment;
+    data['name'] = name;
+    data['status'] = status;
     return data;
   }
 }

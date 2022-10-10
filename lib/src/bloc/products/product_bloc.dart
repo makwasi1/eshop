@@ -7,6 +7,7 @@ import 'package:eshop/src/models/cart_model.dart';
 import 'package:eshop/src/models/categories_model.dart';
 import 'package:eshop/src/models/product_item.dart';
 import 'package:eshop/src/models/products_model.dart';
+import 'package:eshop/src/models/wishlist_model.dart';
 import 'package:eshop/src/services/cart_repo.dart';
 import 'package:eshop/src/services/category_repo.dart';
 import 'package:eshop/src/services/products_repo.dart';
@@ -32,8 +33,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       //also get cart items here
       final product = await productRepository.downloadProducts();
       final categories = await productRepository.downloadCategories();
+      // final wishItem = await productRepository.getWishList();
       // final cartItem = await cartRepository.getCartDetails();
-      emit(ProductsLoadedState(product.data, categories));
+      emit(ProductsLoadedState(product.data, categories,));
     } catch (e) {
       emit(ProductFailure('Error downloading products!'));
     }

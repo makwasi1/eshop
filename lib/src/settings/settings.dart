@@ -1,11 +1,15 @@
 // ignore_for_file: void_checks
 
+import 'package:eshop/src/account/favorites_list.dart';
 import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/constants.dart';
+import 'package:eshop/src/orders/track_map.dart';
+import 'package:eshop/src/orders/track_orders.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/widgets/default_app_bar.dart';
 import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
+import 'package:eshop/src/widgets/video_stream.dart';
 import 'package:flutter/material.dart';
 
 class Setting extends StatefulWidget {
@@ -24,7 +28,7 @@ class _SettingState extends State<Setting> {
       key: scaffoldKey,
       backgroundColor: kWhiteColor,
       appBar: const GeneralAppBar(
-        title: 'ACCOUNT SETTINGS',
+        title: 'USER PROFILE',
       ),
       body: ListView.separated(
         padding: EdgeInsets.zero,
@@ -65,7 +69,7 @@ class _SettingState extends State<Setting> {
                 case 'Discount Notifications':
                   return snackBarMsg(context, 'Discount Notifications');
                   break;
-                case 'Credit Card':
+                case 'Downloadable Products':
                   return snackBarMsg(context, 'Credit Card');
                   break;
                 case 'Logout':
@@ -99,7 +103,7 @@ class _SettingState extends State<Setting> {
   }
 }
 
-void signOutDrawer(BuildContext context) {
+ void signOutDrawer(BuildContext context) {
   showModalBottomSheet(
       isDismissible: false,
       context: context,
