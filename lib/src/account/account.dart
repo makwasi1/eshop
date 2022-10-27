@@ -128,14 +128,18 @@
 
 
 import 'package:eshop/src/about/about.dart';
+import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/orders/track_map.dart';
 import 'package:eshop/src/orders/track_orders.dart';
+import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:eshop/src/widgets/video_stream.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants2.dart';
+// import '../../constants2.dart';
+import '../constants.dart';
+import '../orders/orders.dart';
 import 'favorites_list.dart';
 
 class SettingsPage2 extends StatefulWidget {
@@ -202,7 +206,7 @@ class _SettingsPage2State extends State<SettingsPage2> {
                   ),
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => TrackOrder()));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Orders()));
                     },
                     child: const _CustomListTile(
                         title: "Orders", icon: Icons.phone_outlined),
@@ -228,10 +232,17 @@ class _SettingsPage2State extends State<SettingsPage2> {
                         title: "Help & Feedback",
                         icon: Icons.help_outline_rounded),
                   ),
-                  _CustomListTile(
+                  const _CustomListTile(
                       title: "About", icon: Icons.info_outline_rounded),
-                  _CustomListTile(
-                      title: "Sign out", icon: Icons.exit_to_app_rounded),
+                  GestureDetector(
+                    onTap: () {
+                     setState(() {
+                       return signOutDrawer(context);
+                     }); 
+                    },
+                    child: const _CustomListTile(
+                        title: "Sign out", icon: Icons.exit_to_app_rounded),
+                  ),
                 ],
               ),
             ],
@@ -290,4 +301,80 @@ class _SingleSection extends StatelessWidget {
       ],
     );
   }
+}
+
+void signOutDrawer(BuildContext context) {
+  showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return Container(
+          color: kPrimaryColor,
+          height: 150.0,
+          padding: EdgeInsets.symmetric(horizontal: 32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Text(
+                'Are you sure you want Logout ?',
+                style: TextStyle(
+                  color: kWhiteColor,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: MaterialButton(
+                      color: kWhiteColor,
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onPressed: (){
+                        AuthRepository().logout();
+                        Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>  BottomNavBar(0),
+                      ));
+                      } 
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20.0,
+                  ),
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: kWhiteColor),
+                        primary: kPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      // color: kPrimaryColor,
+                      // highlightedBorderColor: kWhiteColor,
+                      // borderSide: BorderSide(color: kWhiteColor),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: kWhiteColor,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      });
 }

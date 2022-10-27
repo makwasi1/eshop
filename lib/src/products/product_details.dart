@@ -137,11 +137,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                     decoration: BoxDecoration(
                       border: Border.all(color: kPrimaryColor, width: 2.0),
                     ),
-                    child: FlatButton(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: kLessPadding),
-                      color: kPrimaryColor,
-                      textColor: kWhiteColor,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        primary: kWhiteColor,
+                        backgroundColor: kPrimaryColor,
+                        padding:  const EdgeInsets.symmetric(vertical: kLessPadding),
+                        textStyle: const TextStyle(
+                          color: kWhiteColor
+                        ),
+                      ),
+                      // padding:
+                      //     const EdgeInsets.symmetric(vertical: kLessPadding),
+                      // color: kPrimaryColor,
+                      // textColor: kWhiteColor,
                       child: const Text("ADD TO CART",
                           style: TextStyle(fontSize: 18.0)),
                       onPressed: () {

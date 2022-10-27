@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:eshop/src/models/order_model.dart';
+import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eshop/src/services/http_utils.dart';
 import 'package:eshop/src/shared/app_exception.dart';
+import 'package:http/http.dart' as http;
 
 abstract class OrdersServiceRepository {
   Future<void> getOrderById(int orderId);
@@ -10,17 +13,25 @@ abstract class OrdersServiceRepository {
 
 class OrdersRepository extends OrdersServiceRepository {
   String url = 'http://eshoptag.com';
-  String getAllOrdersEndpoint = '/api/orders?pagination=0';
+  String getAllOrdersEndpoint = '/api/orders?page=1&token=true';
   String getOrderByIdEndpoint = '/api/orders/';
 
 //TODO: USER MUST BE LOGGED IN
 
   @override
-  Future getAllOrders() async {
-    final res = await HttpUtils.getRequest(url + getAllOrdersEndpoint);
+  Future<List<Order>> getAllOrders() async {
+    String token = await AuthRepository().getCurrentUserToken();
+    final res = await http.get(Uri.parse(url + getAllOrdersEndpoint), 
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    }
+    );
     if (res.statusCode == 200) {
-      var data = json.decode(res.body);
-      return data;
+      var data = jsonDecode(res.body);
+      List<Order> order = OrderModel.fromMap(data).data;
+      return order;
     } else if (res.body == null) {
       throw UnknownResponseException('No Cart Found.');
     } else if (res.statusCode == 401) {

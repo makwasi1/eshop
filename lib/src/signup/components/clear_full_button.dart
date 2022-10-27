@@ -12,9 +12,18 @@ class ClearFullButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      splashColor: kTransparent,
-      highlightColor: kTransparent,
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: kTransparent,
+        textStyle: const TextStyle(color: Colors.black),
+        primary: kTransparent,
+        padding: const EdgeInsets.symmetric(vertical: kLessPadding),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      // splashColor: kTransparent,
+      // highlightColor: kTransparent,
       child: Text.rich(
         TextSpan(
           children: [

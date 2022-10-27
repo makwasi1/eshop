@@ -166,15 +166,25 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   Container(
                     height: 48.0,
                     width: MediaQuery.of(context).size.width,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10.0),
-                          bottomRight: Radius.circular(10.0),
+                    child: TextButton(
+                      style:  TextButton.styleFrom(
+                        backgroundColor: kPrimaryColor,
+                        foregroundColor: kDarkColor.withOpacity(0.2),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10.0),
+                            bottomRight: Radius.circular(10.0),
+                          ),
                         ),
                       ),
-                      color: kDarkColor.withOpacity(0.2),
-                      child: Text(
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.only(
+                      //     bottomLeft: Radius.circular(10.0),
+                      //     bottomRight: Radius.circular(10.0),
+                      //   ),
+                      // ),
+                      // color: kDarkColor.withOpacity(0.2),
+                      child: const Text(
                         "Edit Detail",
                         style: TextStyle(fontSize: 16.0),
                       ),

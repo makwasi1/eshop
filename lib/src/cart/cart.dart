@@ -105,11 +105,22 @@ class _CartScreenState extends State<CartScreen> {
                     children: [
                       const SizedBox(width: 10),
                       Expanded(
-                        child: FlatButton(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: kLessPadding),
-                          color: Colors.white,
-                          textColor: Colors.black,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: kPrimaryColor,
+                            textStyle: const TextStyle(color: Colors.black),
+                            foregroundColor: kWhiteColor,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: kLessPadding),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                          ),
+                          // padding: const EdgeInsets.symmetric(
+                          //     vertical: kLessPadding),
+                          // color: Colors.white,
+                          // textColor: Colors.black,
                           child: Text("Sub Total:     ${cartItem.formatedGrandTotal}",
                               style: const TextStyle(
                                   fontSize: 24.0, fontWeight: FontWeight.w400)),
@@ -123,11 +134,18 @@ class _CartScreenState extends State<CartScreen> {
                         width: 5,
                       ),
                       Expanded(
-                        child: FlatButton(
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: kPrimaryColor,
+                            textStyle: const TextStyle(color: Colors.white),
+                            foregroundColor: kPrimaryColor,
                             padding: const EdgeInsets.symmetric(
                                 vertical: kLessPadding),
-                            color: kPrimaryColor,
-                            textColor: kWhiteColor,
+                          ),
+                            // padding: const EdgeInsets.symmetric(
+                            //     vertical: kLessPadding),
+                            // color: kPrimaryColor,
+                            // textColor: kWhiteColor,
                             child: const Text("CHECKOUT",
                                 style: TextStyle(fontSize: 18.0)),
                             onPressed: () {

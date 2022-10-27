@@ -20,10 +20,17 @@ class _CheckoutButtonState extends State<CheckoutButton> {
           children: [
             const SizedBox(width: 10),
             Expanded(
-              child: FlatButton(
-                padding: const EdgeInsets.symmetric(vertical: kLessPadding),
-                color: kPrimaryColor,
-                textColor: Colors.black,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  textStyle: const TextStyle(color: Colors.black),
+                  primary: kPrimaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: kLessPadding),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                ),
+                
                 child:
                     const Text("View Cart", style: TextStyle(fontSize: 18.0)),
                 onPressed: () => Navigator.of(context).push(
@@ -41,10 +48,16 @@ class _CheckoutButtonState extends State<CheckoutButton> {
               width: 5,
             ),
             Expanded(
-              child: FlatButton(
-                padding: const EdgeInsets.symmetric(vertical: kLessPadding),
-                color: kDarkColor,
-                textColor: kWhiteColor,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  textStyle: const TextStyle(color: Colors.black),
+                  primary: kPrimaryColor,
+                  padding: const EdgeInsets.symmetric(vertical: kLessPadding),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                ),
                 child: const Text("Checkout", style: TextStyle(fontSize: 18.0)),
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(

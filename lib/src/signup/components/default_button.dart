@@ -32,13 +32,20 @@ class _DefaultButtonState extends State<DefaultButton> {
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
         padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-        child: FlatButton(
-          padding: EdgeInsets.symmetric(vertical: kLessPadding),
-          height: 50.0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
-          color: pressed ? kDarkColor : kPrimaryColor ,
-          textColor: pressed ? kWhiteColor : kDarkColor ,
-          highlightColor: kTransparent,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: pressed ? kPrimaryColor : kTransparent,
+            textStyle:  TextStyle(color:  pressed ? kWhiteColor : kDarkColor),
+            foregroundColor:  pressed ? kDarkColor : kPrimaryColor,
+            padding: const EdgeInsets.symmetric(vertical: kLessPadding),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          ),
+          // padding: EdgeInsets.symmetric(vertical: kLessPadding),
+          // height: 50.0,
+          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+          // color: pressed ? kDarkColor : kPrimaryColor ,
+          // textColor: pressed ? kWhiteColor : kDarkColor ,
+          // highlightColor: kTransparent,
           onLongPress: () => {
             setState(() {
               pressed = !pressed;

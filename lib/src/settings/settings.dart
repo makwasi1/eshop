@@ -99,7 +99,7 @@ class _SettingState extends State<Setting> {
         onPressed: () {},
       ),
     );
-    scaffoldKey.currentState.showSnackBar(sb);
+    // scaffoldKey.currentState.showSnackBar(sb);
   }
 }
 
@@ -149,10 +149,15 @@ class _SettingState extends State<Setting> {
                     width: 20.0,
                   ),
                   Expanded(
-                    child: OutlineButton(
-                      color: kPrimaryColor,
-                      highlightedBorderColor: kWhiteColor,
-                      borderSide: BorderSide(color: kWhiteColor),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: kWhiteColor),
+                        foregroundColor: kPrimaryColor,
+                        
+                      ),
+                      // color: kPrimaryColor,
+                      // highlightedBorderColor: kWhiteColor,
+                      // borderSide: BorderSide(color: kWhiteColor),
                       child: const Text(
                         'Cancel',
                         style: TextStyle(

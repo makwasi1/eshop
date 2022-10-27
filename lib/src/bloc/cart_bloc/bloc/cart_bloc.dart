@@ -26,12 +26,12 @@ class CartBloc extends Bloc<CartEvent, CartBlocState> {
       CartStarted event, Emitter<CartBlocState> emit) async {
     emit(CartLoadingState());
     try {
-        final cart = await cartRepository.getCartDetails();
-        if (cart != null) {
-          emit(CartLoadedState(cart: cart));
-        } else {
-          emit(CartEmptyState());
-        }
+      final cart = await cartRepository.getCartDetails();
+      if (cart != null) {
+        emit(CartLoadedState(cart: cart));
+      } else {
+        emit(CartEmptyState());
+      }
     } catch (_) {
       emit(const CartLoadError(message: 'Error Loading Cart Items'));
     }
@@ -39,27 +39,23 @@ class CartBloc extends Bloc<CartEvent, CartBlocState> {
 
   Future<void> _onItemAdded(
       CartItemAdded event, Emitter<CartBlocState> emit) async {
-    final state = this.state;
-    if (state is CartLoadedState || state is CartEmptyState) {
-      final String currentUserToken =
-          await AuthRepository().getCurrentUserToken();
-      //update the quantity
-
-      if (currentUserToken == null) {
-        try {
-          final cartItems = await cartRepository.addToCart(event.itemId, 1);
-          emit(CartLoadedState(cart: cartItems));
-        } on Exception catch (_) {
-          emit(const CartLoadError(message: 'Failed To add To Cart'));
-        }
-      } else {
-        try {
-          final cartItems = await cartRepository.addToCart(event.itemId, 1);
-          emit(CartLoadedState(cart: cartItems));
-        } on Exception catch (_) {
-          emit(const CartLoadError(message: 'Failed To add To Cart'));
-        }
-      }
+    // emit(CartLoadingState());
+    // try {
+    //   final cart = await cartRepository.addToCart(event.itemId,1);
+    //   if (cart != null) {
+    //     emit(CartLoadedState(cart: cart));
+    //   } else {
+    //     emit(const CartLoadError(message: 'Error Adding Cart Items'));
+    //   }
+    // } catch (_) {
+    //   emit(const CartLoadError(message: 'Error Adding Cart Items'));
+    // }
+    //update the quantity
+    try {
+      final cartItems = await cartRepository.addToCart(event.itemId, 1);
+      emit(CartLoadedState(cart: cartItems));
+    } on Exception catch (_) {
+      emit(const CartLoadError(message: 'Failed To add To Cart'));
     }
   }
 
@@ -70,12 +66,6 @@ class CartBloc extends Bloc<CartEvent, CartBlocState> {
       try {
         Cart cartItems = await cartRepository.removeCartItem(event.item);
         emit(CartLoadedState(cart: cartItems));
-        // if (cartItems != null) {
-        //   emit(CartLoadedState(cart: cartItems));
-        // } else {
-        //   emit(CartEmptyState());
-        // }
-        // emit(CartLoadedState(cart: cartItems));
       } catch (_) {
         emit(const CartLoadError(message: 'Failed To Remove Cart Item'));
       }

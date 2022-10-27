@@ -303,13 +303,18 @@ class _RegisterFormState extends State<RegisterForm> {
                                       ))
                                 ],
                               )
-                                  : RaisedButton(
-                                  color: kPrimaryColor,
-                                  disabledColor: kPrimaryColor,
-                                  disabledTextColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
+                                  : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: kPrimaryColor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(30.0))),
+                                  // color: kPrimaryColor,
+                                  // disabledColor: kPrimaryColor,
+                                  // disabledTextColor: Colors.white,
+                                  // shape: RoundedRectangleBorder(
+                                  //   borderRadius: BorderRadius.circular(30.0),
+                                  // ),
                                   onPressed: _onRegisterButtonPressed,
                                   child: const Text("REGISTER",
                                       style: TextStyle(
@@ -337,13 +342,17 @@ class _RegisterFormState extends State<RegisterForm> {
                         Container(
                           height: 40.0,
                           width: 180.0,
-                          child: RaisedButton(
-                              color: Color(0xFF385c8e),
-                              disabledColor: Color(0xFF385c8e),
-                              disabledTextColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF385c8e),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0))),
+                              // color: Color(0xFF385c8e),
+                              // disabledColor: Color(0xFF385c8e),
+                              // disabledTextColor: Colors.white,
+                              // shape: RoundedRectangleBorder(
+                              //   borderRadius: BorderRadius.circular(8.0),
+                              // ),
                               onPressed: _onRegisterButtonPressed,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -366,13 +375,17 @@ class _RegisterFormState extends State<RegisterForm> {
                         Container(
                           width: 180.0,
                           height: 40.0,
-                          child: RaisedButton(
-                              color: Color(0xFFf14436),
-                              disabledColor: Color(0xFFf14436),
-                              disabledTextColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFf14436),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0))),
+                              // color: Color(0xFFf14436),
+                              // disabledColor: Color(0xFFf14436),
+                              // disabledTextColor: Colors.white,
+                              // shape: RoundedRectangleBorder(
+                              //   borderRadius: BorderRadius.circular(8.0),
+                              // ),
                               onPressed: () {},
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

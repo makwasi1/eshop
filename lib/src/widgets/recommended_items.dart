@@ -234,9 +234,9 @@ Future<void> checkLogged(BuildContext context, int id) async {
 
 Future<void> checkLogged2(BuildContext context, int id) async {
   final token = await AuthRepository().getCurrentUserToken();
-  bool isTokenExpired = JwtDecoder.isExpired(token);
+  // bool isTokenExpired = JwtDecoder.isExpired(token);
 
-  if (isTokenExpired || token == null) {
+  if (token == null) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.orange,
       content: Text("Please login to add to cart!!."),

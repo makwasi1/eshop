@@ -17,39 +17,41 @@ abstract class CartServiceRepository {
 class CartRepository implements CartServiceRepository {
   String url = 'http://eshoptag.com';
   String addSimpleProductEndpoint = '/api/checkout/cart/add/';
-  String getCartDetailsEnpoint = '/api/checkout/cart';
-  String emptyCartEndpoint = '/api/checkout/cart/empty';
-  String updateCartEndpoint = '/api/checkout/cart/update';
-  String applyCouponEndpoint = '/api/checkout/cart/coupon';
+  String getCartDetailsEnpoint = '/api/checkout/cart?token=true';
+  String emptyCartEndpoint = '/api/checkout/cart/empty?token=true';
+  String updateCartEndpoint = '/api/checkout/cart/update?token=true';
+  String applyCouponEndpoint = '/api/checkout/cart/coupon?token=true';
   String removeCartItemEndpoint = '/api/checkout/cart/remove-item/';
   String moveToWishlistEndpoint = '/api/checkout/cart/move-to-wishlist/';
-  String saveAddressEndpoint = '/api/checkout/save-address';
-  String shippingMethodEndpoint = '/api/checkout/cart/save-shipping';
-  String placeOrderEndpoint = '/api/checkout/cart/save-order';
-  String shippingMethod = '/api/checkout/save-shipping';
-  String paymentMethod = '/api/checkout/save-payment';
+  String saveAddressEndpoint = '/api/checkout/save-address?token=true';
+  String shippingMethodEndpoint = '/api/checkout/cart/save-shipping?token=true';
+  String placeOrderEndpoint = '/api/checkout/cart/save-order?token=true';
+  String shippingMethod = '/api/checkout/save-shipping?token=true';
+  String paymentMethod = '/api/checkout/save-payment?token=true';
   String saveOrderEndpoint = '/api/checkout/save-order?token=true';
 
- 
 
-  
   Future<Cart> addToCart(int productId, int quantity) async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     FlutterSecureStorage storage = const FlutterSecureStorage();
       String cookie = await storage.read(key: 'cookie');
+       String token = await AuthRepository().getCurrentUserToken();
+
     final res = await http.post(
-      Uri.parse(url + addSimpleProductEndpoint + productId.toString()),
-      body: jsonEncode({"product_id": productId, "quantity": quantity}),
+      Uri.parse(url + addSimpleProductEndpoint + productId.toString()+'?token=true'),
+      body: json.encode({"product_id": productId, "quantity": quantity}),
       headers: {
-        "Content-type": "application/json",
-        "Cookie": cookie,
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " +token,
+        // "Cookie": cookie,
       },
     );
 
     if (res.statusCode == 200) {
-      var data = json.decode(res.body);
+      var data = jsonDecode(res.body);
 
-      Cart cart = CartModel.fromJson(data).data;
+      Cart cart = Cart.fromJson(data['data'] as Map<String, dynamic>);
       // var cartId = cart.id;
       // prefs.setString('cart', json.encode(cart.toJson()));
       return cart;
@@ -67,11 +69,13 @@ class CartRepository implements CartServiceRepository {
   Future<Cart> getCartDetails() async {
     FlutterSecureStorage storage = const FlutterSecureStorage();
       String cookie = await storage.read(key: 'cookie');
+    final token =  await AuthRepository().getCurrentUserToken();
     final res = await http.get(
       Uri.parse(url + getCartDetailsEnpoint),
       headers: {
         "Content-type": "application/json",
-        "Cookie": cookie,
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
       },
     );
     if (res.statusCode == 200) {
@@ -117,7 +121,15 @@ class CartRepository implements CartServiceRepository {
 
   Future<String> emptyCart() async {
     //get request that returns a string
-    final res = await HttpUtils.getRequest(url + emptyCartEndpoint, true);
+    final token =  await AuthRepository().getCurrentUserToken();
+    final res = await http.get(
+      Uri.parse(url + emptyCartEndpoint),
+      headers: {
+        "Content-type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
     if (res.statusCode == 200) {
       return res.body;
     } else if (res.body == null) {
@@ -135,6 +147,7 @@ class CartRepository implements CartServiceRepository {
     //get request that returns a string
      FlutterSecureStorage storage = const FlutterSecureStorage();
       String cookie = await storage.read(key: 'cookie');
+     final token =  await AuthRepository().getCurrentUserToken();
     final res = await http.put(Uri.parse(url + updateCartEndpoint),
         body: jsonEncode({
           "qty": {
@@ -143,7 +156,8 @@ class CartRepository implements CartServiceRepository {
         }),
         headers: {
           "Content-type": "application/json",
-          "Cookie": cookie,
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
         });
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -163,12 +177,14 @@ class CartRepository implements CartServiceRepository {
   Future<String> applyCoupon(String couponCode) async {
     //get request that returns a string
      FlutterSecureStorage storage = const FlutterSecureStorage();
+     final token =  await AuthRepository().getCurrentUserToken();
       String cookie = await storage.read(key: 'cookie');
     final res = await http.post(
       Uri.parse(  url + applyCouponEndpoint),body: jsonEncode({"code": couponCode}),
       headers: {
         "Content-type": "application/json",
-        "Cookie": cookie,
+        "Accept": "application/json",
+        "Authorization": "Bearer $token",
       },
       );
     if (res.statusCode == 200) {
@@ -203,11 +219,13 @@ class CartRepository implements CartServiceRepository {
   Future<String> addShippingMethod(String method) async {
     //get request that returns a string
      FlutterSecureStorage storage = const FlutterSecureStorage();
+     final token =  await AuthRepository().getCurrentUserToken();
       String cookie = await storage.read(key: 'cookie');
     final res = await http.post(Uri.parse(url + shippingMethod),
         body: jsonEncode({"shipping_method": method}), headers: {
       "Content-type": "application/json",
-      "Cookie": cookie,
+      "Accept": "application/json",
+      "Authorization": "Bearer $token",
         });
 
     if (res.statusCode == 200) {
@@ -227,6 +245,7 @@ class CartRepository implements CartServiceRepository {
   Future<String> addPaymentMethod(String method) async {
     //get request that returns a string
      FlutterSecureStorage storage = const FlutterSecureStorage();
+     final token =  await AuthRepository().getCurrentUserToken();
       String cookie = await storage.read(key: 'cookie');
     final res = await http.post(Uri.parse(url + paymentMethod),
         body: jsonEncode({
@@ -234,7 +253,8 @@ class CartRepository implements CartServiceRepository {
         }),
         headers: {
           "Content-type": "application/json",
-          "Cookie": cookie,
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
         });
 
     if (res.statusCode == 200) {
@@ -254,12 +274,13 @@ class CartRepository implements CartServiceRepository {
     //get request that returns a string
     FlutterSecureStorage storage = const FlutterSecureStorage();
       String cookie = await storage.read(key: 'cookie');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =  await AuthRepository().getCurrentUserToken();
     String cartId = cartItemId.toString();
-    final res = await http.get(Uri.parse(url + removeCartItemEndpoint + cartId),
+    final res = await http.get(Uri.parse(url + removeCartItemEndpoint + cartId + '?token=true'),
         headers: {
           "Content-type": "application/json",
-          "Cookie": cookie,
+          "Accept": "application/json",
+          "Authorization": "Bearer $token",
         });
     if (res.statusCode == 200) {
       var data = json.decode(res.body);
@@ -328,7 +349,7 @@ class CartRepository implements CartServiceRepository {
             }
         },), headers: {
       "Accept": "application/json",
-      "Authorization": "Bearer " +token,
+      "Authorization": "Bearer $token",
         }
       );
     if (res.statusCode == 200 || res.statusCode == 302) {
@@ -345,13 +366,15 @@ class CartRepository implements CartServiceRepository {
   }
 
 
+
+
   //save order
   Future<String> saveOrder() async {
     String token = await AuthRepository().getCurrentUserToken();
     //get request that returns a string
     final res = await http.post(Uri.parse(url + saveOrderEndpoint),
      headers: {
-      "Authorization": "Bearer " + token,
+      "Authorization": "Bearer $token",
     });
   
     if (res.statusCode == 200) {

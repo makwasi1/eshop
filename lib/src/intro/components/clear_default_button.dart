@@ -10,12 +10,21 @@ class ClearDefaultButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: kTransparent,
+        textStyle: const TextStyle(color: kPrimaryColor),
+        primary: kTransparent,
+        padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+      // padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
       onPressed: press,
-      textColor: kPrimaryColor,
-      highlightColor: kTransparent,
-      splashColor: kTransparent,
+      // textColor: kPrimaryColor,
+      // highlightColor: kTransparent,
+      // splashColor: kTransparent,
       child: Text(
         name.toUpperCase(),
       ),
