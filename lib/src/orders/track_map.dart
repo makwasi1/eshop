@@ -1,9 +1,5 @@
 import 'dart:typed_data';
-import 'dart:math' as math;
 import 'package:eshop/src/constants.dart';
-import 'package:eshop/src/delivery/delivery.dart';
-import 'package:eshop/src/widgets/default_app_bar.dart';
-import 'package:eshop/src/widgets/default_back_button.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,13 +28,16 @@ class _SimpleMapState extends State<SimpleMap> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   final  _orderNumber = TextEditingController();
 
-  LatLng _startLocation = LatLng(0.3641858701721144, 32.605753675139646);
-  LatLng endLocation = LatLng(0.33856296332115293, 32.58640158172307);
+  LatLng _startLocation = const LatLng(0.3641858701721144, 32.605753675139646);
+  LatLng endLocation = const LatLng(0.33856296332115293, 32.58640158172307);
 
   @override
   void initState() {
     addMarkers();
-    getLocationFromFirebase(widget.orderId);
+    setState(() {
+      getLocationFromFirebase(widget.orderId);
+    });
+    
     getPolyPoints();
     super.initState();
   }

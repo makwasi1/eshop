@@ -1,10 +1,8 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:eshop/src/constants.dart';
 import 'package:eshop/src/models/order_model.dart';
 import 'package:eshop/src/orders/track_map.dart';
 import 'package:eshop/src/services/orders_repo.dart';
-import 'package:eshop/src/widgets/default_app_bar.dart';
-import 'package:eshop/src/widgets/default_back_button.dart';
-import 'package:eshop/src/widgets/empty_section.dart';
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +20,34 @@ class _OrdersState extends State<Orders> {
   List<Order> ordersList = [];
   List<Order> tempList = [];
   bool isLoading = false;
+  bool isallowed = false;
 
   bool isLoadingmore = true;
 
   @override
   void initState() {
     getOrders();
+    startNotification();
     controller.addListener(_scrollListener);
     super.initState();
+  }
+
+  startNotification() async {
+    bool isallowed = await AwesomeNotifications().isNotificationAllowed();
+    if (!isallowed) {
+      //no permission of local notification
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    } else {
+      //show notification
+      AwesomeNotifications().createNotification(
+          content: NotificationContent(
+        //simgple notification
+        id: 123,
+        channelKey: 'basic', //set configuration wuth key "basic"
+        title: 'Order Confirmed',
+        body: 'Track Order In App Now!!',
+      ));
+    }
   }
 
   @override
@@ -99,8 +117,7 @@ class _OrdersState extends State<Orders> {
       back = Colors.orange;
     } else if ((model.status) == 'shipped') {
       back = Colors.green;
-    } else if ((model.status) == 'canceled' ||
-        model.status == 'returned') {
+    } else if ((model.status) == 'canceled' || model.status == 'returned') {
       back = Colors.red;
     } else if ((model.status) == 'PROCESSED') {
       back = Colors.indigo;
@@ -153,7 +170,7 @@ class _OrdersState extends State<Orders> {
                       children: [
                         Flexible(
                           child: Row(
-                            children:  [
+                            children: [
                               Icon(Icons.electric_bike, size: 18),
                               const SizedBox(width: 5),
                               Expanded(
@@ -198,7 +215,7 @@ class _OrdersState extends State<Orders> {
                           flex: 2,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children:  [
+                            children: [
                               Icon(Icons.money, size: 18),
                               const SizedBox(width: 5),
                               Expanded(
@@ -214,7 +231,7 @@ class _OrdersState extends State<Orders> {
                           flex: 1,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children:  [
+                            children: [
                               Icon(Icons.payment, size: 18),
                               const SizedBox(width: 5),
                               Expanded(
@@ -234,9 +251,10 @@ class _OrdersState extends State<Orders> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 5),
                     child: Row(
-                      children:  [
+                      children: [
                         Icon(Icons.date_range, size: 14),
-                        Text(" Order on: ${DateFormat("dd-MM-yyyy").format(DateTime.parse((model.createdAt).toString()))}"),
+                        Text(
+                            " Order on: ${DateFormat("dd-MM-yyyy").format(DateTime.parse((model.createdAt).toString()))}"),
                       ],
                     ),
                   )
@@ -246,8 +264,9 @@ class _OrdersState extends State<Orders> {
             //view order details
             context,
             CupertinoPageRoute(
-              // OrderDetail(model: orderList[index])
-                builder: (context) => SimpleMap(orderId: (ordersList[index].id).toString())),
+                // OrderDetail(model: orderList[index])
+                builder: (context) =>
+                    SimpleMap(orderId: (ordersList[index].id).toString())),
           );
           setState(() {
             // getUserDetail();

@@ -31,12 +31,12 @@ class _DefaultButtonState extends State<DefaultButton> {
       child: Container(
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-        padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: pressed ? kPrimaryColor : kTransparent,
-            textStyle:  TextStyle(color:  pressed ? kWhiteColor : kDarkColor),
-            foregroundColor:  pressed ? kDarkColor : kPrimaryColor,
+            backgroundColor: kPrimaryColor,
+            textStyle:  const TextStyle(color: kWhiteColor),
+            
             padding: const EdgeInsets.symmetric(vertical: kLessPadding),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
           ),
@@ -52,7 +52,7 @@ class _DefaultButtonState extends State<DefaultButton> {
             })
           },
           onPressed: widget.onPressed,
-          child: Text(widget.btnText,style: TextStyle(fontSize: 18,))
+          child: Text(widget.btnText,style: const TextStyle(fontSize: 18,color: kWhiteColor))
         ),
       ),
     );

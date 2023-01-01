@@ -11,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../bloc/login/login_bloc.dart';
+
 class RecommendedItems extends StatefulWidget {
   final double height, top, bottom, left, right, radius, width;
   final String price, rating;
@@ -19,6 +21,7 @@ class RecommendedItems extends StatefulWidget {
   final int sale;
   final int item;
   final Function onPress;
+
   const RecommendedItems(
       {Key key,
       this.height,
@@ -73,7 +76,7 @@ class _RecommendedItemsState extends State<RecommendedItems> {
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: IconButton(
                       icon: const Icon(Icons.favorite_border),
-                      iconSize: 30,
+                      iconSize: 22,
                       onPressed: () {
                         //add to wishlist
                         checkLogged(context, widget.item);
@@ -84,7 +87,7 @@ class _RecommendedItemsState extends State<RecommendedItems> {
                     padding: EdgeInsets.only(right: 5, left: 50),
                     child: Icon(
                       Icons.compare_arrows,
-                      size: 30,
+                      size: 22,
                     ),
                   ),
                 ],
@@ -114,7 +117,7 @@ class _RecommendedItemsState extends State<RecommendedItems> {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       color: kDarkColor,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.normal),
                 ),
               ),
@@ -126,7 +129,7 @@ class _RecommendedItemsState extends State<RecommendedItems> {
                 child: Text(
                   widget.price.toString(),
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 17, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -178,17 +181,20 @@ class _RecommendedItemsState extends State<RecommendedItems> {
                   color: kPrimaryColor,
                   child: Row(
                     children: const [
-                      Icon(
+                      Expanded(child:Icon(
                         Icons.add_shopping_cart,
                         color: kWhiteColor,
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
+                    ),
+                      
+                     
+                      Expanded(child: Text(
                         "ADD TO CART",
-                        style: TextStyle(color: kWhiteColor, fontSize: 14),
+                        style: TextStyle(color: kWhiteColor, fontSize: 12),
                       ),
+                      
+                      )
+                      
                     ],
                   ),
                   onPressed: () {
@@ -233,20 +239,33 @@ Future<void> checkLogged(BuildContext context, int id) async {
 }
 
 Future<void> checkLogged2(BuildContext context, int id) async {
+  bool isTokenExpired = false;
   final token = await AuthRepository().getCurrentUserToken();
-  // bool isTokenExpired = JwtDecoder.isExpired(token);
-
-  if (token == null) {
+  if(token != null) {
+    isTokenExpired = JwtDecoder.isExpired(token);
+  }
+    
+  if (token == null || isTokenExpired) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: Colors.orange,
       content: Text("Please login to add to cart!!."),
       duration: Duration(seconds: 1),
     ));
-    Navigator.of(context).push(
+
+    //get user email from secure storage
+    String email = await AuthRepository().getStoredEmail();
+    String password = await AuthRepository().getStoredPassword();
+    if(email != null && password != null){
+      //login user
+      AuthRepository().login(email, password);
+    } else {
+      Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SignIn(authRepository: AuthRepository()),
       ),
     );
+    }
+    
   } else{
     context.read<CartBloc>().add(CartItemAdded(id));
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

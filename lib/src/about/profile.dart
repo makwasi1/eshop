@@ -1,5 +1,10 @@
-import 'package:eshop/src/widgets/other_app_bar.dart';
+
 import 'package:flutter/material.dart';
+
+import '../account/account.dart';
+import '../constants.dart';
+import '../widgets/default_back_button.dart';
+
 
 class ProfilePage1 extends StatelessWidget {
   const ProfilePage1({Key key}) : super(key: key);
@@ -7,52 +12,45 @@ class ProfilePage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GeneralAppBar(
-        title: "PROFILE",
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+      icon: const Icon(Icons.arrow_back, color: kWhiteColor),
+      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage2()))),
+        title: const Text('PROFILE', textAlign: TextAlign.center),
+        backgroundColor: kPrimaryColor,
       ),
       body: Column(
-        children: [
-          const Expanded(flex: 2, child: _TopPortion()),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Text(
-                    "Username",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'follow',
-                        elevation: 0,
-                        label: const Text("Follow"),
-                        icon: const Icon(Icons.person_add_alt_1),
-                      ),
-                      const SizedBox(width: 16.0),
-                      FloatingActionButton.extended(
-                        onPressed: () {},
-                        heroTag: 'mesage',
-                        elevation: 0,
-                        backgroundColor: Colors.red,
-                        label: const Text("Message"),
-                        icon: const Icon(Icons.message_rounded),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  const _ProfileInfoRow()
-                ],
+        children: <Widget>[
+          SizedBox(
+            width: 150,
+            height: 150,
+            child: Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')),
+                ),
               ),
             ),
+          ),
+          const SizedBox(height: 10),
+          const Text('John Doe'),
+          const SizedBox(height: 10),
+          const ListTile(
+            leading: Icon(Icons.email),
+            title: Text('john.doe@gmail.com'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.lock),
+            title: const Text('Change password'),
+            onTap: () {
+              // Navigate to the change password screen
+            },
           ),
         ],
       ),

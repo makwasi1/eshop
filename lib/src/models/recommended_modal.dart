@@ -16,12 +16,12 @@ class RecommendedModal {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['image'] = this.image;
-    data['title'] = this.title;
-    data['price'] = this.price;
-    data['rating'] = this.rating;
-    data['sale'] = this.sale;
+    final Map<String, dynamic> data =  <String, dynamic>{};
+    data['image'] = image;
+    data['title'] = title;
+    data['price'] = price;
+    data['rating'] = rating;
+    data['sale'] = sale;
     return data;
   }
 }

@@ -38,7 +38,7 @@ class AuthRepository implements AuthRepositoryService {
         status: 0,
       ));
 
-  String url = 'http://eshoptag.com';
+  String url = 'https://katale.net';
   String registerEnPoint = '/api/customer/register';
   String loginEndPoint = '/api/customer/login?token=true';
   String getProfileEndPoint = '/api/customer/get';
@@ -61,6 +61,7 @@ class AuthRepository implements AuthRepositoryService {
       // String accessToken = User.fromJson(data['token']) as String;
 
       UserModel user = UserModel(token: data['token'], data: profile);
+      storeLogginDetails(email, password);
       storeLoggedInUser(user);
 
       return user;
@@ -157,10 +158,6 @@ class AuthRepository implements AuthRepositoryService {
     try {
       FlutterSecureStorage storage = const FlutterSecureStorage();
       final token  = storage.read(key: HttpUtils.keyForJWTToken);
-      // bool isTokenExpired = JwtDecoder.isExpired(token as String);
-      //  DateTime expirationDate = JwtDecoder.getExpirationDate(token as String);
-      // print('token is expired: $isTokenExpired');
-      // print(expirationDate);
       return token;
     } catch (e) {
       return null;
@@ -229,5 +226,23 @@ class AuthRepository implements AuthRepositoryService {
     FlutterSecureStorage storage = const FlutterSecureStorage();
         String token = await storage.read(key: HttpUtils.keyForJWTToken);
             return token;
+  }
+  
+  void storeLogginDetails(String email, String password) {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    storage.write(key: 'email', value: email);
+    storage.write(key: 'password', value: password);
+  }
+
+  Future<String> getStoredEmail() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String email = await storage.read(key: 'email');
+    return email;
+  }
+
+  Future<String> getStoredPassword() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String password = await storage.read(key: 'password');
+    return password;
   }
 }

@@ -17,6 +17,7 @@ class Address {
         this.phone,
         this.postcode,
         this.state,
+        this.id,
     });
 
     List<String> address1;
@@ -26,6 +27,7 @@ class Address {
     String phone;
     String postcode;
     String state;
+    int id;
 
     factory Address.fromJson(Map<String, dynamic> json) => Address(
         address1: List<String>.from(json["address1"].map((x) => x)),
@@ -35,6 +37,7 @@ class Address {
         phone: json["phone"],
         postcode: json["postcode"],
         state: json["state"],
+        id: json["id"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -45,5 +48,6 @@ class Address {
         "phone": phone,
         "postcode": postcode,
         "state": state,
+        "id": id,
     };
 }

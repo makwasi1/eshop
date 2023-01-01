@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:eshop/src/widgets/other_app_bar.dart';
 import 'package:eshop/src/widgets/vendor_feed.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LiveStreaming extends StatefulWidget {

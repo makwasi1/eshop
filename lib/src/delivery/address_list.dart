@@ -34,7 +34,8 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
     var addresses = await AddressRepository().getAddresses();
     // print(addresses);
   }
-   @override
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -43,10 +44,9 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-                backgroundColor: kPrimaryColor,
-                elevation: kRadius,
-                actions: <Widget> [
-                
+        backgroundColor: kPrimaryColor,
+        elevation: kRadius,
+        actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
             tooltip: 'Add Address',
@@ -59,28 +59,28 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
               );
             },
           ),
-                ],
-                leading: IconButton(
-                  padding: const EdgeInsets.only(left: kDefaultPadding),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => CartScreen(), //search page
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  'ADDRESS',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+        ],
+        leading: IconButton(
+          padding: const EdgeInsets.only(left: kDefaultPadding),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CartScreen(), //search page
+            ),
+          ),
+        ),
+        title: const Text(
+          'ADDRESS',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
       backgroundColor: kWhiteColor,
       body: BlocBuilder<AddressBloc, AddressState>(
         builder: (context, state) {
@@ -91,39 +91,37 @@ class _DeliveryAddressListState extends State<DeliveryAddressList> {
           }
           if (state is AddressLoadedState) {
             return ListView(
-              
-                children: [
-                  const HeaderLabel(
-                    headerText: 'Where are your ordered items shipped?',
-                  ),
-                  //wrap bloc listner here
-                  ListView.builder(
-                    itemCount: state.addresses.length,
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(5),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        
-                        child: ListOfAddresses(
-                          address: state.addresses[index],
-                        ),
-                      );
-                    },
-                  ),
-            
-                  DefaultButton(
-                    btnText: "ADD NEW ADDRESS",
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        // builder: (context) => SignIn(),
-                        builder: (context) => const DeliveryAddress(),
+              children: [
+                const HeaderLabel(
+                  headerText: 'Where should your ordered items be shipped?',
+                ),
+                //wrap bloc listner here
+                ListView.builder(
+                  itemCount: state.addresses.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(5),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: ListOfAddresses(
+                        address: state.addresses[index],
                       ),
+                    );
+                  },
+                ),
+
+                DefaultButton(
+                  btnText: "ADD NEW ADDRESS",
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      // builder: (context) => SignIn(),
+                      builder: (context) => const DeliveryAddress(),
                     ),
                   ),
-                ],
+                ),
+              ],
             );
-          } 
+          }
           return Column(
             children: [
               const HeaderLabel(
@@ -171,17 +169,21 @@ class _ListOfAddressesState extends State<ListOfAddresses> {
       padding: const EdgeInsets.only(bottom: 10),
       child: GestureDetector(
         onTap: () {
-           cartRepo.saveAddress(widget.address.city, widget.address.state, widget.address.country, widget.address.phone, widget.address.postcode);
-          setState(() {
-            
-             
-          });
+          cartRepo.saveAddress(
+              widget.address.city,
+              widget.address.state,
+              widget.address.country,
+              widget.address.phone,
+              widget.address.postcode,
+              widget.address.id,
+              );
+          setState(() {});
           Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const ShippingMethod(
+            MaterialPageRoute(
+              builder: (context) => const ShippingMethod(),
             ),
-          ),
-        );},
+          );
+        },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0),
           padding: const EdgeInsets.only(left: 24.0, top: 16.0, bottom: 16.0),
@@ -237,6 +239,7 @@ class _ListOfAddressesState extends State<ListOfAddresses> {
     );
   }
 }
+
 class AddAddress1 extends StatelessWidget {
   const AddAddress1({
     Key key,
@@ -244,14 +247,14 @@ class AddAddress1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  IconButton(
-        icon: const Icon(Icons.add),
-        iconSize: 35.0,
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const DeliveryAddress(), //search page
-          ),
+    return IconButton(
+      icon: const Icon(Icons.add),
+      iconSize: 35.0,
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const DeliveryAddress(), //search page
         ),
+      ),
     );
   }
 }

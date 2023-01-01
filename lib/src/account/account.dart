@@ -127,7 +127,7 @@
 // }
 
 
-import 'package:eshop/src/about/about.dart';
+import 'package:eshop/src/about/profile.dart';
 import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/orders/track_map.dart';
 import 'package:eshop/src/orders/track_orders.dart';
@@ -154,35 +154,19 @@ class _SettingsPage2State extends State<SettingsPage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GeneralAppBar(
-        title: 'SETTINGS',
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+      icon: const Icon(Icons.arrow_back, color: kWhiteColor),
+      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavBar(0)))),
+        title: const Text('SETTINGS', textAlign: TextAlign.center),
+        backgroundColor: kPrimaryColor,
       ),
       body: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 400),
           child: ListView(
             children: [
-              const _SingleSection(
-                title: "General",
-                children: [
-                  // _CustomListTile(
-                  //     title: "Dark Mode",
-                  //     icon: Icons.dark_mode_outlined,
-                  //     trailing: Switch(
-                  //         value: _isDark,
-                  //         onChanged: (value) {
-                  //           setState(() {
-                  //             _isDark = value;
-                  //           });
-                  //         })),
-                  _CustomListTile(
-                      title: "Notifications",
-                      icon: Icons.notifications_none_rounded),
-                  _CustomListTile(
-                      title: "Security Status",
-                      icon: CupertinoIcons.lock_shield),
-                ],
-              ),
               const Divider(),
                _SingleSection(
                 title: "User Profile",

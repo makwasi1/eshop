@@ -12,7 +12,7 @@ abstract class OrdersServiceRepository {
 }
 
 class OrdersRepository extends OrdersServiceRepository {
-  String url = 'http://eshoptag.com';
+  String url = 'https://katale.net';
   String getAllOrdersEndpoint = '/api/orders?page=1&token=true';
   String getOrderByIdEndpoint = '/api/orders/';
 
@@ -30,7 +30,7 @@ class OrdersRepository extends OrdersServiceRepository {
     );
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
-      List<Order> order = OrderModel.fromMap(data).data;
+      List<Order> order = OrderModel.fromJson(data).data;
       return order;
     } else if (res.body == null) {
       throw UnknownResponseException('No Cart Found.');

@@ -230,43 +230,40 @@ class _HomeState extends State<Home> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: const [
-                          Icon(
+                          Expanded(child: Icon(
                             Icons.credit_card,
                             color: kPrimaryColor,
                             size: 30.0,
                           ),
-                          Text(
+                           ),
+                          Expanded(child:Text(
                             " Secure Payment",
                             style: TextStyle(
-                              fontSize: 24.0,
+                              fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          // const Text(
-                          //   " 100% Secure payment",
-                          //   style: TextStyle(
-                          //     fontSize: 13.0,
-                          //     fontWeight: FontWeight.w500,
-                          //   ),
-                          // ),
-                          //  SizedBox(
-                          //   width: 10.0,
-                          // ),
-                          VerticalDivider(
-                            endIndent: 30.0,
-                          ),
-                          Icon(
+                          
+                           ),
+                          
+                         
+                          // Expanded(child: VerticalDivider(
+                          //   endIndent: 30.0,
+                          // )),
+                          Expanded(child: Icon(
                             Icons.autorenew,
                             color: kPrimaryColor,
                             size: 30.0,
-                          ),
-                          Text(
+                          ), ),
+                         
+                         Expanded(child: Text(
                             "90 Return policy",
                             style: TextStyle(
-                              fontSize: 24.0,
+                              fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                             ),
-                          ),
+                          ),),
+                          
                           // Text(
                           //   "If goods have problems",
                           //   style: TextStyle(

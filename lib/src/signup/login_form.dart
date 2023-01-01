@@ -75,7 +75,11 @@ class _LoginFormState extends State<LoginForm> {
         //   );
         // }
         if (state is LoginSuccess) {
-          Navigator.pop(context);
+          Future.delayed(Duration.zero,(){
+            Navigator.pop(context);
+       //your code goes here
+  });
+          
         }
 
         if (state is UnAuthenticated) {
@@ -86,7 +90,7 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   Container(
                       height: 200.0,
-                      padding: EdgeInsets.only(bottom: 20.0, top: 40.0),
+                      padding: const EdgeInsets.only(bottom: 20.0, top: 40.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
@@ -253,7 +257,7 @@ class _LoginFormState extends State<LoginForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                     Expanded(child:  Container(
                         height: 40.0,
                         width: 180.0,
                         child: ElevatedButton(
@@ -288,8 +292,9 @@ class _LoginFormState extends State<LoginForm> {
                                         color: Colors.white)),
                               ],
                             )),
-                      ),
-                      Container(
+                      ), ),
+
+                      Expanded(child: Container(
                         width: 180.0,
                         height: 40.0,
                         child: ElevatedButton(
@@ -324,7 +329,8 @@ class _LoginFormState extends State<LoginForm> {
                                         color: Colors.white)),
                               ],
                             )),
-                      ),
+                      ), ),
+                      
                     ],
                   ),
                   const SizedBox(

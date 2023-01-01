@@ -1,6 +1,7 @@
 import 'package:eshop/src/bloc/login/login_bloc.dart';
 import 'package:eshop/src/bloc/login/login_state.dart';
 import 'package:eshop/src/bloc/login/login_event.dart';
+import 'package:eshop/src/bottom_nav_bar/bottom_nav_bar.dart';
 import 'package:eshop/src/delivery/delivery.dart';
 import 'package:eshop/src/services/auth_repo.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -27,7 +28,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,25 +56,23 @@ class _RegisterFormState extends State<RegisterForm> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          if(state is LoginLoading){
-            return const Center (
+          if (state is LoginLoading) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (state is LoginSuccess) {
-              setState(() {
-                Navigator.push(
-                    context,
-            MaterialPageRoute(
-                builder: (context) =>
-                   const DeliveryAddress()));
-              });
-            
+            print("Register Success");
+            Future.delayed(Duration.zero, () {
+              //your code goes here
+              Navigator.pop(context);
+            });
           }
 
-          if(state is UnAuthenticated){
+          if (state is UnAuthenticated) {
             return Padding(
-              padding: const EdgeInsets.only(right: 20.0, left: 20.0, top: 80.0),
+              padding:
+                  const EdgeInsets.only(right: 20.0, left: 20.0, top: 80.0),
               child: Form(
                 child: Column(
                   children: [
@@ -113,14 +111,15 @@ class _RegisterFormState extends State<RegisterForm> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon:
-                        Icon(EvaIcons.person, color: Colors.black26),
+                            Icon(EvaIcons.person, color: Colors.black26),
                         enabledBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(30.0)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        contentPadding:
+                            EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "First Name",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -144,15 +143,16 @@ class _RegisterFormState extends State<RegisterForm> {
                       controller: _lastNameController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        prefixIcon:
-                        Icon(EvaIcons.personAddOutline, color: Colors.black26),
+                        prefixIcon: Icon(EvaIcons.personAddOutline,
+                            color: Colors.black26),
                         enabledBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(30.0)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        contentPadding:
+                            EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "Last Name",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -177,14 +177,15 @@ class _RegisterFormState extends State<RegisterForm> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon:
-                        Icon(EvaIcons.emailOutline, color: Colors.black26),
+                            Icon(EvaIcons.emailOutline, color: Colors.black26),
                         enabledBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(30.0)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        contentPadding:
+                            EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "E-Mail",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -209,14 +210,15 @@ class _RegisterFormState extends State<RegisterForm> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon:
-                        Icon(EvaIcons.lockOutline, color: Colors.black26),
+                            Icon(EvaIcons.lockOutline, color: Colors.black26),
                         enabledBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(30.0)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        contentPadding:
+                            EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "Password",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -241,15 +243,16 @@ class _RegisterFormState extends State<RegisterForm> {
                       controller: _confirmPasswordController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        prefixIcon:
-                        const Icon(EvaIcons.lockOutline, color: Colors.black26),
+                        prefixIcon: const Icon(EvaIcons.lockOutline,
+                            color: Colors.black26),
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.black12),
                             borderRadius: BorderRadius.circular(30.0)),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: kPrimaryColor),
                             borderRadius: BorderRadius.circular(30.0)),
-                        contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        contentPadding:
+                            EdgeInsets.only(left: 10.0, right: 10.0),
                         labelText: "Confirm Password",
                         hintStyle: const TextStyle(
                             fontSize: 12.0,
@@ -285,42 +288,44 @@ class _RegisterFormState extends State<RegisterForm> {
                               height: 45,
                               child: state is LoginLoading
                                   ? Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        children: const [
-                                          SizedBox(
-                                            height: 25.0,
-                                            width: 25.0,
-                                            child: CupertinoActivityIndicator(),
-                                          )
-                                        ],
-                                      ))
-                                ],
-                              )
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Center(
+                                            child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            SizedBox(
+                                              height: 25.0,
+                                              width: 25.0,
+                                              child:
+                                                  CupertinoActivityIndicator(),
+                                            )
+                                          ],
+                                        ))
+                                      ],
+                                    )
                                   : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: kPrimaryColor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(30.0))),
-                                  // color: kPrimaryColor,
-                                  // disabledColor: kPrimaryColor,
-                                  // disabledTextColor: Colors.white,
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.circular(30.0),
-                                  // ),
-                                  onPressed: _onRegisterButtonPressed,
-                                  child: const Text("REGISTER",
-                                      style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)))),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: kPrimaryColor,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0))),
+                                      // color: kPrimaryColor,
+                                      // disabledColor: kPrimaryColor,
+                                      // disabledTextColor: Colors.white,
+                                      // shape: RoundedRectangleBorder(
+                                      //   borderRadius: BorderRadius.circular(30.0),
+                                      // ),
+                                      onPressed: _onRegisterButtonPressed,
+                                      child: const Text("REGISTER",
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)))),
                         ],
                       ),
                     ),
@@ -329,7 +334,8 @@ class _RegisterFormState extends State<RegisterForm> {
                       children: const [
                         Text(
                           "Or connect using",
-                          style: TextStyle(color: Colors.black26, fontSize: 12.0),
+                          style:
+                              TextStyle(color: Colors.black26, fontSize: 12.0),
                         ),
                       ],
                     ),
@@ -339,71 +345,77 @@ class _RegisterFormState extends State<RegisterForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          height: 40.0,
-                          width: 180.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Color(0xFF385c8e),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0))),
-                              // color: Color(0xFF385c8e),
-                              // disabledColor: Color(0xFF385c8e),
-                              // disabledTextColor: Colors.white,
-                              // shape: RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.circular(8.0),
-                              // ),
-                              onPressed: _onRegisterButtonPressed,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    EvaIcons.facebook,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text("Facebook",
-                                      style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)),
-                                ],
-                              )),
+                        Expanded(
+                          child: Container(
+                            height: 40.0,
+                            width: 180.0,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFF385c8e),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0))),
+                                // color: Color(0xFF385c8e),
+                                // disabledColor: Color(0xFF385c8e),
+                                // disabledTextColor: Colors.white,
+                                // shape: RoundedRectangleBorder(
+                                //   borderRadius: BorderRadius.circular(8.0),
+                                // ),
+                                onPressed: _onRegisterButtonPressed,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      EvaIcons.facebook,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text("Facebook",
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
+                                  ],
+                                )),
+                          ),
                         ),
-                        Container(
-                          width: 180.0,
-                          height: 40.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFf14436),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0))),
-                              // color: Color(0xFFf14436),
-                              // disabledColor: Color(0xFFf14436),
-                              // disabledTextColor: Colors.white,
-                              // shape: RoundedRectangleBorder(
-                              //   borderRadius: BorderRadius.circular(8.0),
-                              // ),
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    EvaIcons.google,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text("Google",
-                                      style: new TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)),
-                                ],
-                              )),
+                        Expanded(
+                          child: Container(
+                            width: 180.0,
+                            height: 40.0,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFFf14436),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0))),
+                                // color: Color(0xFFf14436),
+                                // disabledColor: Color(0xFFf14436),
+                                // disabledTextColor: Colors.white,
+                                // shape: RoundedRectangleBorder(
+                                //   borderRadius: BorderRadius.circular(8.0),
+                                // ),
+                                onPressed: () {},
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      EvaIcons.google,
+                                      color: Colors.white,
+                                    ),
+                                    const SizedBox(
+                                      width: 5.0,
+                                    ),
+                                    Text("Google",
+                                        style: new TextStyle(
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
+                                  ],
+                                )),
+                          ),
                         ),
                       ],
                     ),

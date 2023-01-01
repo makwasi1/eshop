@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reflectable/reflectable.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'firebase_options.dart';
 import 'main.reflectable.dart';
 
@@ -26,6 +27,34 @@ void main() async {
   initializeReflectable();
    await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  AwesomeNotifications().initialize(
+     'resource://drawable/logo', 
+     [            // notification icon 
+        NotificationChannel(
+            channelGroupKey: 'basic_test',
+            channelKey: 'basic',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            channelShowBadge: true,
+            importance: NotificationImportance.High,
+            enableVibration: true,
+        ),
+
+        NotificationChannel(
+            channelGroupKey: 'image_test',
+            channelKey: 'image',
+            channelName: 'image notifications',
+            channelDescription: 'Notification channel for image tests',
+            defaultColor: Colors.redAccent,
+            ledColor: Colors.white,
+            channelShowBadge: true,
+            importance: NotificationImportance.High
+        )
+
+        //add more notification type with different configuration
+
+     ]
   );
   runApp(MultiRepositoryProvider(
     providers: [

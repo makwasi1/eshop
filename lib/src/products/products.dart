@@ -137,21 +137,20 @@ class _ProductsPageState extends State<ProductsPage> {
                                         ),
                                         Row(
                                           children: [
-                                            Text(
+                                           Expanded(child: Text(
                                               productItem[i].formatedPrice,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 15,
+                                                fontSize: 13,
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              width: 25,
-                                            ),
-                                            const Icon(
-                                              Icons.star,
-                                              color: Colors.yellow,
-                                              size: 20,
-                                            ),
+                                            ), ), 
+                                            
+                                            // const Expanded(child:  Icon(
+                                            //   Icons.star,
+                                            //   color: Colors.yellow,
+                                            //   size: 10,
+                                            // ), ),
+                                            
                                           ],
                                         ),
                                         ElevatedButton(
@@ -162,19 +161,20 @@ class _ProductsPageState extends State<ProductsPage> {
                                           },
                                           child: Row(
                                             children: const [
-                                              Icon(
-                                                Icons.add_shopping_cart,
-                                                color: Colors.white,
+                                              Expanded(
+                                                child: Icon(
+                                                  Icons.add_shopping_cart,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              SizedBox(
-                                                width: 16,
-                                              ),
-                                              Text(
-                                                "ADD TO CART",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white),
-                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  "ADD TO CART",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.white),
+                                                ),
+                                              )
                                             ],
                                           ),
                                         ),
@@ -225,7 +225,7 @@ Future<void> checkLogged2(BuildContext context, int id) async {
         builder: (context) => SignIn(authRepository: AuthRepository()),
       ),
     );
-  } else{
+  } else {
     context.read<CartBloc>().add(CartItemAdded(id));
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       backgroundColor: kPrimaryColor,

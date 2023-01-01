@@ -19,14 +19,14 @@ abstract class ProductServiceRepository {
 }
 
 class ProductRepository extends ProductServiceRepository {
-  String url = 'http://eshoptag.com';
+  String url = 'https://katale.net';
   String productsEndpoint = '/api/products?page=1';
   String getProductByIdEndpoint = '/api/products/';
   String categoriesEndpoint = '/api/categories?page=1';
   String getCategoryByIdEndpoint = '/api/categories/';
   String getProductReviewsEndpoint = '/api/reviews?product_id=';
   String addToWishListEndpoint = '/api/wishlist/add/'; //example.com/api/wishlist/add/{product_id}
-  String getWishListEndpoint = 'http://eshoptag.com/api/wishlist?page=1&token=true';
+  String getWishListEndpoint = 'https://katale.net/api/wishlist?page=1&token=true';
 
   @override
   Future<ProductModel> downloadProducts() async {
@@ -45,7 +45,7 @@ class ProductRepository extends ProductServiceRepository {
       //get cookie from response
       final cookie = response.headers['set-cookie'];
       //store cookie in secure storage
-      FlutterSecureStorage storage = new FlutterSecureStorage();
+      FlutterSecureStorage storage = const FlutterSecureStorage();
       await storage.write(key: 'cookie', value: cookie);
       print(cookie);
       return ProductModel.fromJson(data);
@@ -156,7 +156,7 @@ class ProductRepository extends ProductServiceRepository {
   Future<WishlistModel> addToWishList(int id) async {
     final token = await AuthRepository().getCurrentUserToken();
     final response = await http.get(
-      Uri.parse('http://eshoptag.com/api/wishlist/add/$id?token=true'),
+      Uri.parse('http://katale.net/api/wishlist/add/$id?token=true'),
       // Send authorization headers to the backend.
       headers: {
         "Content-type": "application/json",

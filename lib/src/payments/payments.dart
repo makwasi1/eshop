@@ -24,13 +24,13 @@ class _PaymentState extends State<Payment> {
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: const GeneralAppBar(
-        title: 'PAYMENT',
+        title: 'Order Summary',
         
       ),
       body: Column(
         children: [
           const HeaderLabel(
-            headerText: 'Choose your payment method.',
+            headerText: 'Order Summary.',
           ),
           Expanded(
             child: ListView.separated(

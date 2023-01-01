@@ -12,7 +12,7 @@ abstract class CategoryRepositoryService {
 }
 
 class CategoryRepository extends CategoryRepositoryService {
-  String url = 'http://eshoptag.com';
+  String url = 'http://katale.net';
   String categoriesEndpoint = '/api/categories?page=1';
   String getCategoryByIdEndpoint = '/api/categories/';
 

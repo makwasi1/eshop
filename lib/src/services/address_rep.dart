@@ -18,7 +18,7 @@ class AddressRepository implements AddressRepositoryService {
   static var id;
 
   AddressRepository();
-  String url = 'http://eshoptag.com';
+  String url = 'https://katale.net';
   String addAddressEndPoint = '/api/addresses/create?token=true';
   String getAddressEndPoint = '/api/addresses/';
   String getAddressesEndPoint = '/api/addresses?token=true';
@@ -36,9 +36,9 @@ class AddressRepository implements AddressRepositoryService {
       "postcode": postCode,
       "state": state
     };
-    const token3 = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lc2hvcHRhZy5jb21cL2FwaVwvY3VzdG9tZXJcL2xvZ2luIiwiaWF0IjoxNjYyNDAxNTc3LCJleHAiOjE2NjI0MDUxNzcsIm5iZiI6MTY2MjQwMTU3NywianRpIjoiWVJPYXByWlZTdFBaTlZ3ZCIsInN1YiI6MTMsInBydiI6IjhmY2EwODhhYmFlMmY5YThmODRhNWYwYmY2YTY1MjQ0OTA1NWJlMDAifQ.9qqtaisqcnx9H3rLrUtE_ry-bvQvMUXNQ6Vi7nXkWHM';
+    
    final token =  await AuthRepository().getCurrentUserToken();
-    final response = await http.post(Uri.parse('http://eshoptag.com/api/addresses/create?token=true'),
+    final response = await http.post(Uri.parse('https://katale.net/api/addresses/create?token=true'),
         headers: {
           "Authorization": "Bearer "+ token,
           "Content-Type": "application/json; charset=UTF-8",
